@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriPath — Template Complet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-50: #f0faf4;
+    --green-100: #d4f0e0;
+    --green-400: #3aaa6b;
+    --green-500: #2d8f57;
+    --green-600: #1e6b3e;
+    --green-900: #0d2e1a;
+    --gold-100: #fef6e0;
+    --gold-400: #e6a817;
+    --gold-500: #c48a00;
+    --amber-50: #fffbf0;
+    --slate-50: #f8f9fa;
+    --slate-100: #f1f3f5;
+    --slate-200: #e9ecef;
+    --slate-300: #dee2e6;
+    --slate-400: #adb5bd;
+    --slate-500: #6c757d;
+    --slate-600: #495057;
+    --slate-700: #343a40;
+    --slate-900: #111316;
+    --red-400: #e04646;
+    --red-100: #fde8e8;
+    --blue-400: #3b82f6;
+    --blue-100: #dbeafe;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 20px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --shadow-md: 0 4px 24px rgba(0,0,0,0.11);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--slate-900); line-height: 1.6; }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  /* ---- NAV TEMPLATE (meta nav for demo) ---- */
+  .demo-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: var(--slate-900);
+    display: flex; align-items: center; gap: 0; overflow-x: auto;
+    padding: 0 12px; height: 44px;
+  }
+  .demo-nav span { color: var(--slate-400); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: 0 12px 0 4px; white-space: nowrap; }
+  .demo-nav button {
+    background: none; border: none; color: var(--slate-400); font-family: 'DM Sans', sans-serif;
+    font-size: 12px; padding: 6px 14px; cursor: pointer; white-space: nowrap; border-radius: 6px;
+    transition: background .15s, color .15s;
+  }
+  .demo-nav button:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .demo-nav button.active { background: var(--green-500); color: #fff; }
+
+  /* ---- PAGES ---- */
+  .page { display: none; padding-top: 44px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ===== PAGE 1 : LANDING ===== */
+  .landing-hero {
+    background: linear-gradient(135deg, #0d2e1a 0%, #1e6b3e 60%, #2d8f57 100%);
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 80px 24px 60px; position: relative; overflow: hidden;
+  }
+  .landing-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .landing-logo { font-family: 'Playfair Display', serif; font-size: 18px; color: rgba(255,255,255,0.6); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 60px; }
+  .landing-hero h1 { font-size: clamp(42px, 6vw, 80px); color: #fff; font-weight: 700; line-height: 1.1; max-width: 800px; }
+  .landing-hero h1 em { font-style: normal; color: #7de8a8; }
+  .landing-hero p { font-size: 18px; color: rgba(255,255,255,0.65); max-width: 520px; margin: 24px auto 40px; }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { background: #fff; color: var(--green-600); font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; border: none; padding: 14px 32px; border-radius: 100px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .btn-outline { background: rgba(255,255,255,0.1); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 15px; border: 1.5px solid rgba(255,255,255,0.3); padding: 14px 32px; border-radius: 100px; cursor: pointer; transition: background .15s; }
+  .btn-outline:hover { background: rgba(255,255,255,0.18); }
+
+  .landing-features { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+  .landing-features h2 { font-size: 36px; text-align: center; color: var(--slate-900); margin-bottom: 12px; }
+  .landing-features .subtitle { text-align: center; color: var(--slate-500); margin-bottom: 56px; font-size: 16px; }
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+  .feat-card { background: var(--slate-50); border-radius: var(--radius); padding: 28px 24px; border: 1px solid var(--slate-200); }
+  .feat-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--green-100); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 22px; }
+  .feat-card h3 { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--slate-900); }
+  .feat-card p { font-size: 14px; color: var(--slate-500); line-height: 1.6; }
+
+  .landing-imc { background: var(--green-50); padding: 80px 40px; text-align: center; }
+  .landing-imc h2 { font-size: 34px; margin-bottom: 10px; }
+  .landing-imc p { color: var(--slate-500); max-width: 500px; margin: 0 auto 40px; }
+  .imc-widget { display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; align-items: flex-end; }
+  .imc-field { display: flex; flex-direction: column; gap: 6px; }
+  .imc-field label { font-size: 13px; font-weight: 500; color: var(--slate-600); text-align: left; }
+  .imc-field input { width: 120px; padding: 12px 16px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; }
+  .imc-field input:focus { border-color: var(--green-400); }
+  .imc-btn { background: var(--green-500); color: #fff; border: none; padding: 13px 28px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .imc-result { margin-top: 28px; font-size: 18px; font-weight: 500; display: none; }
+
+  /* ===== PAGE 2 : INSCRIPTION ===== */
+  .auth-wrap { min-height: 100vh; display: flex; }
+  .auth-side { width: 420px; min-width: 420px; background: linear-gradient(160deg, var(--green-900) 0%, var(--green-600) 100%); padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; }
+  .auth-side h2 { font-size: 36px; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+  .auth-side p { color: rgba(255,255,255,0.65); font-size: 15px; }
+  .auth-steps { margin-top: 48px; display: flex; flex-direction: column; gap: 20px; }
+  .auth-step { display: flex; align-items: center; gap: 14px; }
+  .auth-step-num { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.15); color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .auth-step-num.done { background: var(--green-400); }
+  .auth-step span { color: rgba(255,255,255,0.75); font-size: 14px; }
+  .auth-form { flex: 1; padding: 60px 64px; display: flex; flex-direction: column; justify-content: center; max-width: 580px; }
+  .auth-form h3 { font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .auth-form .step-label { color: var(--slate-500); font-size: 14px; margin-bottom: 36px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--slate-700); }
+  .form-group input, .form-group select {
+    padding: 12px 16px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none;
+    background: #fff; transition: border-color .15s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--green-400); }
+  .form-submit { background: var(--green-500); color: #fff; border: none; padding: 14px 32px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; transition: background .15s; }
+  .form-submit:hover { background: var(--green-600); }
+  .form-link { text-align: center; font-size: 14px; color: var(--slate-500); margin-top: 20px; }
+  .form-link a { color: var(--green-500); text-decoration: none; font-weight: 500; }
+  .gender-btns { display: flex; gap: 12px; }
+  .gender-btn { flex: 1; padding: 12px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; background: #fff; cursor: pointer; transition: all .15s; }
+  .gender-btn.active { border-color: var(--green-400); background: var(--green-50); color: var(--green-600); font-weight: 600; }
+
+  /* ===== PAGE 3 : DASHBOARD USER ===== */
+  .app-layout { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; background: var(--slate-900); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; }
+  .sidebar-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; padding: 8px 24px 32px; letter-spacing: .05em; }
+  .sidebar-logo span { color: var(--green-400); }
+  .sidebar-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--slate-500); padding: 0 24px 8px; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 11px 24px; font-size: 14px; color: var(--slate-400); cursor: pointer; transition: background .12s, color .12s; }
+  .sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+  .sidebar-item.active { background: rgba(58, 170, 107, 0.15); color: var(--green-400); }
+  .sidebar-item .icon { font-size: 18px; }
+  .sidebar-footer { margin-top: auto; padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.07); }
+  .sidebar-user { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--green-400); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
+  .avatar-info p { font-size: 13px; color: #fff; font-weight: 500; }
+  .avatar-info span { font-size: 11px; color: var(--slate-500); }
+
+  .main-content { flex: 1; padding: 36px 40px; background: var(--slate-100); overflow-y: auto; }
+  .page-header { margin-bottom: 32px; }
+  .page-header h2 { font-size: 28px; color: var(--slate-900); }
+  .page-header p { color: var(--slate-500); font-size: 15px; margin-top: 4px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--slate-200); }
+  .stat-label { font-size: 12px; color: var(--slate-500); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .stat-value { font-size: 28px; font-weight: 600; color: var(--slate-900); }
+  .stat-sub { font-size: 13px; margin-top: 4px; }
+  .stat-sub.up { color: var(--green-500); }
+  .stat-sub.down { color: var(--red-400); }
+
+  .cards-row { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .card { background: #fff; border-radius: var(--radius); padding: 24px; border: 1px solid var(--slate-200); }
+  .card-title { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: var(--slate-900); margin-bottom: 20px; }
+  .imc-gauge { display: flex; flex-direction: column; align-items: center; padding: 8px 0; }
+  .gauge-bar { width: 100%; height: 16px; border-radius: 100px; background: linear-gradient(to right, #3b82f6 0%, #3aaa6b 30%, #e6a817 65%, #e04646 100%); position: relative; margin-bottom: 24px; }
+  .gauge-marker { position: absolute; top: -4px; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 3px solid var(--slate-900); transform: translateX(-50%); left: 38%; }
+  .gauge-labels { display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: var(--slate-500); }
+  .imc-num { font-size: 48px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--green-500); }
+  .imc-tag { background: var(--green-100); color: var(--green-600); font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 100px; margin-top: 8px; }
+
+  .objective-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .obj-card { border: 2px solid var(--slate-200); border-radius: var(--radius-sm); padding: 16px; cursor: pointer; transition: all .15s; }
+  .obj-card:hover { border-color: var(--green-400); background: var(--green-50); }
+  .obj-card.selected { border-color: var(--green-500); background: var(--green-50); }
+  .obj-card h4 { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--slate-900); margin-bottom: 4px; }
+  .obj-card p { font-size: 13px; color: var(--slate-500); }
+  .obj-icon { font-size: 20px; margin-bottom: 8px; }
+
+  /* progress chart mock */
+  .chart-placeholder { height: 140px; background: var(--slate-50); border-radius: var(--radius-sm); display: flex; align-items: flex-end; padding: 16px; gap: 8px; }
+  .bar { flex: 1; border-radius: 4px 4px 0 0; background: var(--green-100); transition: height .3s; }
+  .bar.active { background: var(--green-400); }
+
+  /* ===== PAGE 4 : RÉGIMES ===== */
+  .regime-filters { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+  .filter-btn { padding: 8px 20px; border-radius: 100px; border: 1.5px solid var(--slate-200); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; background: #fff; transition: all .15s; }
+  .filter-btn.active { background: var(--green-500); color: #fff; border-color: var(--green-500); }
+  .regime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .regime-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; transition: transform .15s, box-shadow .15s; }
+  .regime-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .regime-banner { height: 120px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+  .regime-banner.green { background: linear-gradient(135deg, #d4f0e0, #9fdcb7); }
+  .regime-banner.amber { background: linear-gradient(135deg, #fef6e0, #f7d37a); }
+  .regime-banner.blue { background: linear-gradient(135deg, #dbeafe, #93c5fd); }
+  .regime-body { padding: 20px; }
+  .regime-name { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 6px; }
+  .regime-desc { font-size: 13px; color: var(--slate-500); margin-bottom: 16px; line-height: 1.5; }
+  .regime-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag { padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+  .tag.green { background: var(--green-100); color: var(--green-600); }
+  .tag.amber { background: var(--gold-100); color: var(--gold-500); }
+  .tag.red { background: var(--red-100); color: var(--red-400); }
+  .tag.blue { background: var(--blue-100); color: var(--blue-400); }
+  .composition-bar { margin-bottom: 16px; }
+  .comp-label { font-size: 12px; color: var(--slate-500); margin-bottom: 6px; }
+  .comp-bar { height: 8px; border-radius: 100px; overflow: hidden; display: flex; }
+  .comp-bar .seg { transition: width .3s; }
+  .seg-meat { background: #e04646; }
+  .seg-fish { background: #3b82f6; }
+  .seg-poultry { background: #e6a817; }
+  .regime-price { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--slate-100); }
+  .price-amount { font-size: 22px; font-weight: 700; color: var(--slate-900); }
+  .price-period { font-size: 12px; color: var(--slate-400); }
+  .btn-add { background: var(--green-500); color: #fff; border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .gold-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--gold-100); color: var(--gold-500); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 100px; margin-left: 8px; }
+
+  /* ===== PAGE 5 : PROFIL / RÉSULTAT ===== */
+  .profile-layout { display: grid; grid-template-columns: 300px 1fr; gap: 24px; }
+  .profile-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 28px; }
+  .profile-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--green-400), var(--green-600)); display: flex; align-items: center; justify-content: center; font-size: 28px; color: #fff; font-weight: 700; font-family: 'Playfair Display', serif; margin: 0 auto 16px; }
+  .profile-name { text-align: center; font-size: 20px; margin-bottom: 4px; }
+  .profile-email { text-align: center; font-size: 13px; color: var(--slate-500); margin-bottom: 24px; }
+  .profile-stat { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--slate-100); }
+  .profile-stat:last-child { border-bottom: none; }
+  .profile-stat-label { font-size: 13px; color: var(--slate-500); }
+  .profile-stat-val { font-size: 14px; font-weight: 600; color: var(--slate-900); }
+  .gold-option { background: linear-gradient(135deg, #fef6e0, #fde8b0); border: 1.5px solid var(--gold-400); border-radius: var(--radius); padding: 20px; margin-top: 16px; text-align: center; }
+  .gold-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-500); margin-bottom: 6px; }
+  .gold-price { font-size: 28px; font-weight: 700; color: var(--slate-900); }
+  .gold-features { text-align: left; margin: 14px 0 16px; }
+  .gold-feat { font-size: 13px; color: var(--slate-600); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+  .check { color: var(--green-500); font-weight: 700; }
+  .btn-gold { background: linear-gradient(135deg, #e6a817, #c48a00); color: #fff; border: none; padding: 12px 24px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+
+  .result-section { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 28px; }
+  .result-section h3 { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 600; margin-bottom: 20px; }
+  .regime-selected { border: 2px solid var(--green-400); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 16px; }
+  .regime-icon-lg { width: 56px; height: 56px; border-radius: var(--radius-sm); background: var(--green-100); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+  .regime-info h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 4px; }
+  .regime-info p { font-size: 13px; color: var(--slate-500); }
+  .pdf-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--slate-900); color: #fff; border: none; padding: 12px 24px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+
+  .timeline { margin-top: 20px; }
+  .timeline-item { display: flex; gap: 16px; padding-bottom: 24px; position: relative; }
+  .timeline-item::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 1px; background: var(--slate-200); }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--green-100); border: 2px solid var(--green-400); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; color: var(--green-600); font-weight: 700; }
+  .timeline-content h5 { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .timeline-content p { font-size: 13px; color: var(--slate-500); }
+
+  .wallet-section { background: var(--slate-900); border-radius: var(--radius); padding: 24px; color: #fff; margin-top: 20px; }
+  .wallet-balance { font-size: 36px; font-weight: 700; font-family: 'Playfair Display', serif; margin-bottom: 4px; }
+  .wallet-sub { font-size: 13px; color: var(--slate-400); margin-bottom: 20px; }
+  .wallet-code { display: flex; gap: 10px; }
+  .wallet-code input { flex: 1; padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-sm); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; }
+  .wallet-code input::placeholder { color: rgba(255,255,255,0.35); }
+  .wallet-code button { background: var(--green-400); color: #fff; border: none; padding: 12px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+  /* ===== PAGE 6 : BACK-OFFICE DASHBOARD ===== */
+  .bo-sidebar { width: 220px; background: #1a1d21; padding: 20px 0; flex-shrink: 0; }
+  .bo-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; padding: 6px 20px 28px; }
+  .bo-logo span { color: #e6a817; }
+  .bo-item { display: flex; align-items: center; gap: 9px; padding: 10px 20px; font-size: 13px; color: #8a8f98; cursor: pointer; transition: all .12s; }
+  .bo-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bo-item.active { color: #fff; background: rgba(230,168,23,0.15); border-left: 3px solid #e6a817; }
+  .bo-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #4a4f5a; padding: 16px 20px 6px; }
+  .bo-content { flex: 1; padding: 32px 36px; background: #f0f2f5; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpi-card { background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--slate-200); }
+  .kpi-label { font-size: 12px; color: var(--slate-500); margin-bottom: 8px; }
+  .kpi-value { font-size: 32px; font-weight: 700; color: var(--slate-900); margin-bottom: 6px; }
+  .kpi-trend { font-size: 13px; color: var(--green-500); }
+
+  .chart-row { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .chart-card { background: #fff; border-radius: var(--radius); padding: 24px; border: 1px solid var(--slate-200); }
+  .chart-card h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+  .mock-chart { height: 160px; display: flex; align-items: flex-end; gap: 12px; padding-top: 20px; border-bottom: 1px solid var(--slate-200); padding-bottom: 0; }
+  .mock-bar { flex: 1; border-radius: 4px 4px 0 0; }
+  .mock-bar.b1 { height: 60%; background: #d4f0e0; }
+  .mock-bar.b2 { height: 80%; background: #d4f0e0; }
+  .mock-bar.b3 { height: 55%; background: #d4f0e0; }
+  .mock-bar.b4 { height: 90%; background: var(--green-400); }
+  .mock-bar.b5 { height: 70%; background: #d4f0e0; }
+  .mock-bar.b6 { height: 85%; background: #d4f0e0; }
+  .mock-bar.b7 { height: 75%; background: #d4f0e0; }
+  .mock-bar.b8 { height: 95%; background: var(--green-400); }
+  .pie-mock { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--green-400) 0% 45%, var(--gold-400) 45% 72%, var(--blue-400) 72% 100%); margin: 16px auto; }
+  .pie-legend { display: flex; flex-direction: column; gap: 8px; }
+  .pie-leg-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--slate-600); }
+  .pie-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .bo-table { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; }
+  .bo-table-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--slate-200); }
+  .bo-table-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; }
+  .btn-add-bo { background: var(--green-500); color: #fff; border: none; padding: 9px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; }
+  th { font-family: 'DM Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--slate-500); padding: 12px 20px; text-align: left; border-bottom: 1px solid var(--slate-200); }
+  td { padding: 14px 20px; font-size: 14px; color: var(--slate-700); border-bottom: 1px solid var(--slate-100); }
+  tr:last-child td { border-bottom: none; }
+  .action-btns { display: flex; gap: 6px; }
+  .btn-edit { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--slate-200); background: #fff; font-size: 12px; cursor: pointer; color: var(--slate-700); }
+  .btn-del { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--red-100); background: var(--red-100); font-size: 12px; cursor: pointer; color: var(--red-400); }
+  .badge-status { padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+  .badge-active { background: var(--green-100); color: var(--green-600); }
+  .badge-pending { background: var(--gold-100); color: var(--gold-500); }
+  .badge-inactive { background: var(--slate-100); color: var(--slate-500); }
+
+  /* ===== PAGE 7 : CRUD RÉGIME ===== */
+  .form-page { max-width: 700px; }
+  .form-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 32px; margin-bottom: 20px; }
+  .form-card h3 { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-200); }
+  .comp-sliders { display: flex; flex-direction: column; gap: 16px; }
+  .slider-group { display: flex; align-items: center; gap: 12px; }
+  .slider-label { width: 80px; font-size: 13px; color: var(--slate-600); }
+  .slider-group input[type=range] { flex: 1; accent-color: var(--green-500); }
+  .slider-val { width: 48px; text-align: right; font-size: 14px; font-weight: 600; }
+  .slider-val.meat { color: var(--red-400); }
+  .slider-val.fish { color: var(--blue-400); }
+  .slider-val.poultry { color: var(--gold-500); }
+  .comp-total { text-align: right; font-size: 13px; color: var(--slate-500); margin-top: 8px; }
+  .comp-total.ok { color: var(--green-500); }
+  .comp-total.warn { color: var(--red-400); }
+  .price-table { border: 1px solid var(--slate-200); border-radius: var(--radius-sm); overflow: hidden; }
+  .price-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 0; border-bottom: 1px solid var(--slate-100); }
+  .price-row:last-child { border-bottom: none; }
+  .price-cell { padding: 12px 16px; font-size: 14px; }
+  .price-cell input { width: 100%; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px; background: transparent; }
+  .price-cell.del { display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--red-400); }
+  .add-row-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--green-500); cursor: pointer; padding: 10px 0; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+  .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+  .btn-cancel { padding: 12px 24px; border: 1px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; background: #fff; cursor: pointer; color: var(--slate-700); }
+  .btn-save { padding: 12px 28px; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; background: var(--green-500); color: #fff; cursor: pointer; }
+
+  /* ===== PAGE 8 : CODES WALLET ===== */
+  .codes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+  .code-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 20px; text-align: center; }
+  .code-str { font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: .12em; color: var(--slate-900); margin-bottom: 8px; }
+  .code-amount { font-size: 24px; font-weight: 700; color: var(--green-500); margin-bottom: 12px; }
+  .code-status { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 12px; }
+
+  /* LOGIN */
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--slate-100); }
+  .login-box { background: #fff; border-radius: var(--radius-lg); border: 1px solid var(--slate-200); padding: 48px; width: 100%; max-width: 400px; box-shadow: var(--shadow-md); }
+  .login-logo { font-family: 'Playfair Display', serif; font-size: 22px; text-align: center; margin-bottom: 8px; }
+  .login-sub { text-align: center; font-size: 14px; color: var(--slate-500); margin-bottom: 36px; }
+  .login-role { display: flex; gap: 8px; margin-bottom: 28px; }
+  .role-btn { flex: 1; padding: 9px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; background: #fff; font-family: 'DM Sans', sans-serif; transition: all .15s; }
+  .role-btn.active { border-color: var(--green-400); background: var(--green-50); color: var(--green-600); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .auth-side { display: none; }
+    .auth-form { padding: 40px 28px; max-width: 100%; }
+    .cards-row { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .chart-row { grid-template-columns: 1fr; }
+    .profile-layout { grid-template-columns: 1fr; }
+    .sidebar, .bo-sidebar { width: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- META NAVIGATION (démo) -->
+<nav class="demo-nav">
+  <span>PAGES →</span>
+  <button class="active" onclick="showPage('landing')">🏠 Landing</button>
+  <button onclick="showPage('login')">🔑 Login</button>
+  <button onclick="showPage('inscription1')">📝 Inscription #1</button>
+  <button onclick="showPage('inscription2')">📋 Inscription #2</button>
+  <button onclick="showPage('dashboard')">📊 Dashboard</button>
+  <button onclick="showPage('regimes')">🥗 Régimes</button>
+  <button onclick="showPage('profil')">👤 Profil & Plan</button>
+  <button onclick="showPage('bo-dash')">⚙️ BO Dashboard</button>
+  <button onclick="showPage('bo-crud')">✏️ BO Régime CRUD</button>
+  <button onclick="showPage('bo-codes')">💳 BO Codes</button>
+</nav>
+
+<!-- ============================= -->
+<!-- PAGE 1 : LANDING              -->
+<!-- ============================= -->
+<div class="page active" id="page-landing">
+  <div class="landing-hero">
+    <div class="landing-logo">NutriPath</div>
+    <h1>Votre chemin vers un <em>poids idéal</em>, scientifiquement guidé.</h1>
+    <p>Calculez votre IMC, choisissez votre objectif et recevez un programme nutritionnel sur mesure.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('inscription1')">Commencer gratuitement</button>
+      <button class="btn-outline" onclick="showPage('login')">Se connecter</button>
+    </div>
+  </div>
+
+  <div class="landing-features">
+    <h2>Tout ce dont vous avez besoin</h2>
+    <p class="subtitle">Une approche complète et personnalisée de la nutrition</p>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon">⚖️</div>
+        <h3>Calcul IMC instantané</h3>
+        <p>Entrez votre taille et poids, obtenez votre IMC et une analyse complète de votre situation.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🥗</div>
+        <h3>Régimes adaptés</h3>
+        <p>5 programmes nutritionnels variés avec composition détaillée (viande, poisson, volaille).</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🏃</div>
+        <h3>Activité sportive</h3>
+        <p>Des recommandations sportives complémentaires adaptées à votre objectif et votre condition.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📄</div>
+        <h3>Export PDF</h3>
+        <p>Téléchargez votre plan complet en PDF pour le partager avec votre médecin ou coach.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⭐</div>
+        <h3>Option Gold</h3>
+        <p>Accédez à 15% de remise sur tous les régimes avec notre offre premium.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💰</div>
+        <h3>Porte-monnaie</h3>
+        <p>Rechargez votre compte avec des codes et payez vos programmes facilement.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="landing-imc">
+    <h2>Calculez votre IMC maintenant</h2>
+    <p>Découvrez votre indice de masse corporelle en quelques secondes, sans inscription</p>
+    <div class="imc-widget">
+      <div class="imc-field">
+        <label>Taille (cm)</label>
+        <input type="number" id="calc-taille" placeholder="175" value="175">
+      </div>
+      <div class="imc-field">
+        <label>Poids (kg)</label>
+        <input type="number" id="calc-poids" placeholder="72" value="72">
+      </div>
+      <button class="imc-btn" onclick="calcIMC()">Calculer mon IMC</button>
+    </div>
+    <div class="imc-result" id="imc-result"></div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : LOGIN                   -->
+<!-- ============================= -->
+<div class="page" id="page-login">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="login-logo">NutriPath</div>
+      <p class="login-sub">Connectez-vous à votre compte</p>
+      <div class="login-role">
+        <button class="role-btn active">Utilisateur</button>
+        <button class="role-btn">Administrateur</button>
+      </div>
+      <div class="form-group">
+        <label>Adresse e-mail</label>
+        <input type="email" placeholder="marie@example.com">
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <button class="form-submit" onclick="showPage('dashboard')">Se connecter</button>
+      <p class="form-link" style="margin-top:16px">Pas encore de compte ? <a href="#" onclick="showPage('inscription1')">S'inscrire</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : INSCRIPTION #1 (Identité) -->
+<!-- ============================= -->
+<div class="page" id="page-inscription1">
+  <div class="auth-wrap">
+    <div class="auth-side">
+      <h2>Rejoignez NutriPath</h2>
+      <p>Votre parcours vers une meilleure santé commence ici.</p>
+      <div class="auth-steps">
+        <div class="auth-step"><div class="auth-step-num done">1</div><span>Vos informations personnelles</span></div>
+        <div class="auth-step"><div class="auth-step-num">2</div><span>Données de santé</span></div>
+        <div class="auth-step"><div class="auth-step-num">3</div><span>Choix de vos objectifs</span></div>
+      </div>
+    </div>
+    <div class="auth-form">
+      <h3>Informations personnelles</h3>
+      <p class="step-label">Étape 1 sur 2 — Parlez-nous de vous</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" placeholder="Marie">
+        </div>
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" placeholder="Dupont">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Adresse e-mail</label>
+        <input type="email" placeholder="marie@example.com">
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" placeholder="Min. 8 caractères">
+      </div>
+      <div class="form-group">
+        <label>Genre</label>
+        <div class="gender-btns">
+          <button class="gender-btn active" onclick="selectGender(this)">♀ Femme</button>
+          <button class="gender-btn" onclick="selectGender(this)">♂ Homme</button>
+          <button class="gender-btn" onclick="selectGender(this)">⚬ Autre</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Date de naissance</label>
+        <input type="date" value="1995-06-15">
+      </div>
+      <button class="form-submit" onclick="showPage('inscription2')">Continuer →</button>
+      <p class="form-link">Déjà inscrit ? <a href="#" onclick="showPage('login')">Se connecter</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : INSCRIPTION #2 (Santé) -->
+<!-- ============================= -->
+<div class="page" id="page-inscription2">
+  <div class="auth-wrap">
+    <div class="auth-side">
+      <h2>Vos données de santé</h2>
+      <p>Ces informations nous permettent de calculer votre IMC et de personnaliser vos recommandations.</p>
+      <div class="auth-steps">
+        <div class="auth-step"><div class="auth-step-num done">1</div><span>Informations personnelles ✓</span></div>
+        <div class="auth-step"><div class="auth-step-num done">2</div><span>Données de santé</span></div>
+        <div class="auth-step"><div class="auth-step-num">3</div><span>Choix de vos objectifs</span></div>
+      </div>
+    </div>
+    <div class="auth-form">
+      <h3>Données de santé</h3>
+      <p class="step-label">Étape 2 sur 2 — Votre condition physique actuelle</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Taille (cm)</label>
+          <input type="number" placeholder="168" value="168">
+        </div>
+        <div class="form-group">
+          <label>Poids actuel (kg)</label>
+          <input type="number" placeholder="72" value="72">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Poids cible (kg)</label>
+          <input type="number" placeholder="65" value="65">
+        </div>
+        <div class="form-group">
+          <label>Niveau d'activité</label>
+          <select>
+            <option>Sédentaire</option>
+            <option selected>Légèrement actif</option>
+            <option>Modérément actif</option>
+            <option>Très actif</option>
+          </select>
+        </div>
+      </div>
+      <div class="stat-card" style="background: var(--green-50); border-color: var(--green-100); margin-bottom: 24px;">
+        <div class="stat-label" style="color: var(--green-600);">Votre IMC estimé</div>
+        <div class="stat-value" style="color: var(--green-500);">25.5</div>
+        <div class="stat-sub" style="color: var(--slate-500);">Légèrement en surpoids — objectif : atteindre 21.8</div>
+      </div>
+      <div class="form-group">
+        <label>Votre objectif principal</label>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="obj-card selected" onclick="selectObj(this)">
+            <div class="obj-icon">📉</div>
+            <h4>Réduire mon poids</h4>
+            <p>Perdre du poids de façon saine et progressive</p>
+          </div>
+          <div class="obj-card" onclick="selectObj(this)">
+            <div class="obj-icon">📈</div>
+            <h4>Augmenter mon poids</h4>
+            <p>Prendre de la masse musculaire ou du poids</p>
+          </div>
+          <div class="obj-card" onclick="selectObj(this)">
+            <div class="obj-icon">🎯</div>
+            <h4>Atteindre mon IMC idéal</h4>
+            <p>Équilibrer alimentation et activité physique</p>
+          </div>
+        </div>
+      </div>
+      <button class="form-submit" onclick="showPage('dashboard')">Créer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : DASHBOARD UTILISATEUR  -->
+<!-- ============================= -->
+<div class="page" id="page-dashboard">
+  <div class="app-layout">
+    <div class="sidebar">
+      <div class="sidebar-logo">Nutri<span>Path</span></div>
+      <div class="sidebar-section">Menu</div>
+      <div class="sidebar-item active"><span class="icon">📊</span> Tableau de bord</div>
+      <div class="sidebar-item" onclick="showPage('regimes')"><span class="icon">🥗</span> Régimes</div>
+      <div class="sidebar-item"><span class="icon">🏃</span> Activités</div>
+      <div class="sidebar-item" onclick="showPage('profil')"><span class="icon">👤</span> Mon profil</div>
+      <div class="sidebar-section" style="margin-top:20px;">Compte</div>
+      <div class="sidebar-item"><span class="icon">💰</span> Porte-monnaie</div>
+      <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar">MD</div>
+          <div class="avatar-info">
+            <p>Marie Dupont</p>
+            <span>Compte standard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <h2>Bonjour, Marie 👋</h2>
+        <p>Voici votre tableau de bord — semaine du 5 mai 2026</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Poids actuel</div>
+          <div class="stat-value">72 kg</div>
+          <div class="stat-sub down">−0.5 kg cette semaine</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">IMC</div>
+          <div class="stat-value" style="color: var(--gold-500);">25.5</div>
+          <div class="stat-sub" style="color: var(--slate-500);">Surpoids léger</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Objectif</div>
+          <div class="stat-value" style="color: var(--green-500);">65 kg</div>
+          <div class="stat-sub up">7 kg restants</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Programme en cours</div>
+          <div class="stat-value" style="font-size: 18px; padding-top: 4px;">Méditerranéen</div>
+          <div class="stat-sub" style="color: var(--slate-500);">Semaine 3 / 12</div>
+        </div>
+      </div>
+
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-title">Progression du poids (8 semaines)</div>
+          <div class="chart-placeholder">
+            <div class="bar" style="height: 72%"></div>
+            <div class="bar" style="height: 75%"></div>
+            <div class="bar" style="height: 68%"></div>
+            <div class="bar" style="height: 80%"></div>
+            <div class="bar" style="height: 78%"></div>
+            <div class="bar active" style="height: 85%"></div>
+            <div class="bar" style="height: 90%"></div>
+            <div class="bar active" style="height: 95%"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:6px;">
+            <span style="font-size:11px;color:var(--slate-400)">Sem. 1</span>
+            <span style="font-size:11px;color:var(--slate-400)">Sem. 8</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Votre IMC</div>
+          <div class="imc-gauge">
+            <div style="font-size:13px; color: var(--slate-500); margin-bottom: 12px; text-align: center;">Indice de masse corporelle</div>
+            <div class="imc-num">25.5</div>
+            <div class="imc-tag">Surpoids léger</div>
+            <div style="width:100%; margin-top: 20px;">
+              <div class="gauge-bar"><div class="gauge-marker"></div></div>
+              <div class="gauge-labels">
+                <span>Insuffisant<br>< 18.5</span>
+                <span>Normal<br>18.5–25</span>
+                <span>Surpoids<br>25–30</span>
+                <span>Obésité<br>> 30</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-title">Programme Méditerranéen — Semaine 3</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); gap: 10px;">
+          <div style="background: var(--green-50); border-radius: 8px; padding: 12px; text-align: center;">
+            <div style="font-size:11px; color:var(--slate-500); margin-bottom: 6px;">Lun</div>
+            <div style="font-size:12px; font-weight: 600; color: var(--green-600);">Poulet / Légumes</div>
+          </div>
+          <div style="background: var(--green-50); border-radius: 8px; padding: 12px; text-align: center;">
+            <div style="font-size:11px; color:var(--slate-500); margin-bottom: 6px;">Mar</div>
+            <div style="font-size:12px; font-weight: 600; color: var(--green-600);">Poisson / Riz</div>
+          </div>
+          <div style="background: var(--slate-100); border-radius: 8px; padding: 12px; text-align: center; border: 2px solid var(--green-400);">
+            <div style="font-size:11px; color:var(--slate-500); margin-bottom: 6px;">Mer ← Aujourd'hui</div>
+            <div style="font-size:12px; font-weight: 600; color: var(--green-600);">Salade niçoise</div>
+          </div>
+          <div style="background: var(--slate-50); border-radius: 8px; padding: 12px; text-align: center; opacity: .5;">
+            <div style="font-size:11px; color:var(--slate-500); margin-bottom: 6px;">Jeu</div>
+            <div style="font-size:12px; font-weight: 600; color: var(--slate-500);">Viande / Quinoa</div>
+          </div>
+          <div style="background: var(--slate-50); border-radius: 8px; padding: 12px; text-align: center; opacity: .5;">
+            <div style="font-size:11px; color:var(--slate-500); margin-bottom: 6px;">Ven</div>
+            <div style="font-size:12px; font-weight: 600; color: var(--slate-500);">Poisson vapeur</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : LISTE DES RÉGIMES      -->
+<!-- ============================= -->
+<div class="page" id="page-regimes">
+  <div class="app-layout">
+    <div class="sidebar">
+      <div class="sidebar-logo">Nutri<span>Path</span></div>
+      <div class="sidebar-section">Menu</div>
+      <div class="sidebar-item" onclick="showPage('dashboard')"><span class="icon">📊</span> Tableau de bord</div>
+      <div class="sidebar-item active"><span class="icon">🥗</span> Régimes</div>
+      <div class="sidebar-item"><span class="icon">🏃</span> Activités</div>
+      <div class="sidebar-item" onclick="showPage('profil')"><span class="icon">👤</span> Mon profil</div>
+      <div class="sidebar-section" style="margin-top:20px;">Compte</div>
+      <div class="sidebar-item"><span class="icon">💰</span> Porte-monnaie</div>
+      <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar">MD</div>
+          <div class="avatar-info"><p>Marie Dupont</p><span>Compte standard</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header">
+        <h2>Choisir un régime</h2>
+        <p>Sélectionnez un programme adapté à votre objectif de réduction de poids</p>
+      </div>
+      <div class="regime-filters">
+        <button class="filter-btn active">Tous</button>
+        <button class="filter-btn" onclick="toggleFilter(this)">Perte de poids</button>
+        <button class="filter-btn" onclick="toggleFilter(this)">Prise de poids</button>
+        <button class="filter-btn" onclick="toggleFilter(this)">IMC idéal</button>
+        <button class="filter-btn" onclick="toggleFilter(this)">< 1 mois</button>
+      </div>
+      <div class="regime-grid">
+        <!-- Régime 1 -->
+        <div class="regime-card">
+          <div class="regime-banner green">🥗</div>
+          <div class="regime-body">
+            <div class="regime-name">Méditerranéen</div>
+            <div class="regime-desc">Riche en légumes frais, poissons et huile d'olive. Programme éprouvé pour une perte de poids durable.</div>
+            <div class="regime-meta">
+              <span class="tag green">Perte de poids</span>
+              <span class="tag blue">12 semaines</span>
+            </div>
+            <div class="composition-bar">
+              <div class="comp-label">Composition : Viande 20% · Poisson 50% · Volaille 30%</div>
+              <div class="comp-bar">
+                <div class="seg seg-meat" style="width:20%"></div>
+                <div class="seg seg-fish" style="width:50%"></div>
+                <div class="seg seg-poultry" style="width:30%"></div>
+              </div>
+            </div>
+            <div class="regime-price">
+              <div><div class="price-amount">45 000 Ar<span class="gold-badge">GOLD −15%</span></div><div class="price-period">pour 4 semaines</div></div>
+              <button class="btn-add">Choisir</button>
+            </div>
+          </div>
+        </div>
+        <!-- Régime 2 -->
+        <div class="regime-card">
+          <div class="regime-banner amber">🍗</div>
+          <div class="regime-body">
+            <div class="regime-name">Protéiné Sport</div>
+            <div class="regime-desc">Haute teneur en protéines pour favoriser la prise de masse musculaire et la récupération sportive.</div>
+            <div class="regime-meta">
+              <span class="tag red">Prise de poids</span>
+              <span class="tag amber">8 semaines</span>
+            </div>
+            <div class="composition-bar">
+              <div class="comp-label">Composition : Viande 45% · Poisson 20% · Volaille 35%</div>
+              <div class="comp-bar">
+                <div class="seg seg-meat" style="width:45%"></div>
+                <div class="seg seg-fish" style="width:20%"></div>
+                <div class="seg seg-poultry" style="width:35%"></div>
+              </div>
+            </div>
+            <div class="regime-price">
+              <div><div class="price-amount">52 000 Ar</div><div class="price-period">pour 4 semaines</div></div>
+              <button class="btn-add">Choisir</button>
+            </div>
+          </div>
+        </div>
+        <!-- Régime 3 -->
+        <div class="regime-card">
+          <div class="regime-banner blue">🐟</div>
+          <div class="regime-body">
+            <div class="regime-name">Détox Marine</div>
+            <div class="regime-desc">Basé sur les poissons et fruits de mer, ce régime riche en oméga-3 optimise votre métabolisme.</div>
+            <div class="regime-meta">
+              <span class="tag green">Perte de poids</span>
+              <span class="tag blue">6 semaines</span>
+            </div>
+            <div class="composition-bar">
+              <div class="comp-label">Composition : Viande 10% · Poisson 70% · Volaille 20%</div>
+              <div class="comp-bar">
+                <div class="seg seg-meat" style="width:10%"></div>
+                <div class="seg seg-fish" style="width:70%"></div>
+                <div class="seg seg-poultry" style="width:20%"></div>
+              </div>
+            </div>
+            <div class="regime-price">
+              <div><div class="price-amount">38 000 Ar<span class="gold-badge">GOLD −15%</span></div><div class="price-period">pour 2 semaines</div></div>
+              <button class="btn-add">Choisir</button>
+            </div>
+          </div>
+        </div>
+        <!-- Régime 4 -->
+        <div class="regime-card">
+          <div class="regime-banner green" style="background: linear-gradient(135deg, #e8f5e9, #a5d6a7);">🌿</div>
+          <div class="regime-body">
+            <div class="regime-name">Équilibre Vital</div>
+            <div class="regime-desc">Programme équilibré pour atteindre et maintenir son IMC idéal avec variété et plaisir alimentaire.</div>
+            <div class="regime-meta">
+              <span class="tag green">IMC idéal</span>
+              <span class="tag blue">16 semaines</span>
+            </div>
+            <div class="composition-bar">
+              <div class="comp-label">Composition : Viande 33% · Poisson 33% · Volaille 34%</div>
+              <div class="comp-bar">
+                <div class="seg seg-meat" style="width:33%"></div>
+                <div class="seg seg-fish" style="width:33%"></div>
+                <div class="seg seg-poultry" style="width:34%"></div>
+              </div>
+            </div>
+            <div class="regime-price">
+              <div><div class="price-amount">60 000 Ar<span class="gold-badge">GOLD −15%</span></div><div class="price-period">pour 8 semaines</div></div>
+              <button class="btn-add">Choisir</button>
+            </div>
+          </div>
+        </div>
+        <!-- Régime 5 -->
+        <div class="regime-card">
+          <div class="regime-banner amber" style="background: linear-gradient(135deg, #fff8e1, #ffe082);">🥩</div>
+          <div class="regime-body">
+            <div class="regime-name">Masse & Force</div>
+            <div class="regime-desc">Régime hyperprotéiné orienté prise de masse, idéal pour les sportifs cherchant à augmenter leur poids.</div>
+            <div class="regime-meta">
+              <span class="tag red">Prise de poids</span>
+              <span class="tag amber">12 semaines</span>
+            </div>
+            <div class="composition-bar">
+              <div class="comp-label">Composition : Viande 55% · Poisson 15% · Volaille 30%</div>
+              <div class="comp-bar">
+                <div class="seg seg-meat" style="width:55%"></div>
+                <div class="seg seg-fish" style="width:15%"></div>
+                <div class="seg seg-poultry" style="width:30%"></div>
+              </div>
+            </div>
+            <div class="regime-price">
+              <div><div class="price-amount">68 000 Ar</div><div class="price-period">pour 4 semaines</div></div>
+              <button class="btn-add">Choisir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : PROFIL & RÉSULTAT      -->
+<!-- ============================= -->
+<div class="page" id="page-profil">
+  <div class="app-layout">
+    <div class="sidebar">
+      <div class="sidebar-logo">Nutri<span>Path</span></div>
+      <div class="sidebar-section">Menu</div>
+      <div class="sidebar-item" onclick="showPage('dashboard')"><span class="icon">📊</span> Tableau de bord</div>
+      <div class="sidebar-item" onclick="showPage('regimes')"><span class="icon">🥗</span> Régimes</div>
+      <div class="sidebar-item"><span class="icon">🏃</span> Activités</div>
+      <div class="sidebar-item active"><span class="icon">👤</span> Mon profil</div>
+      <div class="sidebar-section" style="margin-top:20px;">Compte</div>
+      <div class="sidebar-item"><span class="icon">💰</span> Porte-monnaie</div>
+      <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar">MD</div>
+          <div class="avatar-info"><p>Marie Dupont</p><span>Compte standard</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="page-header"><h2>Mon profil</h2><p>Gérez vos informations et consultez votre plan nutritionnel</p></div>
+      <div class="profile-layout">
+        <div>
+          <div class="profile-card">
+            <div class="profile-avatar">MD</div>
+            <div class="profile-name">Marie Dupont</div>
+            <div class="profile-email">marie@example.com</div>
+            <div class="profile-stat"><span class="profile-stat-label">Genre</span><span class="profile-stat-val">Femme</span></div>
+            <div class="profile-stat"><span class="profile-stat-label">Taille</span><span class="profile-stat-val">168 cm</span></div>
+            <div class="profile-stat"><span class="profile-stat-label">Poids actuel</span><span class="profile-stat-val">72 kg</span></div>
+            <div class="profile-stat"><span class="profile-stat-label">Poids cible</span><span class="profile-stat-val">65 kg</span></div>
+            <div class="profile-stat"><span class="profile-stat-label">IMC actuel</span><span class="profile-stat-val" style="color: var(--gold-500);">25.5</span></div>
+            <div class="profile-stat"><span class="profile-stat-label">Objectif</span><span class="profile-stat-val">Réduire mon poids</span></div>
+            <button style="width:100%; margin-top:16px; padding: 11px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); background: #fff; font-family: 'DM Sans'; font-size: 14px; cursor: pointer; color: var(--slate-700);">✏️ Modifier le profil</button>
+          </div>
+          <div class="gold-option">
+            <div class="gold-title">⭐ Option Gold</div>
+            <div style="font-size:13px; color: var(--slate-600); margin-bottom: 8px;">Paiement unique</div>
+            <div class="gold-price">25 000 Ar</div>
+            <div class="gold-features">
+              <div class="gold-feat"><span class="check">✓</span> 15% de remise sur tous les régimes</div>
+              <div class="gold-feat"><span class="check">✓</span> Suivi personnalisé avancé</div>
+              <div class="gold-feat"><span class="check">✓</span> Export PDF illimité</div>
+              <div class="gold-feat"><span class="check">✓</span> Support prioritaire</div>
+            </div>
+            <button class="btn-gold">Activer Gold</button>
+          </div>
+          <div class="wallet-section">
+            <div style="font-size:13px; color:var(--slate-400); margin-bottom:4px;">Mon porte-monnaie</div>
+            <div class="wallet-balance">15 000 Ar</div>
+            <div class="wallet-sub">Solde disponible</div>
+            <div class="wallet-code">
+              <input placeholder="Entrer un code cadeau…">
+              <button>Valider</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="result-section">
+            <h3>Mon plan actuel — Méditerranéen</h3>
+            <div class="regime-selected">
+              <div class="regime-icon-lg">🥗</div>
+              <div class="regime-info">
+                <h4>Régime Méditerranéen</h4>
+                <p>12 semaines • Démarré le 14 avril 2026 • Semaine 3 en cours</p>
+                <p style="margin-top: 4px;"><span class="tag green">−7 kg attendus</span></p>
+              </div>
+            </div>
+            <h3 style="margin-top:24px;">Plan d'activité sportive recommandé</h3>
+            <div style="background: var(--slate-50); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px;">
+              <div style="display:flex; gap: 12px; align-items: center; margin-bottom: 8px;">
+                <span style="font-size:24px;">🏃</span>
+                <div><div style="font-weight:600; font-size:15px;">Cardio léger + renforcement</div><div style="font-size:13px; color: var(--slate-500);">3× par semaine, 45 min</div></div>
+              </div>
+              <div style="font-size:13px; color: var(--slate-600);">Marche rapide, vélo, natation ou yoga — activités à faible impact pour préserver les articulations.</div>
+            </div>
+            <h3>Progression semaine par semaine</h3>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot">1</div>
+                <div class="timeline-content"><h5>Semaine 1–2 : Transition alimentaire</h5><p>Introduction progressive du régime méditerranéen, hydratation intensive.</p></div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">3</div>
+                <div class="timeline-content"><h5>Semaine 3–6 : Phase active ← Vous êtes ici</h5><p>Objectif −500g/semaine. Pleine activité sportive recommandée.</p></div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">7</div>
+                <div class="timeline-content"><h5>Semaine 7–10 : Consolidation</h5><p>Maintien des acquis, ajustements selon les résultats.</p></div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">✓</div>
+                <div class="timeline-content"><h5>Semaine 11–12 : Stabilisation</h5><p>Transition vers une alimentation durable. Bilan final.</p></div>
+              </div>
+            </div>
+            <button class="pdf-btn">📄 Exporter mon plan en PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : BACK-OFFICE DASHBOARD  -->
+<!-- ============================= -->
+<div class="page" id="page-bo-dash">
+  <div class="app-layout">
+    <div class="bo-sidebar">
+      <div class="bo-logo">Nutri<span>Path</span> Admin</div>
+      <div class="bo-section">Général</div>
+      <div class="bo-item active">📊 Tableau de bord</div>
+      <div class="bo-section">Gestion</div>
+      <div class="bo-item" onclick="showPage('bo-crud')">🥗 Régimes</div>
+      <div class="bo-item">🏃 Activités</div>
+      <div class="bo-item" onclick="showPage('bo-codes')">💳 Codes wallet</div>
+      <div class="bo-item">👥 Utilisateurs</div>
+      <div class="bo-section">Paramètres</div>
+      <div class="bo-item">⚙️ Paramètres</div>
+      <div class="bo-item">🔒 Se déconnecter</div>
+    </div>
+    <div class="bo-content">
+      <div class="page-header"><h2>Tableau de bord Admin</h2><p>Vue d'ensemble au 6 mai 2026</p></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">Utilisateurs total</div><div class="kpi-value">247</div><div class="kpi-trend">↑ +12 ce mois</div></div>
+        <div class="kpi-card"><div class="kpi-label">Abonnés Gold</div><div class="kpi-value">38</div><div class="kpi-trend">↑ +5 ce mois</div></div>
+        <div class="kpi-card"><div class="kpi-label">Régimes actifs</div><div class="kpi-value">189</div><div class="kpi-trend">↑ +23 ce mois</div></div>
+        <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value">94</div><div class="kpi-trend">↑ +8 ce mois</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-card">
+          <h3>Inscriptions par semaine</h3>
+          <div class="mock-chart">
+            <div class="mock-bar b1"></div>
+            <div class="mock-bar b2"></div>
+            <div class="mock-bar b3"></div>
+            <div class="mock-bar b4"></div>
+            <div class="mock-bar b5"></div>
+            <div class="mock-bar b6"></div>
+            <div class="mock-bar b7"></div>
+            <div class="mock-bar b8"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--slate-400); margin-top:6px;">
+            <span>Sem. 1</span><span>Sem. 2</span><span>Sem. 3</span><span>Sem. 4</span><span>Sem. 5</span><span>Sem. 6</span><span>Sem. 7</span><span>Sem. 8</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Objectifs populaires</h3>
+          <div class="pie-mock"></div>
+          <div class="pie-legend">
+            <div class="pie-leg-item"><div class="pie-dot" style="background: var(--green-400)"></div>Réduire poids (45%)</div>
+            <div class="pie-leg-item"><div class="pie-dot" style="background: var(--gold-400)"></div>IMC idéal (27%)</div>
+            <div class="pie-leg-item"><div class="pie-dot" style="background: var(--blue-400)"></div>Augmenter poids (28%)</div>
+          </div>
+        </div>
+      </div>
+      <div class="bo-table">
+        <div class="bo-table-header">
+          <h3>Derniers utilisateurs inscrits</h3>
+          <button class="btn-add-bo">Voir tous</button>
+        </div>
+        <table>
+          <thead><tr><th>Nom</th><th>Email</th><th>IMC</th><th>Objectif</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>Marie Dupont</td><td>marie@example.com</td><td>25.5</td><td>Réduire poids</td><td><span class="badge-status badge-active">Actif</span></td></tr>
+            <tr><td>Jean Rakoto</td><td>jean@example.com</td><td>22.1</td><td>IMC idéal</td><td><span class="badge-status badge-active">Gold ⭐</span></td></tr>
+            <tr><td>Soa Andria</td><td>soa@example.com</td><td>30.2</td><td>Réduire poids</td><td><span class="badge-status badge-pending">En attente</span></td></tr>
+            <tr><td>Luc Martin</td><td>luc@example.com</td><td>19.8</td><td>Augmenter poids</td><td><span class="badge-status badge-active">Actif</span></td></tr>
+            <tr><td>Fara Razafy</td><td>fara@example.com</td><td>27.0</td><td>Réduire poids</td><td><span class="badge-status badge-inactive">Inactif</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : BO CRUD RÉGIME         -->
+<!-- ============================= -->
+<div class="page" id="page-bo-crud">
+  <div class="app-layout">
+    <div class="bo-sidebar">
+      <div class="bo-logo">Nutri<span>Path</span> Admin</div>
+      <div class="bo-section">Général</div>
+      <div class="bo-item" onclick="showPage('bo-dash')">📊 Tableau de bord</div>
+      <div class="bo-section">Gestion</div>
+      <div class="bo-item active">🥗 Régimes</div>
+      <div class="bo-item">🏃 Activités</div>
+      <div class="bo-item" onclick="showPage('bo-codes')">💳 Codes wallet</div>
+      <div class="bo-item">👥 Utilisateurs</div>
+      <div class="bo-section">Paramètres</div>
+      <div class="bo-item">⚙️ Paramètres</div>
+    </div>
+    <div class="bo-content">
+      <div class="page-header">
+        <h2>Gestion des régimes</h2>
+        <p>Créer, modifier ou supprimer les programmes nutritionnels</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px;">
+        <div>
+          <div class="bo-table">
+            <div class="bo-table-header">
+              <h3>Liste des régimes (5)</h3>
+              <button class="btn-add-bo">+ Nouveau régime</button>
+            </div>
+            <table>
+              <thead><tr><th>Nom</th><th>Durée</th><th>Variation poids</th><th>Prix (4 sem.)</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Méditerranéen</strong></td><td>12 semaines</td><td style="color: var(--red-400);">−4 à −8 kg</td><td>45 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+                <tr><td><strong>Protéiné Sport</strong></td><td>8 semaines</td><td style="color: var(--green-500);">+3 à +6 kg</td><td>52 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+                <tr><td><strong>Détox Marine</strong></td><td>6 semaines</td><td style="color: var(--red-400);">−3 à −5 kg</td><td>38 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+                <tr><td><strong>Équilibre Vital</strong></td><td>16 semaines</td><td style="color: var(--red-400);">−5 à −10 kg</td><td>60 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+                <tr><td><strong>Masse & Force</strong></td><td>12 semaines</td><td style="color: var(--green-500);">+5 à +12 kg</td><td>68 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Formulaire CRUD -->
+        <div class="form-page">
+          <div class="form-card">
+            <h3>✏️ Éditer un régime</h3>
+            <div class="form-group">
+              <label>Nom du régime</label>
+              <input type="text" value="Méditerranéen">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea rows="3" style="padding: 12px 16px; border: 1.5px solid var(--slate-200); border-radius: 8px; font-family: 'DM Sans'; font-size: 14px; resize: none; outline: none; width:100%">Riche en légumes frais, poissons et huile d'olive. Programme éprouvé pour une perte de poids durable.</textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Durée totale (semaines)</label>
+                <input type="number" value="12">
+              </div>
+              <div class="form-group">
+                <label>Objectif associé</label>
+                <select><option selected>Réduire poids</option><option>Augmenter poids</option><option>IMC idéal</option></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Variation min (kg)</label>
+                <input type="number" value="-8">
+              </div>
+              <div class="form-group">
+                <label>Variation max (kg)</label>
+                <input type="number" value="-4">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Composition protéique</label>
+              <div class="comp-sliders">
+                <div class="slider-group">
+                  <span class="slider-label">🥩 Viande</span>
+                  <input type="range" min="0" max="100" value="20" oninput="updateComp(this,'meat-val',event)">
+                  <span class="slider-val meat" id="meat-val">20%</span>
+                </div>
+                <div class="slider-group">
+                  <span class="slider-label">🐟 Poisson</span>
+                  <input type="range" min="0" max="100" value="50" oninput="updateComp(this,'fish-val',event)">
+                  <span class="slider-val fish" id="fish-val">50%</span>
+                </div>
+                <div class="slider-group">
+                  <span class="slider-label">🍗 Volaille</span>
+                  <input type="range" min="0" max="100" value="30" oninput="updateComp(this,'poultry-val',event)">
+                  <span class="slider-val poultry" id="poultry-val">30%</span>
+                </div>
+              </div>
+              <div class="comp-total ok" id="comp-total">Total : 100% ✓</div>
+            </div>
+
+            <div class="form-group">
+              <label>Tarifs selon la durée</label>
+              <div class="price-table">
+                <div class="price-row" style="background: var(--slate-50); font-weight:600; font-size:12px; color:var(--slate-500);">
+                  <div class="price-cell">Durée</div>
+                  <div class="price-cell">Prix (Ar)</div>
+                  <div class="price-cell"></div>
+                </div>
+                <div class="price-row"><div class="price-cell"><input value="2 semaines"></div><div class="price-cell"><input value="25 000"></div><div class="price-cell del">✕</div></div>
+                <div class="price-row"><div class="price-cell"><input value="4 semaines"></div><div class="price-cell"><input value="45 000"></div><div class="price-cell del">✕</div></div>
+                <div class="price-row"><div class="price-cell"><input value="8 semaines"></div><div class="price-cell"><input value="80 000"></div><div class="price-cell del">✕</div></div>
+                <div class="price-row"><div class="price-cell"><input value="12 semaines"></div><div class="price-cell"><input value="110 000"></div><div class="price-cell del">✕</div></div>
+              </div>
+              <button class="add-row-btn">+ Ajouter une durée</button>
+            </div>
+            <div class="form-actions">
+              <button class="btn-cancel">Annuler</button>
+              <button class="btn-save">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE : BO CODES WALLET        -->
+<!-- ============================= -->
+<div class="page" id="page-bo-codes">
+  <div class="app-layout">
+    <div class="bo-sidebar">
+      <div class="bo-logo">Nutri<span>Path</span> Admin</div>
+      <div class="bo-section">Général</div>
+      <div class="bo-item" onclick="showPage('bo-dash')">📊 Tableau de bord</div>
+      <div class="bo-section">Gestion</div>
+      <div class="bo-item" onclick="showPage('bo-crud')">🥗 Régimes</div>
+      <div class="bo-item">🏃 Activités</div>
+      <div class="bo-item active">💳 Codes wallet</div>
+      <div class="bo-item">👥 Utilisateurs</div>
+      <div class="bo-section">Paramètres</div>
+      <div class="bo-item">⚙️ Paramètres</div>
+    </div>
+    <div class="bo-content">
+      <div class="page-header">
+        <h2>Codes porte-monnaie</h2>
+        <p>Gérer les codes de recharge et valider les demandes</p>
+      </div>
+      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <button class="btn-add-bo">+ Générer des codes</button>
+        <div style="background:#fff; border: 1px solid var(--slate-200); border-radius: 8px; padding: 8px 16px; font-size:14px; color:var(--slate-500);">🔍 Rechercher un code…</div>
+      </div>
+
+      <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr); margin-bottom:24px;">
+        <div class="kpi-card"><div class="kpi-label">Codes générés</div><div class="kpi-value">150</div><div class="kpi-trend" style="color:var(--slate-500)">15 séries de 10</div></div>
+        <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value" style="color: var(--green-500);">94</div><div class="kpi-trend">63% du total</div></div>
+        <div class="kpi-card"><div class="kpi-label">Codes disponibles</div><div class="kpi-value" style="color: var(--gold-500);">56</div><div class="kpi-trend" style="color:var(--slate-500)">37% restants</div></div>
+      </div>
+
+      <div class="bo-table" style="margin-bottom:24px;">
+        <div class="bo-table-header"><h3>Tous les codes (15 affichés)</h3></div>
+        <table>
+          <thead><tr><th>Code</th><th>Montant</th><th>Statut</th><th>Utilisateur</th><th>Date validation</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>NUTR-A1B2C3</strong></td><td>5 000 Ar</td><td><span class="badge-status badge-active">Validé</span></td><td>Marie Dupont</td><td>01/05/2026</td><td><div class="action-btns"><button class="btn-edit">Voir</button></div></td></tr>
+            <tr><td><strong>NUTR-D4E5F6</strong></td><td>10 000 Ar</td><td><span class="badge-status badge-pending">En attente</span></td><td>—</td><td>—</td><td><div class="action-btns"><button class="btn-edit">Valider</button><button class="btn-del">Invalider</button></div></td></tr>
+            <tr><td><strong>NUTR-G7H8I9</strong></td><td>5 000 Ar</td><td><span class="badge-status badge-inactive">Expiré</span></td><td>—</td><td>—</td><td><div class="action-btns"><button class="btn-edit">Voir</button></div></td></tr>
+            <tr><td><strong>NUTR-J0K1L2</strong></td><td>20 000 Ar</td><td><span class="badge-status badge-active">Validé</span></td><td>Jean Rakoto</td><td>28/04/2026</td><td><div class="action-btns"><button class="btn-edit">Voir</button></div></td></tr>
+            <tr><td><strong>NUTR-M3N4O5</strong></td><td>10 000 Ar</td><td><span class="badge-status badge-pending">En attente</span></td><td>—</td><td>—</td><td><div class="action-btns"><button class="btn-edit">Valider</button><button class="btn-del">Invalider</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-card" style="max-width: 480px; background:#fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 24px;">
+        <h3 style="font-family: 'DM Sans'; font-size: 15px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--slate-100);">Générer de nouveaux codes</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre de codes</label>
+            <input type="number" value="10">
+          </div>
+          <div class="form-group">
+            <label>Valeur par code (Ar)</label>
+            <select><option>5 000</option><option selected>10 000</option><option>20 000</option><option>50 000</option></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Date d'expiration</label>
+          <input type="date" value="2026-12-31">
+        </div>
+        <button class="btn-save" style="width: 100%; padding: 13px;">Générer les codes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelector('#page-' + id).classList.add('active');
+  document.querySelectorAll('.demo-nav button').forEach(b => b.classList.remove('active'));
+  event && event.target && event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function calcIMC() {
+  const t = parseFloat(document.getElementById('calc-taille').value) / 100;
+  const p = parseFloat(document.getElementById('calc-poids').value);
+  if (!t || !p) return;
+  const imc = (p / (t * t)).toFixed(1);
+  let cat = imc < 18.5 ? 'Insuffisance pondérale' : imc < 25 ? 'Poids normal ✓' : imc < 30 ? 'Surpoids' : 'Obésité';
+  let color = imc < 18.5 ? '#3b82f6' : imc < 25 ? '#3aaa6b' : imc < 30 ? '#e6a817' : '#e04646';
+  const r = document.getElementById('imc-result');
+  r.style.display = 'block';
+  r.innerHTML = `Votre IMC est <strong style="color:${color}; font-size:24px;">${imc}</strong> — <span style="color:${color}">${cat}</span>`;
+}
+
+function selectGender(btn) {
+  document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectObj(card) {
+  document.querySelectorAll('.obj-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+function toggleFilter(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function updateComp(el, targetId, ev) {
+  document.getElementById(targetId).textContent = ev.target.value + '%';
+  const sliders = document.querySelectorAll('#page-bo-crud input[type=range]');
+  let total = 0;
+  sliders.forEach(s => total += parseInt(s.value));
+  const totalEl = document.getElementById('comp-total');
+  totalEl.textContent = 'Total : ' + total + '% ' + (total === 100 ? '✓' : '⚠ doit être = 100%');
+  totalEl.className = 'comp-total ' + (total === 100 ? 'ok' : 'warn');
+}
+
+document.querySelectorAll('.role-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
