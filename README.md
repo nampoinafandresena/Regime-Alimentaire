@@ -1,69 +1,61 @@
-# Regime-Alimentaire
-Projet trinome S4 (SI) 
+# CodeIgniter 4 Framework
 
+## What is CodeIgniter?
 
-### TO DO GIT
-# Phase 1 : La Mise en Place
-## 1. Tout le monde doit récupérer le projet sur son PC
-git clone https://github.com/ton-compte/Regime-Alimentaire.git
-cd Regime-Alimentaire
+CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
+More information can be found at the [official site](https://codeigniter.com).
 
-## 2. Créer la branche dev en local et basculer dessus
-git checkout -b dev
+This repository holds the distributable version of the framework.
+It has been built from the
+[development repository](https://github.com/codeigniter4/CodeIgniter4).
 
-## 3. Pousser cette branche sur GitHub pour que les autres la voient
-git push origin dev
+More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
 
-# Phase 2 : Le Flux de Travail Quotidien (Chaque membre)
-1. Mettre son repo local a jour
-git checkout dev
-git pull origin dev
+You can read the [user guide](https://codeigniter.com/user_guide/)
+corresponding to the latest version of the framework.
 
-2. Creer une branche de fonctionnalite
-### On part de dev, on crée une branche qui part de ce point
-git checkout -b feature/connexion
-ex: feature/nom-fonction, fix/bug-typo
+## Important Change with index.php
 
-3. Commit reguliers
-### Sauvegarde du travail localement
-git add .
-git commit -m "Ajout du formulaire de connexion"
+`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
+for better security and separation of components.
 
-### Coder la suite...
-git add .
-git commit -m "Vérification du mot de passe"
+This means that you should configure your web server to "point" to your project's *public* folder, and
+not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
+framework are exposed.
 
-4. Envoi la branche sur GitHub
-git push origin feature/connexion
+**Please** read the user guide for a better explanation of how CI4 works!
 
-5. Créer la Pull Request (PR)
-- Allez sur la page GitHub du projet.
-- Une bannière jaune devrait apparaître : "feature/connexion had recent pushes".
-- Cliquez sur "Compare & pull request" .
-- Base : dev (là où on veut que le code aille).
-- Compare : feature/connexion.
-- Cliquez sur "Create pull request".
-- À ce stade, les autres membres peuvent commenter votre code .
+## Repository Management
 
-6. Merger la PR (et la supprimer)
-- SUPPRIMEZ LA BRANCHE en cliquant sur le bouton "Delete branch" qui apparaît juste après .
+We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
+We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
+FEATURE REQUESTS.
 
-# Phase 3 :  Le Nettoyage Local (Après fusion)
- 1. On retourne sur la branche principale de travail (dev)
-git checkout dev
+This repository is a "distribution" one, built by our release preparation script.
+Problems with it can be raised on our forum, or as issues in the main repository.
 
- 2. On récupère les changements qui ont été mergés (y compris ta feature)
-git pull origin dev
+## Contributing
 
- 3. On supprime la branche localement (comme on l'a fait sur GitHub)
-git branch -d feature/connexion
-- (Le -d ne marche que si la branche a bien été mergée, sécurité intégrée)
+We welcome contributions from the community.
 
- 4. (Optionnel mais propre) On dit à Git d'oublier le lien avec la branche distante
-git remote prune origin
+Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
 
+## Server Requirements
 
-# Phase 4 : La Finale (Merge de dev vers main)
+PHP version 8.2 or higher is required, with the following extensions installed:
 
-Rappel
-![alt text](image.png)
+- [intl](http://php.net/manual/en/intl.requirements.php)
+- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+
+> [!WARNING]
+> - The end of life date for PHP 7.4 was November 28, 2022.
+> - The end of life date for PHP 8.0 was November 26, 2023.
+> - The end of life date for PHP 8.1 was December 31, 2025.
+> - If you are still using below PHP 8.2, you should upgrade immediately.
+> - The end of life date for PHP 8.2 will be December 31, 2026.
+
+Additionally, make sure that the following extensions are enabled in your PHP:
+
+- json (enabled by default - don't turn it off)
+- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
+- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
