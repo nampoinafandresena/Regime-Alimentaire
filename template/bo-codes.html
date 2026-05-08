@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriPath — BO Codes Wallet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+  :root {
+    --green-50: #f0faf4;
+    --green-100: #d4f0e0;
+    --green-400: #3aaa6b;
+    --green-500: #2d8f57;
+    --green-600: #1e6b3e;
+    --gold-100: #fef6e0;
+    --gold-400: #e6a817;
+    --gold-500: #c48a00;
+    --slate-50: #f8f9fa;
+    --slate-100: #f1f3f5;
+    --slate-200: #e9ecef;
+    --slate-300: #dee2e6;
+    --slate-400: #adb5bd;
+    --slate-500: #6c757d;
+    --slate-600: #495057;
+    --slate-700: #343a40;
+    --slate-900: #111316;
+    --red-400: #e04646;
+    --red-100: #fde8e8;
+    --blue-400: #3b82f6;
+    --blue-100: #dbeafe;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--slate-900); line-height: 1.6; }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  .demo-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+    display: flex; align-items: center; gap: 0; overflow-x: auto;
+    padding: 0 24px; height: 56px; border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .demo-nav span { color: var(--slate-500); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: 0 12px 0 4px; white-space: nowrap; }
+  .demo-nav a {
+    background: none; border: none; color: var(--slate-500); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; padding: 8px 16px; cursor: pointer; white-space: nowrap; border-radius: 0;
+    border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    text-decoration: none;
+  }
+  .demo-nav a:hover { color: var(--slate-900); }
+  .demo-nav a.active { color: var(--green-500); border-bottom-color: var(--green-500); }
+
+  .app-layout { display: flex; min-height: 100vh; padding-top: 56px; }
+  .bo-sidebar { width: 220px; background: #1a1d21; padding: 20px 0; flex-shrink: 0; }
+  .bo-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; padding: 6px 20px 28px; }
+  .bo-logo span { color: #e6a817; }
+  .bo-item { display: flex; align-items: center; gap: 9px; padding: 10px 20px; font-size: 13px; color: #8a8f98; cursor: pointer; transition: all .12s; text-decoration: none; }
+  .bo-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bo-item.active { color: #fff; background: rgba(230,168,23,0.15); border-left: 3px solid #e6a817; }
+  .bo-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #4a4f5a; padding: 16px 20px 6px; }
+
+  .bo-content { flex: 1; padding: 32px 36px; background: #f0f2f5; }
+  .page-header { margin-bottom: 32px; }
+  .page-header h2 { font-size: 28px; color: var(--slate-900); }
+  .page-header p { color: var(--slate-500); font-size: 15px; margin-top: 4px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--slate-200); }
+  .kpi-label { font-size: 12px; color: var(--slate-500); margin-bottom: 8px; }
+  .kpi-value { font-size: 32px; font-weight: 700; color: var(--slate-900); margin-bottom: 6px; }
+  .kpi-trend { font-size: 13px; color: var(--slate-500); }
+
+  .bo-table { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; margin-bottom: 24px; }
+  .bo-table-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--slate-200); }
+  .bo-table-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; }
+  .btn-add-bo { background: var(--green-500); color: #fff; border: none; padding: 9px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; }
+  th { font-family: 'DM Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--slate-500); padding: 12px 20px; text-align: left; border-bottom: 1px solid var(--slate-200); }
+  td { padding: 14px 20px; font-size: 14px; color: var(--slate-700); border-bottom: 1px solid var(--slate-100); }
+  tr:last-child td { border-bottom: none; }
+  .badge-status { padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+  .badge-active { background: var(--green-100); color: var(--green-600); }
+  .badge-pending { background: var(--gold-100); color: var(--gold-500); }
+  .badge-inactive { background: var(--slate-100); color: var(--slate-500); }
+  .action-btns { display: flex; gap: 6px; }
+  .btn-edit { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--slate-200); background: #fff; font-size: 12px; cursor: pointer; color: var(--slate-700); }
+  .btn-del { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--red-100); background: var(--red-100); font-size: 12px; cursor: pointer; color: var(--red-400); }
+
+  .form-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 24px; max-width: 480px; }
+  .form-card h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--slate-100); }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--slate-700); }
+  .form-group input, .form-group select { padding: 12px 16px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; background: #fff; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--green-400); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .btn-save { padding: 12px 28px; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; background: var(--green-500); color: #fff; cursor: pointer; width: 100%; }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .bo-sidebar { width: 200px; }
+    .bo-content { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="demo-nav">
+  <span>PAGES →</span>
+  <a href="index.html">Landing</a>
+  <a href="login.html">Login</a>
+  <a href="inscription1.html">Inscription #1</a>
+  <a href="inscription2.html">Inscription #2</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="regimes.html">Régimes</a>
+  <a href="sports.html">Sports</a>
+  <a href="regimes.html">Régimes</a>
+  <a href="profil.html">Profil & Plan</a>
+  <a href="bo-dashboard.html">BO Dashboard</a>
+  <a href="bo-crud.html">BO Régime CRUD</a>
+  <a href="bo-sports.html">BO Sports CRUD</a>
+  <a href="bo-codes.html" class="active">BO Codes</a>
+</nav>
+
+<div class="app-layout">
+  <div class="bo-sidebar">
+    <div class="bo-logo">Nutri<span>Path</span> Admin</div>
+    <div class="bo-section">Général</div>
+    <a href="bo-dashboard.html" class="bo-item">📊 Tableau de bord</a>
+    <div class="bo-section">Gestion</div>
+    <a href="bo-crud.html" class="bo-item">🥗 Régimes</a>
+    <a href="bo-sports.html" class="bo-item">🏃 Sports</a>
+    <a href="bo-codes.html" class="bo-item active">💳 Codes wallet</a>
+    <div class="bo-item">👥 Utilisateurs</div>
+    <div class="bo-section">Paramètres</div>
+    <div class="bo-item">⚙️ Paramètres</div>
+  </div>
+  <div class="bo-content">
+    <div class="page-header"><h2>Codes porte-monnaie</h2><p>Gérer les codes de recharge et valider les demandes</p></div>
+    <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+      <button class="btn-add-bo">+ Générer des codes</button>
+      <div style="background:#fff; border: 1px solid var(--slate-200); border-radius: 8px; padding: 8px 16px; font-size:14px; color:var(--slate-500);">🔍 Rechercher un code…</div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Codes générés</div><div class="kpi-value">150</div><div class="kpi-trend">15 séries de 10</div></div>
+      <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value" style="color: var(--green-500);">94</div><div class="kpi-trend">63% du total</div></div>
+      <div class="kpi-card"><div class="kpi-label">Codes disponibles</div><div class="kpi-value" style="color: var(--gold-500);">56</div><div class="kpi-trend">37% restants</div></div>
+    </div>
+
+    <div class="bo-table">
+      <div class="bo-table-header"><h3>Tous les codes (15 affichés)</h3></div>
+      <table>
+        <thead><tr><th>Code</th><th>Montant</th><th>Statut</th><th>Utilisateur</th><th>Date validation</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>NUTR-A1B2C3</strong></td><td>5 000 Ar</td><td><span class="badge-status badge-active">Validé</span></td><td>Marie Dupont</td><td>01/05/2026</td><td><div class="action-btns"><button class="btn-edit">Voir</button></div></td></tr>
+          <tr><td><strong>NUTR-D4E5F6</strong></td><td>10 000 Ar</td><td><span class="badge-status badge-pending">En attente</span></td><td>—</td><td>—</td><td><div class="action-btns"><button class="btn-edit">Valider</button><button class="btn-del">Invalider</button></div></td></tr>
+          <tr><td><strong>NUTR-G7H8I9</strong></td><td>5 000 Ar</td><td><span class="badge-status badge-inactive">Expiré</span></td><td>—</td><td>—</td><td><div class="action-btns"><button class="btn-edit">Voir</button></div></td></tr>
+          <tr><td><strong>NUTR-J0K1L2</strong></td><td>20 000 Ar</td><td><span class="badge-status badge-active">Validé</span></td><td>Jean Rakoto</td><td>28/04/2026</td><td><div class="action-btns"><button class="btn-edit">Voir</button></div></td></tr>
+          <tr><td><strong>NUTR-M3N4O5</strong></td><td>10 000 Ar</td><td><span class="badge-status badge-pending">En attente</span></td><td>—</td><td>—</td><td><div class="action-btns"><button class="btn-edit">Valider</button><button class="btn-del">Invalider</button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-card">
+      <h3>Générer de nouveaux codes</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Nombre de codes</label><input type="number" value="10"></div>
+        <div class="form-group"><label>Valeur par code (Ar)</label><select><option>5 000</option><option selected>10 000</option><option>20 000</option><option>50 000</option></select></div>
+      </div>
+      <div class="form-group"><label>Date d'expiration</label><input type="date" value="2026-12-31"></div>
+      <button class="btn-save">Générer les codes</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
