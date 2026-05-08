@@ -1,13 +1,13 @@
 -- Utilisateurs (5 existants + ajout de gold et soldes variés)
-INSERT INTO utilisateurs (nom, email, mot_de_passe, role, est_gold, solde_portefeuille) VALUES 
-('admin', 'admin@itu.mg', 'admin123', 'admin', FALSE, 0.00),
-('Rojotiana', 'rojotiana@itu.mg', 'user123', 'user', TRUE, 15000.00),
-('Feno', 'feno@itu.mg', 'user123', 'user', FALSE, 5000.00),
-('Miora', 'miora@itu.mg', 'user123', 'user', FALSE, 12000.00),
-('Rindra', 'rindra@itu.mg', 'user123', 'user', TRUE, 25000.00),
-('Tahiry', 'tahiry@itu.mg', 'user123', 'user', FALSE, 0.00),
-('Nantenaina', 'nantenaina@itu.mg', 'user123', 'user', TRUE, 30000.00),
-('Fitia', 'fitia@itu.mg', 'user123', 'user', FALSE, 7500.00);
+INSERT INTO utilisateurs (nom, email, genre, mot_de_passe, role, est_gold, solde_portefeuille) VALUES 
+('admin', 'admin@itu.mg', 'Homme', 'admin123', 'admin', FALSE, 0.00),
+('Rojotiana', 'rojotiana@itu.mg', 'Femme', 'user123', 'user', TRUE, 15000.00),
+('Feno', 'feno@itu.mg', 'Femme', 'user123', 'user', FALSE, 5000.00),
+('Miora', 'miora@itu.mg', 'Femme', 'user123', 'user', FALSE, 12000.00),
+('Rindra', 'rindra@itu.mg', 'Homme', 'user123', 'user', TRUE, 25000.00),
+('Tahiry', 'tahiry@itu.mg', 'Homme', 'user123', 'user', FALSE, 0.00),
+('Nantenaina', 'nantenaina@itu.mg', 'Femme', 'user123', 'user', TRUE, 30000.00),
+('Fitia', 'fitia@itu.mg', 'Femme', 'user123', 'user', FALSE, 7500.00);
 
 -- Données santé pour chaque utilisateur
 INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VALUES 
@@ -30,7 +30,7 @@ INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VAL
 INSERT INTO objectifs (libelle) VALUES 
 ('Augmenter son poids'), 
 ('Réduire son poids'), 
-('Atteindre son IMC idéal'),
+('Atteindre son IMC idéal');
 
 -- Utilisateurs objectifs
 INSERT INTO utilisateurs_objectifs (id_utilisateur, id_objectif, poids_cible, date_debut) VALUES 
@@ -54,34 +54,48 @@ INSERT INTO regimes (nom, description, pourcentage_viande, pourcentage_poisson, 
 ('Méditerranéen', 'Inspiration du régime méditerranéen', 25, 45, 30);
 
 -- Régimes prix durée (chaque régime a plusieurs durées)
-INSERT INTO regimes_prix_duree (id_regime, duree_semaines, variation_poids_min, variation_poids_max, prix) VALUES 
--- Carnivore Plus
-(1, 4, -2.0, -1.0, 49.99),
-(1, 8, -4.0, -2.5, 89.99),
-(1, 12, -6.0, -3.5, 129.99),
--- Oceanic
-(2, 4, -2.5, -1.5, 59.99),
-(2, 8, -5.0, -3.0, 109.99),
-(2, 12, -7.0, -4.5, 159.99),
--- Mixte Equilibre
-(3, 4, -1.5, -0.5, 39.99),
-(3, 8, -3.0, -1.5, 69.99),
-(3, 12, -4.5, -2.5, 99.99),
--- Volailles Legeres
-(4, 4, -1.8, -0.8, 44.99),
-(4, 8, -3.5, -1.8, 79.99),
-(4, 12, -5.0, -3.0, 114.99),
--- Proteine Max
-(5, 4, 1.0, 2.0, 54.99),  -- prise de poids
-(5, 8, 2.0, 4.0, 99.99),
-(5, 12, 3.0, 6.0, 149.99),
--- Végétarien Renforcé
-(6, 4, -1.0, 0.5, 44.99),
-(6, 8, -2.0, 1.0, 79.99),
--- Méditerranéen
-(7, 4, -1.5, -0.5, 49.99),
-(7, 8, -3.0, -1.0, 89.99),
-(7, 12, -4.5, -2.0, 129.99);
+INSERT INTO regimes_prix_duree (id_regime, duree_semaines, variation_poids, prix) VALUES 
+-- Régime 1: Carnivore Plus (prise de poids/masse musculaire)
+(1, 4, 2.50, 50000),
+(1, 8, 5.00, 90000),
+(1, 12, 7.50, 120000),
+(1, 16, 10.00, 150000),
+
+-- Régime 2: Oceanic (perte de poids modérée)
+(2, 4, -2.00, 55000),
+(2, 8, -4.00, 100000),
+(2, 12, -6.00, 135000),
+(2, 16, -8.00, 160000),
+
+-- Régime 3: Mixte Equilibre (variation selon durée)
+(3, 4, -1.00, 45000),
+(3, 8, -2.00, 85000),
+(3, 12, -2.50, 110000),
+(3, 16, -3.00, 130000),
+
+-- Régime 4: Volailles Legeres (perte de poids douce)
+(4, 4, -1.50, 40000),
+(4, 8, -3.00, 75000),
+(4, 12, -4.50, 100000),
+(4, 16, -6.00, 120000),
+
+-- Régime 5: Proteine Max (prise de poids pour sportifs)
+(5, 4, 3.00, 60000),
+(5, 8, 6.00, 110000),
+(5, 12, 9.00, 150000),
+(5, 16, 12.00, 180000),
+
+-- Régime 6: Végétarien Renforcé (perte de poids progressive)
+(6, 4, -1.80, 48000),
+(6, 8, -3.50, 88000),
+(6, 12, -5.00, 115000),
+(6, 16, -6.50, 138000),
+
+-- Régime 7: Méditerranéen (variation modérée selon durée)
+(7, 4, -1.20, 52000),
+(7, 8, -2.50, 95000),
+(7, 12, -3.80, 125000),
+(7, 16, -5.00, 145000);
 
 -- Activités sportives (5 fournies + ajout)
 INSERT INTO activites_sportives (nom, variation_poids_par_heure) VALUES 

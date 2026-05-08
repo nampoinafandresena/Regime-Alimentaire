@@ -1,3 +1,4 @@
+DROP DATABASE regime_db;
 CREATE DATABASE regime_db;
 USE regime_db;
 
@@ -5,6 +6,7 @@ CREATE TABLE utilisateurs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
+    genre ENUM('Homme', 'Femme', 'Autre') DEFAULT 'Homme',
     mot_de_passe VARCHAR(255) NOT NULL,
     role ENUM('user', 'admin') DEFAULT 'user',
     est_gold BOOLEAN DEFAULT FALSE, 
@@ -48,8 +50,7 @@ CREATE TABLE regimes_prix_duree (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_regime INT,
     duree_semaines INT,
-    variation_poids_min DECIMAL(5, 2), 
-    variation_poids_max DECIMAL(5, 2), 
+    variation_poids DECIMAL(5, 2), 
     prix DECIMAL(10, 2),
     FOREIGN KEY (id_regime) REFERENCES regimes(id)
 );
@@ -73,7 +74,7 @@ CREATE TABLE code_users(
     id_utilisateur INT,
     date_utilisation_code TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_code) REFERENCES codes_portefeuille(id),
-    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id)
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id)
 );
 
 CREATE TABLE achats_gold (
