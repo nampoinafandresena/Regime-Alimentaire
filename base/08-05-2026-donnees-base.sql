@@ -163,3 +163,9 @@ UPDATE utilisateurs SET solde_portefeuille = 12000 WHERE id = 4;  -- Miora: 1200
 UPDATE utilisateurs SET solde_portefeuille = 5000 WHERE id = 3;   -- Feno: 5000
 UPDATE utilisateurs SET solde_portefeuille = 0 WHERE id = 6;      -- Tahiry: 0
 UPDATE utilisateurs SET solde_portefeuille = 7500 WHERE id = 8;   -- Fitia: 7500
+
+INSERT INTO options_gold (id, prix, description) VALUES 
+(1, 29.99, 'Abonnement Gold pour 1 mois'),
+(2, 79.99, 'Abonnement Gold pour 3 mois'),
+(3, 149.99, 'Abonnement Gold pour 6 mois'),
+(4, 279.99, 'Abonnement Gold pour 12 mois');

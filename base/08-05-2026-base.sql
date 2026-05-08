@@ -85,3 +85,8 @@ CREATE TABLE achats_gold (
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id)
 );
 
+CREATE TABLE options_gold (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    prix DECIMAL(10,2),
+    description VARCHAR(255)
+);
