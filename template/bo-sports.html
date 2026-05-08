@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriPath — BO Gestion des Sports</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+  :root {
+    --green-50: #f0faf4;
+    --green-100: #d4f0e0;
+    --green-400: #3aaa6b;
+    --green-500: #2d8f57;
+    --green-600: #1e6b3e;
+    --gold-100: #fef6e0;
+    --gold-400: #e6a817;
+    --gold-500: #c48a00;
+    --slate-50: #f8f9fa;
+    --slate-100: #f1f3f5;
+    --slate-200: #e9ecef;
+    --slate-300: #dee2e6;
+    --slate-400: #adb5bd;
+    --slate-500: #6c757d;
+    --slate-600: #495057;
+    --slate-700: #343a40;
+    --slate-900: #111316;
+    --red-400: #e04646;
+    --red-100: #fde8e8;
+    --blue-400: #3b82f6;
+    --blue-100: #dbeafe;
+    --orange-400: #f97316;
+    --orange-100: #fff7ed;
+    --purple-400: #a855f7;
+    --purple-100: #f3e8ff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--slate-900); line-height: 1.6; }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  .demo-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+    display: flex; align-items: center; gap: 0; overflow-x: auto;
+    padding: 0 24px; height: 56px; border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .demo-nav span { color: var(--slate-500); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: 0 12px 0 4px; white-space: nowrap; }
+  .demo-nav a {
+    background: none; border: none; color: var(--slate-500); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; padding: 8px 16px; cursor: pointer; white-space: nowrap; border-radius: 0;
+    border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    text-decoration: none;
+  }
+  .demo-nav a:hover { color: var(--slate-900); }
+  .demo-nav a.active { color: var(--green-500); border-bottom-color: var(--green-500); }
+
+  .app-layout { display: flex; min-height: 100vh; padding-top: 56px; }
+  .bo-sidebar { width: 220px; background: #1a1d21; padding: 20px 0; flex-shrink: 0; }
+  .bo-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; padding: 6px 20px 28px; }
+  .bo-logo span { color: #e6a817; }
+  .bo-item { display: flex; align-items: center; gap: 9px; padding: 10px 20px; font-size: 13px; color: #8a8f98; cursor: pointer; transition: all .12s; text-decoration: none; }
+  .bo-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bo-item.active { color: #fff; background: rgba(230,168,23,0.15); border-left: 3px solid #e6a817; }
+  .bo-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #4a4f5a; padding: 16px 20px 6px; }
+
+  .bo-content { flex: 1; padding: 32px 36px; background: #f0f2f5; }
+  .page-header { margin-bottom: 32px; }
+  .page-header h2 { font-size: 28px; color: var(--slate-900); }
+  .page-header p { color: var(--slate-500); font-size: 15px; margin-top: 4px; }
+
+  .bo-table { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; }
+  .bo-table-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--slate-200); }
+  .bo-table-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; }
+  .btn-add-bo { background: var(--green-500); color: #fff; border: none; padding: 9px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { font-family: 'DM Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--slate-500); padding: 12px 20px; text-align: left; border-bottom: 1px solid var(--slate-200); }
+  td { padding: 14px 20px; font-size: 14px; color: var(--slate-700); border-bottom: 1px solid var(--slate-100); }
+  tr:last-child td { border-bottom: none; }
+  .action-btns { display: flex; gap: 6px; }
+  .btn-edit { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--slate-200); background: #fff; font-size: 12px; cursor: pointer; color: var(--slate-700); }
+  .btn-del { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--red-100); background: var(--red-100); font-size: 12px; cursor: pointer; color: var(--red-400); }
+
+  .form-page { max-width: 480px; }
+  .form-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 28px; margin-bottom: 20px; }
+  .form-card h3 { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-200); }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--slate-700); }
+  .form-group input, .form-group select, .form-group textarea { padding: 12px 16px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; background: #fff; transition: border-color .15s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green-400); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+  .btn-cancel { padding: 12px 24px; border: 1px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; background: #fff; cursor: pointer; color: var(--slate-700); }
+  .btn-save { padding: 12px 28px; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; background: var(--green-500); color: #fff; cursor: pointer; }
+
+  .badge-category { padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+  .badge-cardio { background: var(--blue-100); color: var(--blue-400); }
+  .badge-force { background: var(--gold-100); color: var(--gold-500); }
+  .badge-flexibilite { background: var(--green-100); color: var(--green-600); }
+  .badge-plein-air { background: var(--red-100); color: var(--red-400); }
+  .badge-douceur { background: var(--purple-100); color: var(--purple-400); }
+
+  @media (max-width: 900px) {
+    .form-row { grid-template-columns: 1fr; }
+    .bo-sidebar { width: 200px; }
+    .bo-content { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="demo-nav">
+  <span>PAGES →</span>
+  <a href="index.html">Landing</a>
+  <a href="login.html">Login</a>
+  <a href="inscription1.html">Inscription #1</a>
+  <a href="inscription2.html">Inscription #2</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="regimes.html">Régimes</a>
+  <a href="sports.html">Sports</a>
+  <a href="profil.html">Profil & Plan</a>
+  <a href="bo-dashboard.html">BO Dashboard</a>
+  <a href="bo-crud.html">BO Régime CRUD</a>
+  <a href="bo-sports.html" class="active">BO Sports CRUD</a>
+  <a href="bo-codes.html">BO Codes</a>
+</nav>
+
+<div class="app-layout">
+  <div class="bo-sidebar">
+    <div class="bo-logo">Nutri<span>Path</span> Admin</div>
+    <div class="bo-section">Général</div>
+    <a href="bo-dashboard.html" class="bo-item">📊 Tableau de bord</a>
+    <div class="bo-section">Gestion</div>
+    <a href="bo-crud.html" class="bo-item">🥗 Régimes</a>
+    <a href="bo-sports.html" class="bo-item active">🏃 Sports</a>
+    <a href="bo-codes.html" class="bo-item">💳 Codes wallet</a>
+    <div class="bo-item">👥 Utilisateurs</div>
+    <div class="bo-section">Paramètres</div>
+    <div class="bo-item">⚙️ Paramètres</div>
+  </div>
+  <div class="bo-content">
+    <div class="page-header">
+      <h2>Gestion des activités sportives</h2>
+      <p>Créer, modifier ou supprimer les programmes sportifs</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 420px; gap: 24px;">
+      <div>
+        <div class="bo-table">
+          <div class="bo-table-header">
+            <h3>Liste des activités (8)</h3>
+            <button class="btn-add-bo" onclick="resetForm()">+ Nouvelle activité</button>
+          </div>
+          <table id="sportsTable">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Calories/30min</th>
+                <th>Fréquence</th>
+                <th>Intensité</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sportsTableBody">
+              <tr data-id="1">
+                <td><strong>Course à pied</strong></td>
+                <td><span class="badge-category badge-cardio">🏃 Cardio</span></td>
+                <td>450 cal</td>
+                <td>3-5x/semaine</td>
+                <td>Élevée</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(1)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(1)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="2">
+                <td><strong>Natation</strong></td>
+                <td><span class="badge-category badge-cardio">🏊 Cardio</span></td>
+                <td>350 cal</td>
+                <td>2-3x/semaine</td>
+                <td>Modérée</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(2)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(2)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="3">
+                <td><strong>Musculation</strong></td>
+                <td><span class="badge-category badge-force">💪 Force</span></td>
+                <td>300 cal</td>
+                <td>3-4x/semaine</td>
+                <td>Élevée</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(3)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(3)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="4">
+                <td><strong>Yoga</strong></td>
+                <td><span class="badge-category badge-flexibilite">🧘 Flexibilité</span></td>
+                <td>180 cal</td>
+                <td>2-4x/semaine</td>
+                <td>Faible</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(4)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(4)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="5">
+                <td><strong>Vélo / Cyclisme</strong></td>
+                <td><span class="badge-category badge-plein-air">🌳 Plein air</span></td>
+                <td>400 cal</td>
+                <td>2-3x/semaine</td>
+                <td>Modérée</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(5)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(5)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="6">
+                <td><strong>Marche rapide</strong></td>
+                <td><span class="badge-category badge-douceur">🚶 Douceur</span></td>
+                <td>200 cal</td>
+                <td>5-7x/semaine</td>
+                <td>Faible</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(6)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(6)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="7">
+                <td><strong>Pilates</strong></td>
+                <td><span class="badge-category badge-flexibilite">🤸 Flexibilité</span></td>
+                <td>200 cal</td>
+                <td>2-3x/semaine</td>
+                <td>Faible</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(7)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(7)">🗑️</button></div></td>
+              </tr>
+              <tr data-id="8">
+                <td><strong>CrossFit</strong></td>
+                <td><span class="badge-category badge-force">🏋️ Force</span></td>
+                <td>500 cal</td>
+                <td>3-4x/semaine</td>
+                <td>Élevée</td>
+                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(8)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(8)">🗑️</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Formulaire CRUD -->
+      <div class="form-page">
+        <div class="form-card" id="formCard">
+          <h3 id="formTitle">✏️ Ajouter / Modifier un sport</h3>
+          <div class="form-group">
+            <label>Nom de l'activité</label>
+            <input type="text" id="sportName" placeholder="Ex: Course à pied">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea rows="3" id="sportDesc" placeholder="Description détaillée de l'activité..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Catégorie</label>
+              <select id="sportCategory">
+                <option value="cardio">🏃 Cardio</option>
+                <option value="force">💪 Force</option>
+                <option value="flexibilite">🧘 Flexibilité</option>
+                <option value="plein-air">🌳 Plein air</option>
+                <option value="douceur">🌸 Douceur</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Intensité</label>
+              <select id="sportIntensity">
+                <option value="faible">🍃 Faible</option>
+                <option value="moyen">🌊 Modérée</option>
+                <option value="eleve">⚡ Élevée</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Calories / 30 min</label>
+              <input type="number" id="sportCalories" placeholder="450">
+            </div>
+            <div class="form-group">
+              <label>Fréquence (par semaine)</label>
+              <input type="text" id="sportFrequency" placeholder="3-5x/semaine">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Durée (minutes)</label>
+              <input type="text" id="sportDuration" placeholder="30-45 min">
+            </div>
+            <div class="form-group">
+              <label>Niveau requis</label>
+              <select id="sportLevel">
+                <option>Débutant</option>
+                <option selected>Intermédiaire</option>
+                <option>Avancé</option>
+                <option>Tous niveaux</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel" onclick="resetForm()">Annuler</button>
+            <button class="btn-save" onclick="saveSport()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentEditId = null;
+
+const sportsData = {
+  1: { name: "Course à pied", desc: "Idéal pour brûler des calories et améliorer votre endurance cardiovasculaire.", category: "cardio", intensity: "eleve", calories: "450", frequency: "3-5x/semaine", duration: "30-45 min", level: "Intermédiaire" },
+  2: { name: "Natation", desc: "Activité complète sans impact sur les articulations, idéale pour tous les âges.", category: "cardio", intensity: "moyen", calories: "350", frequency: "2-3x/semaine", duration: "30-60 min", level: "Tous niveaux" },
+  3: { name: "Musculation", desc: "Renforcez votre masse musculaire, améliorez votre métabolisme de base.", category: "force", intensity: "eleve", calories: "300", frequency: "3-4x/semaine", duration: "45-60 min", level: "Intermédiaire" },
+  4: { name: "Yoga", desc: "Améliorez votre souplesse, réduisez le stress et tonifiez votre corps.", category: "flexibilite", intensity: "faible", calories: "180", frequency: "2-4x/semaine", duration: "45-75 min", level: "Débutant" },
+  5: { name: "Vélo / Cyclisme", desc: "Parfait pour explorer tout en faisant du sport, excellent pour le cardio.", category: "plein-air", intensity: "moyen", calories: "400", frequency: "2-3x/semaine", duration: "45-90 min", level: "Tous niveaux" },
+  6: { name: "Marche rapide", desc: "Accessible à tous, idéal pour débuter une activité physique régulière.", category: "douceur", intensity: "faible", calories: "200", frequency: "5-7x/semaine", duration: "30-60 min", level: "Débutant" },
+  7: { name: "Pilates", desc: "Renforcez vos muscles profonds, améliorez votre posture et votre équilibre.", category: "flexibilite", intensity: "faible", calories: "200", frequency: "2-3x/semaine", duration: "45-60 min", level: "Débutant" },
+  8: { name: "CrossFit", desc: "Entraînement intense mêlant cardio et force pour des résultats rapides.", category: "force", intensity: "eleve", calories: "500", frequency: "3-4x/semaine", duration: "45-60 min", level: "Avancé" }
+};
+
+function editSport(id) {
+  currentEditId = id;
+  const sport = sportsData[id];
+  if (sport) {
+    document.getElementById('sportName').value = sport.name;
+    document.getElementById('sportDesc').value = sport.desc;
+    document.getElementById('sportCategory').value = sport.category;
+    document.getElementById('sportIntensity').value = sport.intensity;
+    document.getElementById('sportCalories').value = sport.calories;
+    document.getElementById('sportFrequency').value = sport.frequency;
+    document.getElementById('sportDuration').value = sport.duration;
+    document.getElementById('sportLevel').value = sport.level;
+    document.getElementById('formTitle').innerHTML = '✏️ Modifier un sport';
+  }
+}
+
+function deleteSport(id) {
+  if (confirm('Supprimer cette activité sportive ?')) {
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) row.remove();
+    delete sportsData[id];
+  }
+}
+
+function saveSport() {
+  const name = document.getElementById('sportName').value;
+  const desc = document.getElementById('sportDesc').value;
+  const category = document.getElementById('sportCategory').value;
+  const intensity = document.getElementById('sportIntensity').value;
+  const calories = document.getElementById('sportCalories').value;
+  const frequency = document.getElementById('sportFrequency').value;
+  const duration = document.getElementById('sportDuration').value;
+  const level = document.getElementById('sportLevel').value;
+
+  if (!name) {
+    alert('Veuillez saisir un nom');
+    return;
+  }
+
+  const categoryLabels = {
+    cardio: '🏃 Cardio', force: '💪 Force', flexibilite: '🧘 Flexibilité',
+    'plein-air': '🌳 Plein air', douceur: '🌸 Douceur'
+  };
+  const intensityLabels = { faible: 'Faible', moyen: 'Modérée', eleve: 'Élevée' };
+  const badgeClasses = {
+    cardio: 'badge-cardio', force: 'badge-force', flexibilite: 'badge-flexibilite',
+    'plein-air': 'badge-plein-air', douceur: 'badge-douceur'
+  };
+
+  if (currentEditId && sportsData[currentEditId]) {
+    // Update existing
+    sportsData[currentEditId] = { name, desc, category, intensity, calories, frequency, duration, level };
+    const row = document.querySelector(`tr[data-id="${currentEditId}"]`);
+    if (row) {
+      row.innerHTML = `
+        <td><strong>${name}</strong></td>
+        <td><span class="badge-category ${badgeClasses[category]}">${categoryLabels[category]}</span></td>
+        <td>${calories} cal</td>
+        <td>${frequency}</td>
+        <td>${intensityLabels[intensity]}</td>
+        <td><div class="action-btns"><button class="btn-edit" onclick="editSport(${currentEditId})">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(${currentEditId})">🗑️</button></div></td>
+      `;
+    }
+  } else {
+    // Create new
+    const newId = Date.now();
+    sportsData[newId] = { name, desc, category, intensity, calories, frequency, duration, level };
+    const tbody = document.getElementById('sportsTableBody');
+    const newRow = document.createElement('tr');
+    newRow.setAttribute('data-id', newId);
+    newRow.innerHTML = `
+      <td><strong>${name}</strong></td>
+      <td><span class="badge-category ${badgeClasses[category]}">${categoryLabels[category]}</span></td>
+      <td>${calories} cal</td>
+      <td>${frequency}</td>
+      <td>${intensityLabels[intensity]}</td>
+      <td><div class="action-btns"><button class="btn-edit" onclick="editSport(${newId})">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(${newId})">🗑️</button></div></td>
+    `;
+    tbody.appendChild(newRow);
+  }
+  resetForm();
+}
+
+function resetForm() {
+  currentEditId = null;
+  document.getElementById('sportName').value = '';
+  document.getElementById('sportDesc').value = '';
+  document.getElementById('sportCategory').value = 'cardio';
+  document.getElementById('sportIntensity').value = 'moyen';
+  document.getElementById('sportCalories').value = '';
+  document.getElementById('sportFrequency').value = '';
+  document.getElementById('sportDuration').value = '';
+  document.getElementById('sportLevel').value = 'Intermédiaire';
+  document.getElementById('formTitle').innerHTML = '➕ Ajouter un sport';
+}
+</script>
+</body>
+</html>
