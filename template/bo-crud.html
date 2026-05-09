@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriPath — BO Gestion des Régimes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+  :root {
+    --green-50: #f0faf4;
+    --green-100: #d4f0e0;
+    --green-400: #3aaa6b;
+    --green-500: #2d8f57;
+    --green-600: #1e6b3e;
+    --gold-100: #fef6e0;
+    --gold-400: #e6a817;
+    --gold-500: #c48a00;
+    --slate-50: #f8f9fa;
+    --slate-100: #f1f3f5;
+    --slate-200: #e9ecef;
+    --slate-300: #dee2e6;
+    --slate-400: #adb5bd;
+    --slate-500: #6c757d;
+    --slate-600: #495057;
+    --slate-700: #343a40;
+    --slate-900: #111316;
+    --red-400: #e04646;
+    --red-100: #fde8e8;
+    --blue-400: #3b82f6;
+    --blue-100: #dbeafe;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--slate-900); line-height: 1.6; }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  .demo-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+    display: flex; align-items: center; gap: 0; overflow-x: auto;
+    padding: 0 24px; height: 56px; border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .demo-nav span { color: var(--slate-500); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: 0 12px 0 4px; white-space: nowrap; }
+  .demo-nav a {
+    background: none; border: none; color: var(--slate-500); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; padding: 8px 16px; cursor: pointer; white-space: nowrap; border-radius: 0;
+    border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    text-decoration: none;
+  }
+  .demo-nav a:hover { color: var(--slate-900); }
+  .demo-nav a.active { color: var(--green-500); border-bottom-color: var(--green-500); }
+
+  .app-layout { display: flex; min-height: 100vh; padding-top: 56px; }
+  .bo-sidebar { width: 220px; background: #1a1d21; padding: 20px 0; flex-shrink: 0; }
+  .bo-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; padding: 6px 20px 28px; }
+  .bo-logo span { color: #e6a817; }
+  .bo-item { display: flex; align-items: center; gap: 9px; padding: 10px 20px; font-size: 13px; color: #8a8f98; cursor: pointer; transition: all .12s; text-decoration: none; }
+  .bo-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bo-item.active { color: #fff; background: rgba(230,168,23,0.15); border-left: 3px solid #e6a817; }
+  .bo-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #4a4f5a; padding: 16px 20px 6px; }
+
+  .bo-content { flex: 1; padding: 32px 36px; background: #f0f2f5; }
+  .page-header { margin-bottom: 32px; }
+  .page-header h2 { font-size: 28px; color: var(--slate-900); }
+  .page-header p { color: var(--slate-500); font-size: 15px; margin-top: 4px; }
+
+  .bo-table { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; }
+  .bo-table-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--slate-200); }
+  .bo-table-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; }
+  .btn-add-bo { background: var(--green-500); color: #fff; border: none; padding: 9px 20px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; }
+  th { font-family: 'DM Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--slate-500); padding: 12px 20px; text-align: left; border-bottom: 1px solid var(--slate-200); }
+  td { padding: 14px 20px; font-size: 14px; color: var(--slate-700); border-bottom: 1px solid var(--slate-100); }
+  tr:last-child td { border-bottom: none; }
+  .action-btns { display: flex; gap: 6px; }
+  .btn-edit { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--slate-200); background: #fff; font-size: 12px; cursor: pointer; color: var(--slate-700); }
+  .btn-del { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--red-100); background: var(--red-100); font-size: 12px; cursor: pointer; color: var(--red-400); }
+
+  .form-page { max-width: 700px; }
+  .form-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--slate-200); padding: 32px; margin-bottom: 20px; }
+  .form-card h3 { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-200); }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--slate-700); }
+  .form-group input, .form-group select, .form-group textarea { padding: 12px 16px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; background: #fff; transition: border-color .15s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green-400); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .comp-sliders { display: flex; flex-direction: column; gap: 16px; }
+  .slider-group { display: flex; align-items: center; gap: 12px; }
+  .slider-label { width: 80px; font-size: 13px; color: var(--slate-600); }
+  .slider-group input[type=range] { flex: 1; accent-color: var(--green-500); }
+  .slider-val { width: 48px; text-align: right; font-size: 14px; font-weight: 600; }
+  .slider-val.meat { color: var(--red-400); }
+  .slider-val.fish { color: var(--blue-400); }
+  .slider-val.poultry { color: var(--gold-500); }
+  .comp-total { text-align: right; font-size: 13px; color: var(--slate-500); margin-top: 8px; }
+  .comp-total.ok { color: var(--green-500); }
+  .comp-total.warn { color: var(--red-400); }
+  .price-table { border: 1px solid var(--slate-200); border-radius: var(--radius-sm); overflow: hidden; }
+  .price-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 0; border-bottom: 1px solid var(--slate-100); }
+  .price-row:last-child { border-bottom: none; }
+  .price-cell { padding: 12px 16px; font-size: 14px; }
+  .price-cell input { width: 100%; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px; background: transparent; }
+  .price-cell.del { display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--red-400); }
+  .add-row-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--green-500); cursor: pointer; padding: 10px 0; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+  .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+  .btn-cancel { padding: 12px 24px; border: 1px solid var(--slate-200); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; background: #fff; cursor: pointer; color: var(--slate-700); }
+  .btn-save { padding: 12px 28px; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; background: var(--green-500); color: #fff; cursor: pointer; }
+
+  @media (max-width: 900px) {
+    .form-row { grid-template-columns: 1fr; }
+    .bo-sidebar { width: 200px; }
+    .bo-content { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="demo-nav">
+  <span>PAGES →</span>
+  <a href="index.html">Landing</a>
+  <a href="login.html">Login</a>
+  <a href="inscription1.html">Inscription #1</a>
+  <a href="inscription2.html">Inscription #2</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="regimes.html">Régimes</a>
+  <a href="profil.html">Profil & Plan</a>
+  <a href="bo-dashboard.html">BO Dashboard</a>
+  <a href="bo-crud.html" class="active">BO Régime CRUD</a>
+  <a href="bo-codes.html">BO Codes</a>
+</nav>
+
+<div class="app-layout">
+  <div class="bo-sidebar">
+    <div class="bo-logo">Nutri<span>Path</span> Admin</div>
+    <div class="bo-section">Général</div>
+    <a href="bo-dashboard.html" class="bo-item">📊 Tableau de bord</a>
+    <div class="bo-section">Gestion</div>
+    <a href="bo-crud.html" class="bo-item active">🥗 Régimes</a>
+    <a href="bo-sports.html" class="bo-item">🏃 Sports</a>
+    <a href="bo-codes.html" class="bo-item">💳 Codes wallet</a>
+    <div class="bo-item">👥 Utilisateurs</div>
+    <div class="bo-section">Paramètres</div>
+    <div class="bo-item">⚙️ Paramètres</div>
+  </div>
+  <div class="bo-content">
+    <div class="page-header"><h2>Gestion des régimes</h2><p>Créer, modifier ou supprimer les programmes nutritionnels</p></div>
+    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px;">
+      <div>
+        <div class="bo-table">
+          <div class="bo-table-header"><h3>Liste des régimes (5)</h3><button class="btn-add-bo">+ Nouveau régime</button></div>
+          <table>
+            <thead><tr><th>Nom</th><th>Durée</th><th>Variation poids</th><th>Prix (4 sem.)</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Méditerranéen</strong></td><td>12 semaines</td><td style="color: var(--red-400);">−4 à −8 kg</td><td>45 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+              <tr><td><strong>Protéiné Sport</strong></td><td>8 semaines</td><td style="color: var(--green-500);">+3 à +6 kg</td><td>52 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+              <tr><td><strong>Détox Marine</strong></td><td>6 semaines</td><td style="color: var(--red-400);">−3 à −5 kg</td><td>38 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+              <tr><td><strong>Équilibre Vital</strong></td><td>16 semaines</td><td style="color: var(--red-400);">−5 à −10 kg</td><td>60 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+              <tr><td><strong>Masse & Force</strong></td><td>12 semaines</td><td style="color: var(--green-500);">+5 à +12 kg</td><td>68 000 Ar</td><td><div class="action-btns"><button class="btn-edit">✏️ Éditer</button><button class="btn-del">🗑️</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="form-page">
+        <div class="form-card">
+          <h3>✏️ Éditer un régime</h3>
+          <div class="form-group"><label>Nom du régime</label><input type="text" value="Méditerranéen"></div>
+          <div class="form-group"><label>Description</label><textarea rows="3">Riche en légumes frais, poissons et huile d'olive. Programme éprouvé pour une perte de poids durable.</textarea></div>
+          <div class="form-row">
+            <div class="form-group"><label>Durée totale (semaines)</label><input type="number" value="12"></div>
+            <div class="form-group"><label>Objectif associé</label><select><option selected>Réduire poids</option><option>Augmenter poids</option><option>IMC idéal</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Variation min (kg)</label><input type="number" value="-8"></div>
+            <div class="form-group"><label>Variation max (kg)</label><input type="number" value="-4"></div>
+          </div>
+          <div class="form-group">
+            <label>Composition protéique</label>
+            <div class="comp-sliders">
+              <div class="slider-group"><span class="slider-label">🥩 Viande</span><input type="range" min="0" max="100" value="20" oninput="updateComp(this,'meat-val')"><span class="slider-val meat" id="meat-val">20%</span></div>
+              <div class="slider-group"><span class="slider-label">🐟 Poisson</span><input type="range" min="0" max="100" value="50" oninput="updateComp(this,'fish-val')"><span class="slider-val fish" id="fish-val">50%</span></div>
+              <div class="slider-group"><span class="slider-label">🍗 Volaille</span><input type="range" min="0" max="100" value="30" oninput="updateComp(this,'poultry-val')"><span class="slider-val poultry" id="poultry-val">30%</span></div>
+            </div>
+            <div class="comp-total ok" id="comp-total">Total : 100% ✓</div>
+          </div>
+          <div class="form-group">
+            <label>Tarifs selon la durée</label>
+            <div class="price-table">
+              <div class="price-row" style="background: var(--slate-50); font-weight:600;"><div class="price-cell">Durée</div><div class="price-cell">Prix (Ar)</div><div class="price-cell"></div></div>
+              <div class="price-row"><div class="price-cell"><input value="2 semaines"></div><div class="price-cell"><input value="25 000"></div><div class="price-cell del">✕</div></div>
+              <div class="price-row"><div class="price-cell"><input value="4 semaines"></div><div class="price-cell"><input value="45 000"></div><div class="price-cell del">✕</div></div>
+              <div class="price-row"><div class="price-cell"><input value="8 semaines"></div><div class="price-cell"><input value="80 000"></div><div class="price-cell del">✕</div></div>
+              <div class="price-row"><div class="price-cell"><input value="12 semaines"></div><div class="price-cell"><input value="110 000"></div><div class="price-cell del">✕</div></div>
+            </div>
+            <button class="add-row-btn">+ Ajouter une durée</button>
+          </div>
+          <div class="form-actions"><button class="btn-cancel">Annuler</button><button class="btn-save">Enregistrer</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function updateComp(el, targetId) {
+  document.getElementById(targetId).textContent = el.value + '%';
+  const sliders = document.querySelectorAll('#page-bo-crud input[type=range]');
+  let total = 0;
+  sliders.forEach(s => total += parseInt(s.value));
+  const totalEl = document.getElementById('comp-total');
+  totalEl.textContent = 'Total : ' + total + '% ' + (total === 100 ? '✓' : '⚠ doit être = 100%');
+  totalEl.className = 'comp-total ' + (total === 100 ? 'ok' : 'warn');
+}
+</script>
+</body>
+</html>
