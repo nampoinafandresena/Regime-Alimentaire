@@ -7,18 +7,27 @@ use CodeIgniter\Model;
 class CodeUserModel extends Model{
     protected $table = 'code_users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id_code', 'id_utilisateur', 'date_utilisation'];
+    protected $allowedFields = ['id_utilisateur', 'id_code', 'date_utilisation_code'];
     protected $useTimestamps = true;
 
     public function getCodesByUserId($userId){
-        return $this->where('id_utilisateur', $userId)->orderBy('date_utilisation', 'DESC')->findAll();
+        return $this->where('id_utilisateur', $userId)->orderBy('date_utilisation_code', 'DESC')->findAll();
     }
 
-    public function CodeValideforUser($userId, $codeId){
-        $alreadyUsed = $this->where('id_utilisateur', $userId)
+    public function hasUsedCode($userId, $codeId){
+        return $this->where('id_utilisateur', $userId)
             ->where('id_code', $codeId)
-            ->first();
+            ->first() !== null;
+    }
 
-        return $alreadyUsed === null;
+    public function utiliserCode($userId, $codeId){
+        if($this->hasUsedCode($userId, $codeId)){
+            return false;
+        }
+        $data = [
+            'id_utilisateur' => $userId,
+            'id_code' => $codeId,
+        ];
+        return $this->insert($data);
     }
 }

@@ -16,7 +16,7 @@ class UserModel extends Model{
         'genre' => 'required[in_list[Homme,Femme,Autre]]',
         'email' => 'required[required|valid_email]',
         'mot_de_passe' => 'required[min_length[6]]',
-        'role' => 'required|in_list[client,admin]',
+        'role' => 'required|in_list[user,admin]',
         'est_gold' => 'required|in_list[0,1]',
         'solde_portefeuille' => 'required|decimal[2]'
     ];

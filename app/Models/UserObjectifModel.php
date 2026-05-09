@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class UserObjectifModel extends Model{
-    protected $table = 'utilisateurs_objectif';
+    protected $table = 'utilisateurs_objectifs';
     protected $primaryKey = 'id';
     protected $allowedFields = ['id_utilisateur', 'id_objectif'];
     protected $userTimestamps = true;
@@ -23,6 +23,10 @@ class UserObjectifModel extends Model{
     }
 
     public function insertObjectifForUser($userId, $objectifId){
+        $currentCount = $this->where('id_utilisateur', $userId)->countAllResults();
+        if($currentCount >= 3){
+            return false;
+        }
         return $this->insert([
             'id_utilisateur' => $userId,
             'id_objectif' => $objectifId
