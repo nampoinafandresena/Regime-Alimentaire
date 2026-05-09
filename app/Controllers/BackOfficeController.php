@@ -19,4 +19,8 @@ class BackOfficeController extends BaseController
     public function crud_code(): string{
         return view('Modal-BO', ['page' => 'pages/bo-crud-code']);
     }
+
+    public function crud_user(): string{
+        return view('Modal-BO', ['page' => 'pages/bo-crud-user']);
+    }
 }
