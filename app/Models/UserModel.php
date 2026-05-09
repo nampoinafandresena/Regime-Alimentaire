@@ -9,7 +9,7 @@ class UserModel extends Model{
     protected $table = 'utilisateurs';
     protected $primaryKey = 'id';
     protected $allowedFields = ['nom', 'genre' ,'email', 'mot_de_passe', 'role', 'est_gold', 'solde_portefeuille'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     protected $validationRules = [
         'nom' => 'required[min_length[3]]',
