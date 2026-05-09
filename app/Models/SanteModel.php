@@ -13,4 +13,21 @@ class SanteModel extends Model{
     public function getSanteByUserId($userId){
         return $this->where('id_utilisateur', $userId)->orderBy('date_mesure', 'DESC')->findAll();
     }
+
+    public function ajouterSante($userId, $taille, $poids){
+        $data = [
+            'id_utilisateur' => $userId,
+            'taille_cm' => $taille,
+            'poids_kg' => $poids,
+        ];
+        return $this->insert($data);
+    }
+
+    public function UpdateSante($santeId, $taille, $poids){
+        $data = [
+            'taille_cm' => $taille,
+            'poids_kg' => $poids,
+        ];
+        return $this->update($santeId, $data);
+    }
 }

@@ -10,19 +10,29 @@ class RegimePrixModel extends Model{
     protected $allowedFields = ['id_regime', 'duree_semaines', 'variation_poids', 'prix'];
     protected $useTimestamps = true;
 
+    public function getAllRegimePrix(){
+        return $this->orderBy('prix', 'ASC')->findAll();
+    }
+
     public function getPrixByRegimeId($regimeId){
         return $this->where('id_regime', $regimeId)->first();
     }
 
-    public function PrixRemiseForUserGold($regimeId, $userId){
-        $prix = $this->getPrixByRegimeId($regimeId);
+    public function PrixRemiseForUserGold($userId){
+        $prix = $this->getAllRegimePrix();
         $userModel = new UserModel();
         $user = $userModel->find($userId);
         if($user['est_gold']){
-            return $prix * 0.85;
+            foreach($prix as &$ligne){
+                if(isset($ligne['prix'])){
+                    $ligne['prix'] = $ligne['prix'] * 0.85;
+                }
+            }
+            unset($ligne);
+            return $prix;
         }
         else{
-            return $prix = $this->getPrixByRegimeId($regimeId);
+            return $prix = $this->getAllRegimePrix();
         }
     }
 }
