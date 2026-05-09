@@ -13,3 +13,6 @@ $routes->post('/inscription/etape-2', 'UserController::storeStep2');
 $routes->get('/formulaire', 'AuthController::form');
 $routes->post('/login', 'AuthController::login');   
 $routes->get('/index', 'RegimeController::index');
+
+// routes dashboard
+$routes->get('/bo/dashboard/general', 'BackOfficeController::index');
