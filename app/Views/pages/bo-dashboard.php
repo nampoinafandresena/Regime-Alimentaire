@@ -1,17 +1,3 @@
-<div class="app-layout">
-  <div class="bo-sidebar">
-    <div class="bo-logo">Nutri<span>Path</span> Admin</div>
-    <div class="bo-section">Général</div>
-    <a href="bo-dashboard.html" class="bo-item active">📊 Tableau de bord</a>
-    <div class="bo-section">Gestion</div>
-    <a href="bo-crud.html" class="bo-item">🥗 Régimes</a>
-    <a href="bo-sports.html">🏃 Sports</a>
-    <a href="bo-codes.html" class="bo-item">💳 Codes wallet</a>
-    <div class="bo-item">👥 Utilisateurs</div>
-    <div class="bo-section">Paramètres</div>
-    <div class="bo-item">⚙️ Paramètres</div>
-    <div class="bo-item">🔒 Se déconnecter</div>
-  </div>
   <div class="bo-content">
     <div class="page-header"><h2>Tableau de bord Admin</h2><p>Vue d'ensemble au 6 mai 2026</p></div>
     <div class="kpi-row">
@@ -56,4 +42,3 @@
       </table>
     </div>
   </div>
-</div>
