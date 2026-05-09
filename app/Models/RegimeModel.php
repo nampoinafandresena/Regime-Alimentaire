@@ -14,4 +14,8 @@ class RegimeModel extends Model{
         return $this->findAll();
     }
     
+    public function countActiveRegimes(){
+        return $this->countAllResults();
+    }
+
 }

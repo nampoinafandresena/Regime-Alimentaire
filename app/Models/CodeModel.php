@@ -17,4 +17,8 @@ class CodeModel extends Model{
     public function CodeValide($code){
         return $this->where('code', $code)->where('est_valide', true)->first();
     }
+
+    public function countValidatedCodes(){
+        return $this->where('est_valide', 1)->countAllResults();
+    }
 }

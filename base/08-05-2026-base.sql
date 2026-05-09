@@ -90,3 +90,20 @@ CREATE TABLE options_gold (
     prix DECIMAL(10,2),
     description VARCHAR(255)
 );
+
+-- avoir la liste des utilisateurs (ID	Nom complet	Email	Genre	Taille/Poids	IMC	Objectif	Wallet (€)	Statut	Actions)
+select 
+    nom, 
+    email, 
+    genre, 
+    concat(taille_cm, ' cm / ', poids_kg, ' kg') as taille_poids, 
+    round(poids_kg / (taille_cm/100 * taille_cm/100), 2) as imc, 
+    o.libelle as objectif, solde_portefeuille, 
+    case when est_gold = 1 then 'Gold' else 'Standard' end as statut 
+from utilisateurs u 
+    join donnees_sante ds on u.id = ds.id_utilisateur 
+    join utilisateurs_objectifs uo on u.id = uo.id_utilisateur 
+    join objectifs o on uo.id_objectif = o.id;
+
+
+    
