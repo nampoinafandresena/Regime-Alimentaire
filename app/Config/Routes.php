@@ -17,3 +17,4 @@ $routes->get('/index', 'RegimeController::index');
 // routes dashboard
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
 $routes->get('/bo/dashboard/regime', 'BackOfficeController::crud_regime');
+$routes->get('/bo/dashboard/sport', 'BackOfficeController::crud_sport');

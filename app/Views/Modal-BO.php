@@ -35,7 +35,7 @@
         <a href="/bo/dashboard/general" class="bo-item">📊 Tableau de bord</a>
         <div class="bo-section">Gestion</div>
         <a href="/bo/dashboard/regime" class="bo-item">🥗 Régimes</a>
-        <a href="bo-sports.html" class="bo-item">🏃 Sports</a>
+        <a href="/bo/dashboard/sport" class="bo-item">🏃 Sports</a>
         <a href="bo-codes.html" class="bo-item">💳 Codes wallet</a>
         <div class="bo-item">👥 Utilisateurs</div>
         <div class="bo-section">Paramètres</div>

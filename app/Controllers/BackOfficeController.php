@@ -11,4 +11,8 @@ class BackOfficeController extends BaseController
     public function crud_regime(): string{
         return view('Modal-BO', ['page' => 'pages/bo-crud-regime']);
     }
+
+    public function crud_sport(): string{
+        return view('Modal-BO', ['page' => 'pages/bo-crud-sport']);
+    }
 }
