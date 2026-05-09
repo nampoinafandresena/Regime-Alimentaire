@@ -7,7 +7,7 @@
     <h1>Votre chemin vers un <em>poids idéal</em>, scientifiquement guidé.</h1>
     <p>Calculez votre IMC, choisissez votre objectif et recevez un programme nutritionnel sur mesure.</p>
     <div class="hero-btns">
-      <a href="inscription1.html" class="btn-primary">Commencer gratuitement</a>
+      <a href="/inscription/etape-1" class="btn-primary">S'inscrire</a>
       <a href="/formulaire" class="btn-outline">Se connecter</a>
     </div>
   </div>

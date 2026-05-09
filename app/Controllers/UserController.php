@@ -11,7 +11,7 @@ class UserController extends BaseController
 {
 	public function inscriptionStep1()
 	{
-		return view('inscription1');
+		return view('Modal', ['page' => 'inscription1']);
 	}
 
 	public function storeStep1()
@@ -44,8 +44,9 @@ class UserController extends BaseController
 	{
 		$objectifs = (new ObjectifModel())->findAll();
 
-		return view('inscription2', [
+		return view('Modal', [
 			'objectifs' => $objectifs,
+			'page' => 'inscription2',
 		]);
 	}
 
@@ -106,7 +107,7 @@ class UserController extends BaseController
 
 		$session->remove('inscription_step1');
 
-		return redirect()->to('/login');
+		return redirect()->to('/formulaire');
 	}
 }
 
