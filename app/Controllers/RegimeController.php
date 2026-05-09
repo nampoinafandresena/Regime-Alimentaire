@@ -6,6 +6,6 @@ class RegimeController extends BaseController
 {
     public function index(): string
     {
-        return view('pages/Regime');
+        return view('Modal', ['page' => 'pages/Regime']);
     }
 }
