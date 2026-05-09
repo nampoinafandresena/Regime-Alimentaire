@@ -3,7 +3,7 @@
     use App\Models\UserModel;
     class AuthController extends BaseController {
     public function form() {
-        return view('auth/Login');
+        return view('Modal', ['page' => 'auth/Login']);
     }
     public function login() {
         $model = new UserModel();
@@ -11,8 +11,9 @@
         $password = $this->request->getPost('password');
         $user = $model->getUserByEmail($email);
         if (!$user || !password_verify($password, password_hash($user['mot_de_passe'], PASSWORD_DEFAULT))) {
-            return view('auth/Login', [
-            'erreur' => 'Email ou mot de passe incorrect'
+            return view('Modal', [
+            'erreur' => 'Email ou mot de passe incorrect',
+            'page' => 'auth/Login'
             ]);
         }
         // Stocker uniquement les données non sensibles en session

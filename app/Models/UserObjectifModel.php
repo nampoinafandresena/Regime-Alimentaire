@@ -8,7 +8,7 @@ class UserObjectifModel extends Model{
     protected $table = 'utilisateurs_objectifs';
     protected $primaryKey = 'id';
     protected $allowedFields = ['id_utilisateur', 'id_objectif'];
-    protected $userTimestamps = true;
+    protected $useTimestamps = false;
 
     public function getAllUserObjectif(){
         return $this->findAll();
