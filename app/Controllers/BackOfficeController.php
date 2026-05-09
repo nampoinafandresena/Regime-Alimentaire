@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use App\Models\RegimeModel;
 use App\Models\CodeModel;
+use App\Models\UserObjectifModel;
+use App\Models\ObjectifModel;
 
 class BackOfficeController extends BaseController
 {
@@ -12,17 +14,26 @@ class BackOfficeController extends BaseController
         $dataUser = $userModel->countUser();
         $dataGold = $userModel->countGoldUsers();
         $dataUserInfos = $userModel->getInfosGeneralesUsers(5, null, null);
+        
+        // Calculer les statistiques des objectifs pour TOUS les utilisateurs
+        $ObjectifModel = new ObjectifModel();
+        $objectifsStatsResult = $ObjectifModel->getObjectifsStatistics();
+        $objectifsStats = $objectifsStatsResult['data'] ?? [];
+        $objectifsTotal = $objectifsStatsResult['total'] ?? 0;
+        
         $regimeModel = new RegimeModel();
         $dataRegimes = $regimeModel->countActiveRegimes();
         $codeModel = new CodeModel();
         $dataCodes = $codeModel->countValidatedCodes();
+        
         return view('Modal-BO', [
             'page' => 'pages/bo-dashboard', 
             'dataUser' => $dataUser,
             'dataGold' => $dataGold,
             'dataUserInfos' => $dataUserInfos,
             'dataRegimes' => $dataRegimes,
-            'dataCodes' => $dataCodes
+            'dataCodes' => $dataCodes,
+            'objectifsStats' => $objectifsStats 
         ]);
     }
 

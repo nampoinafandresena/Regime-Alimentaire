@@ -66,7 +66,6 @@ class UserModel extends Model{
             )
         ";
         
-        // Ajouter la recherche si présente
         if($search) {
             $sql .= " AND (utilisateurs.nom LIKE '%" . $this->db->escapeLikeString($search) . "%' 
                     OR utilisateurs.email LIKE '%" . $this->db->escapeLikeString($search) . "%')";

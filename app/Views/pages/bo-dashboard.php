@@ -1,4 +1,4 @@
-  <div class="bo-content">
+<div class="bo-content">
     <div class="page-header"><h2>Tableau de bord Admin</h2><p>Vue d'ensemble au <?= date('d/m/Y'); ?></p></div>
     <div class="kpi-row">
       <div class="kpi-card"><div class="kpi-label">Utilisateurs total</div><div class="kpi-value"><?= $dataUser; ?></div><div class="kpi-trend">↑ +12 ce mois</div></div>
@@ -7,7 +7,7 @@
       <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value"><?= $dataCodes; ?></div><div class="kpi-trend">↑ +8 ce mois</div></div>
     </div>
     <div class="chart-row">
-      <div class="chart-card">
+      <!-- <div class="chart-card">
         <h3>Inscriptions par semaine</h3>
         <div class="mock-chart">
           <div class="mock-bar b1"></div><div class="mock-bar b2"></div><div class="mock-bar b3"></div>
@@ -17,15 +17,67 @@
         <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--slate-400); margin-top:6px;">
           <span>Sem. 1</span><span>Sem. 2</span><span>Sem. 3</span><span>Sem. 4</span><span>Sem. 5</span><span>Sem. 6</span><span>Sem. 7</span><span>Sem. 8</span>
         </div>
-      </div>
+      </div> -->
+
       <div class="chart-card">
+        <?php 
+            $objectifColors = [
+            'Réduire son poids' => '#3aaa6b',
+            'Augmenter son poids' => '#e6a817', 
+            'Atteindre IMC idéal' => '#7d3bf6',
+            'default' => '#3d5ce7'
+          ];
+        ?>
+
         <h3>Objectifs populaires</h3>
-        <div class="pie-mock"></div>
-        <div class="pie-legend">
-          <div class="pie-leg-item"><div class="pie-dot" style="background: var(--green-400)"></div>Réduire poids (45%)</div>
-          <div class="pie-leg-item"><div class="pie-dot" style="background: var(--gold-400)"></div>IMC idéal (27%)</div>
-          <div class="pie-leg-item"><div class="pie-dot" style="background: var(--blue-400)"></div>Augmenter poids (28%)</div>
-        </div>
+    
+        <?php if(empty($objectifsStats)): ?>
+            <div style="text-align: center; padding: 40px; color: var(--slate-400);">
+                Aucune donnée d'objectif disponible
+            </div>
+        <?php else: ?>
+
+        <canvas id="objectifsPieChart" height="180" style="max-height: 180px;"></canvas>
+
+        <?php
+            foreach($objectifsStats as &$stat) {
+                $stat['color'] = $objectifColors[$stat['libelle']] ?? $objectifColors['default'];
+            }
+            unset($stat);
+        ?>
+
+        
+          <div class="objectifs-table" style="margin-top: 20px;">
+              <table style="width: 100%; font-size: 13px;">
+                  <thead>
+                      <tr>
+                          <th>Objectif</th>
+                          <th>Nombre</th>
+                          <th>Pourcentage</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <?php foreach($objectifsStats as $stat): ?>
+                          <tr>
+                              <td>
+                                  <div class="pie-dot" style="background: <?= $stat['color'] ?>; display: inline-block; margin-right: 8px;"></div>
+                                  <?= $stat['libelle'] ?>
+                              </td>
+                              <td><?= $stat['total'] ?></td>
+                              <td>
+                                  <div style="display: flex; align-items: center; gap: 8px;">
+                                      <div style="flex: 1; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                                          <div style="width: <?= $stat['pourcentage'] ?>%; height: 100%; background: <?= $stat['color'] ?>; border-radius: 3px;"></div>
+                                      </div>
+                                      <span><?= $stat['pourcentage'] ?>%</span>
+                                  </div>
+                              </td>
+                          </tr>
+                      <?php endforeach; ?>
+                  </tbody>
+              </table>
+          </div>
+          <?php endif; ?>
       </div>
     </div>
     <div class="bo-table">
@@ -46,3 +98,83 @@
       </table>
     </div>
   </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Graphique en camembert des objectifs
+const objectifsData = <?= json_encode($objectifsStats) ?>;
+
+if(document.getElementById('objectifsPieChart') && objectifsData.length > 0) {
+    const ctx = document.getElementById('objectifsPieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: objectifsData.map(item => item.libelle),
+            datasets: [{
+                data: objectifsData.map(item => item.total),
+                backgroundColor: objectifsData.map(item => item.color),
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 10 } }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            const total = objectifsData.reduce((sum, item) => sum + item.total, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${value} utilisateurs (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+
+<style>
+.pie-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.pie-leg-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--slate-600);
+}
+
+.pie-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.objectifs-table table {
+    border-collapse: collapse;
+}
+
+.objectifs-table th,
+.objectifs-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.objectifs-table th {
+    font-weight: 600;
+    color: var(--slate-600);
+}
+</style>
