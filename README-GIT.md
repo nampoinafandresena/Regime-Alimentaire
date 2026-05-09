@@ -67,3 +67,34 @@ git remote prune origin
 
 Rappel
 ![alt text](image.png)
+
+
+# Comment abandonner les modifications et forcer le changement de branche
+### Étape 1 : Annuler les modifications des fichiers suivis
+```bash
+# Voir ce qui a été modifié
+git status
+
+# Pour annuler TOUS les fichiers modifiés suivis
+git restore .
+
+# Ou fichier par fichier
+git restore writable/logs/log-2026-05-09.log
+```
+
+### Étape 2 : Supprimer les fichiers non suivis
+```bash
+# Voir quels fichiers non suivis vont être supprimés (simulation)
+git clean -fdn
+
+# Si ça te convient, supprimer vraiment
+git clean -fd
+
+# Pour supprimer aussi les fichiers ignorés (.gitignore)
+git clean -fdx  # Attention plus agressif !
+```
+
+### Étape 3 : Changer de branche
+```bash
+git checkout ta-branche
+```
