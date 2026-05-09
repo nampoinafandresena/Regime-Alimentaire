@@ -6,6 +6,6 @@ class BackOfficeController extends BaseController
 {
     public function index(): string
     {
-        return view('bo-dashboard', ['page' => 'pages/Regime']);
+        return view('Modal-BO', ['page' => 'pages/bo-dashboard']);
     }
 }
