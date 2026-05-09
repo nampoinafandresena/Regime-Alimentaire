@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-class Home extends BaseController
+class RegimeController extends BaseController
 {
     public function index(): string
     {
-        return view('Home');
+        return view('pages/Regime');
     }
 }
