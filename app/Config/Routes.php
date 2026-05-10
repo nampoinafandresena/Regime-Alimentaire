@@ -14,8 +14,13 @@ $routes->get('/formulaire', 'AuthController::form');
 $routes->post('/login', 'AuthController::login');   
 $routes->get('/index', 'RegimeController::index');
 $routes->match(['get', 'post'], '/regimes', 'RegimeController::index');
+$routes->get('/profil', 'UserController::profil');
+$routes->post('/profil/update', 'UserController::updateProfil');
+$routes->post('/profil/sante', 'UserController::updateSante');
+$routes->post('/profil/objectifs', 'UserController::updateObjectifs');
+$routes->post('/profil/redeem', 'UserController::UtilisationCode');
+$routes->post('/profil/gold', 'UserController::acheterGold');
 
-// routes dashboard back-office
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
 
 $routes->get('/bo/dashboard/regime', 'BackOfficeController::crud_regime');
@@ -31,10 +36,12 @@ $routes->post('/bo/dashboard/sport/create', 'BOSportController::createSportAjax'
 $routes->put('/bo/dashboard/sport/update/(:num)', 'BOSportController::updateSportAjax/$1');
 
 $routes->get('/bo/dashboard/code', 'BOCodeController::index');
-$routes->post('/bo/dashboard/code/delete/(:num)', 'BOCodeController::deleteCodeAjax/$1');
+$routes->delete('/bo/dashboard/code/delete/(:num)', 'BOCodeController::deleteCodeAjax/$1');
 $routes->get('/bo/dashboard/code/get/(:num)', 'BOCodeController::getCodeAjax/$1');
 $routes->post('/bo/dashboard/code/create', 'BOCodeController::createCodeAjax');
 $routes->put('/bo/dashboard/code/update/(:num)', 'BOCodeController::updateCodeAjax/$1');
+$routes->post('/bo/dashboard/code/valider/(:num)', 'BOCodeController::validerCodeAjax/$1');
+$routes->post('/bo/dashboard/code/invalider/(:num)', 'BOCodeController::invaliderCodeAjax/$1');
 
 $routes->get('/bo/dashboard/user', 'BackOfficeController::crud_user');
 $routes->post('/bo/dashboard/user/delete/(:num)', 'BackOfficeController::deleteUserAjax/$1');

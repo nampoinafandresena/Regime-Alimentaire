@@ -22,6 +22,11 @@ class UserObjectifModel extends Model{
         return $this->where('id_utilisateur', $userId)->findAll();
     }
 
+    public function getObjectifIdsByUserId($userId){
+        $rows = $this->select('id_objectif')->where('id_utilisateur', $userId)->findAll();
+        return array_map(static fn ($row) => (int) $row['id_objectif'], $rows);
+    }
+
     public function insertObjectifForUser($userId, $objectifId){
         $currentCount = $this->where('id_utilisateur', $userId)->countAllResults();
         if($currentCount >= 3){
@@ -31,5 +36,9 @@ class UserObjectifModel extends Model{
             'id_utilisateur' => $userId,
             'id_objectif' => $objectifId
         ]);
+    }
+
+    public function updateUserObjectif($id, $data){
+        return $this->update($id, $data);
     }
 }

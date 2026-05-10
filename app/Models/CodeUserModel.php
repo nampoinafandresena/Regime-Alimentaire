@@ -8,7 +8,7 @@ class CodeUserModel extends Model{
     protected $table = 'code_users';
     protected $primaryKey = 'id';
     protected $allowedFields = ['id_utilisateur', 'id_code', 'date_utilisation_code'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     public function getCodesByUserId($userId){
         return $this->where('id_utilisateur', $userId)->orderBy('date_utilisation_code', 'DESC')->findAll();

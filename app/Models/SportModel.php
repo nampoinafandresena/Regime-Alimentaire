@@ -8,7 +8,7 @@ class SportModel extends Model{
     protected $table = 'sport';
     protected $primaryKey = 'id';
     protected $allowedFields = ['nom', 'description', 'id_categorie', 'id_intensite', 'variation_poids_par_heure'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     public function getAllSports(){
         return $this->findAll();

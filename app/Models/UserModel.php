@@ -26,11 +26,14 @@ class UserModel extends Model{
     }
 
     public function createUser($data){
-        $data['mot_de_passe'] = password_hash($data['mot_de_passe'], PASSWORD_DEFAULT);
+
         return $this->insert($data);
     }
 
-    // compter le nombre de users sans l admin
+    public function updateUser($id, $data){
+        return $this->update($id, $data);
+    }
+    
     public function countUser(){
         return $this->where('role !=', 'admin')->countAllResults();
     }

@@ -8,7 +8,7 @@ class ObjectifModel extends Model{
     protected $table = 'objectifs';
     protected $primaryKey = 'id';
     protected $allowedFields = ['libelle'];
-    protected $userTimestamps = true;
+    protected $useTimestamps = true;
 
     public function getAllObjectif(){
         return $this->findAll();

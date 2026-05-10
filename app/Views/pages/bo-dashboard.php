@@ -7,17 +7,18 @@
       <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value"><?= $dataCodes; ?></div><div class="kpi-trend">↑ +8 ce mois</div></div>
     </div>
     <div class="chart-row">
-      <!-- <div class="chart-card">
-        <h3>Inscriptions par semaine</h3>
-        <div class="mock-chart">
-          <div class="mock-bar b1"></div><div class="mock-bar b2"></div><div class="mock-bar b3"></div>
-          <div class="mock-bar b4"></div><div class="mock-bar b5"></div><div class="mock-bar b6"></div>
-          <div class="mock-bar b7"></div><div class="mock-bar b8"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--slate-400); margin-top:6px;">
-          <span>Sem. 1</span><span>Sem. 2</span><span>Sem. 3</span><span>Sem. 4</span><span>Sem. 5</span><span>Sem. 6</span><span>Sem. 7</span><span>Sem. 8</span>
-        </div>
-      </div> -->
+      <div class="chart-card chart-card--full">
+        <h3>Popularité des régimes</h3>
+        <?php if(empty($dataRegimesInfos)): ?>
+            <div style="text-align: center; padding: 40px; color: var(--slate-400);">
+                Aucun régime à afficher
+            </div>
+        <?php else: ?>
+            <div class="chart-card__canvas-wrapper">
+                <canvas id="populariteRegimesChart"></canvas>
+            </div>
+        <?php endif; ?>
+      </div>
 
       <div class="chart-card">
         <?php 
@@ -78,7 +79,7 @@
               </table>
           </div>
           <?php endif; ?>
-      </div>
+        </div>
     </div>
     <div class="bo-table">
       <div class="bo-table-header"><h3>Derniers utilisateurs inscrits</h3><a href="/bo/dashboard/user"><button class="btn-add-bo">Voir tous</button></a></div>
@@ -102,6 +103,58 @@
 <script>
 // Graphique en camembert des objectifs
 const objectifsData = <?= json_encode($objectifsStats) ?>;
+const regimesData = <?= json_encode($dataRegimesInfos) ?>;
+
+if(document.getElementById('populariteRegimesChart') && regimesData.length > 0) {
+    const regimesCtx = document.getElementById('populariteRegimesChart').getContext('2d');
+    const regimeValues = regimesData.map(regime => {
+        const price = Number(regime.prix);
+        const duration = Number(regime.duree_semaines);
+        return Number.isFinite(price) ? price : (Number.isFinite(duration) ? duration : 1);
+    });
+
+    new Chart(regimesCtx, {
+        type: 'bar',
+        data: {
+            labels: regimesData.map(regime => regime.nom),
+            datasets: [{
+                label: 'Popularité estimée',
+                data: regimeValues,
+                backgroundColor: regimesData.map((_, index) => {
+                    const colors = ['#3b82f6', '#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0ea5e9', '#f97316'];
+                    return colors[index % colors.length];
+                }),
+                borderRadius: 8,
+                barPercentage: 0.7,
+                categoryPercentage: 0.8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: { autoSkip: false, maxRotation: 45, minRotation: 0, font: { size: 11 } }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#e2e8f0' }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y || 0;
+                            return `Valeur : ${value}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 
 if(document.getElementById('objectifsPieChart') && objectifsData.length > 0) {
     const ctx = document.getElementById('objectifsPieChart').getContext('2d');

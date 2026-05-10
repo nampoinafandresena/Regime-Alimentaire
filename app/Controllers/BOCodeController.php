@@ -92,46 +92,6 @@ class BOCodeController extends BaseController
         ]);
     }
     
-    public function generateCodesAjax()
-    {
-        if ($this->request->isAJAX()) {
-            $codeModel = new CodeModel();
-            $data = $this->request->getJSON(true);
-            
-            $nombre = (int)($data['nombre'] ?? 10);
-            $montant = (float)($data['montant'] ?? 10000);
-            $dateExpiration = $data['date_expiration'] ?? null;
-            
-            if ($nombre <= 0 || $nombre > 100) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Le nombre doit être entre 1 et 100'
-                ]);
-            }
-            
-            try {
-                $result = $codeModel->generateCodes($nombre, $montant, $dateExpiration);
-                
-                if ($result) {
-                    return $this->response->setJSON([
-                        'success' => true,
-                        'message' => "$nombre codes générés avec succès"
-                    ]);
-                }
-            } catch (\Exception $e) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Erreur: ' . $e->getMessage()
-                ]);
-            }
-        }
-        
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Requête invalide'
-        ]);
-    }
-    
     public function updateCodeAjax($id)
     {
         if ($this->request->isAJAX()) {
