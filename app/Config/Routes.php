@@ -20,6 +20,7 @@ $routes->post('/profil/sante', 'UserController::updateSante');
 $routes->post('/profil/objectifs', 'UserController::updateObjectifs');
 $routes->post('/profil/redeem', 'UserController::UtilisationCode');
 $routes->post('/profil/gold', 'UserController::acheterGold');
+$routes->get('/profil/export-pdf', 'UserExportController::exportPlanPDF');
 
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
 

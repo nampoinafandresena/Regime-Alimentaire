@@ -19,7 +19,7 @@
   <a href="/"><i class="bi bi-house-fill"></i> Landing</a>
   <a href="/formulaire"><i class="bi bi-lock-fill"></i> Se connecter</a>
   <a href="/bo/dashboard/general" class="active"><i class="bi bi-pencil-fill"></i> BO Dashboard</a>
-  <a href="/bo/dashboard/regime"><i class="fas fa-utensils"></i> BO Régime CRUD</a>
+  <a href="/bo/dashboard/regime"><i class="bi bi-cup-straw"></i> BO Régime CRUD</a>
   <a href="/bo/dashboard/sport"><i class="bi bi-bicycle"></i> BO Sports CRUD</a>
   <a href="/bo/dashboard/code"><i class="bi bi-credit-card"></i> BO Codes</a>
   <a href="/bo/dashboard/user"><i class="bi bi-people"></i> BO Utilisateurs</a>
@@ -36,7 +36,7 @@
         
         <div class="bo-section">Gestion</div>
         <a href="/bo/dashboard/regime" class="bo-item">
-            <i class="fas fa-utensils" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
+            <i class="bi bi-cup-straw" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
         </a>
         <a href="/bo/dashboard/sport" class="bo-item">
             <i class="bi bi-bicycle" style="font-size: 1.2rem; margin-right: 10px;"></i> Sports

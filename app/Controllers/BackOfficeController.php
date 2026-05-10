@@ -125,22 +125,31 @@ class BackOfficeController extends BaseController
     
     public function deleteUser($id)
     {
-        $userModel = new UserModel();
-        $userModel->delete($id);
-        
-        return redirect()->to('/backoffice')->with('success', 'Utilisateur supprimé');
+        $result = $this->deleteUserWithRelations((int) $id);
+
+        if (! $result['success']) {
+            return redirect()->to('/backoffice')->with('error', $result['message']);
+        }
+
+        return redirect()->to('/backoffice')->with('success', $result['message']);
     }
 
     public function deleteUserAjax($id)
     {
         if ($this->request->isAJAX()) {
-            $userModel = new UserModel();
-            
             try {
-                $userModel->delete($id);
+                $result = $this->deleteUserWithRelations((int) $id);
+
+                if (! $result['success']) {
+                    return $this->response->setJSON([
+                        'success' => false,
+                        'message' => $result['message']
+                    ]);
+                }
+
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => 'Utilisateur supprimé avec succès'
+                    'message' => $result['message']
                 ]);
             } catch (\Exception $e) {
                 return $this->response->setJSON([
@@ -154,5 +163,40 @@ class BackOfficeController extends BaseController
             'success' => false,
             'message' => 'Requête invalide'
         ]);
+    }
+
+    private function deleteUserWithRelations(int $id): array
+    {
+        $db = \Config\Database::connect();
+
+        $userExists = $db->table('utilisateurs')->where('id', $id)->countAllResults() > 0;
+        if (! $userExists) {
+            return [
+                'success' => false,
+                'message' => 'Utilisateur introuvable'
+            ];
+        }
+
+        $db->transStart();
+
+        $db->table('code_users')->where('id_utilisateur', $id)->delete();
+        $db->table('achats_gold')->where('id_utilisateur', $id)->delete();
+        $db->table('utilisateurs_objectifs')->where('id_utilisateur', $id)->delete();
+        $db->table('donnees_sante')->where('id_utilisateur', $id)->delete();
+        $db->table('utilisateurs')->where('id', $id)->delete();
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return [
+                'success' => false,
+                'message' => 'La suppression a échoué à cause des dépendances en base.'
+            ];
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Utilisateur supprimé avec succès'
+        ];
     }
 }
