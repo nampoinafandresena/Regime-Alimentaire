@@ -80,17 +80,19 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="action-btns">
-                                    <a href="<?= base_url('backoffice/viewUser/' . $user['id']) ?>" class="btn-view">
+                                    <!-- <a href="<?= base_url('backoffice/viewUser/' . $user['id']) ?>" class="btn-view">
                                         <i class="bi bi-eye"></i> Voir
                                     </a>
                                     <a href="<?= base_url('backoffice/editUserForm/' . $user['id']) ?>" class="btn-edit">
                                         <i class="bi bi-pencil"></i> Edit
-                                    </a>
-                                    <a href="<?= base_url('backoffice/deleteUser/' . $user['id']) ?>" 
-                                       class="btn-del" 
-                                       onclick="return confirm('Supprimer cet utilisateur définitivement ?')">
+                                    </a> -->
+                                    <button type="button" 
+                                            class="btn-del" 
+                                            data-id="<?= $user['id'] ?>" 
+                                            data-name="<?= esc($user['nom']) ?>"
+                                            onclick="deleteUser(this)">
                                         <i class="bi bi-trash"></i> Del
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -154,4 +156,107 @@ if(document.getElementById('imcChart')) {
         }
     });
 }
+
+// Fonction de suppression dynamique
+function deleteUser(button) {
+    const userId = button.getAttribute('data-id');
+    const userName = button.getAttribute('data-name');
+    
+    if (confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur "${userName}" définitivement ?`)) {
+        // Désactiver le bouton pendant la requête
+        button.disabled = true;
+        button.innerHTML = '<i class="bi bi-hourglass-split"></i> Suppression...';
+        
+        // Obtenir le token CSRF
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                         document.querySelector('input[name="csrf_test_name"]')?.value || '';
+        
+        fetch(`<?= base_url('bo/dashboard/user/delete') ?>/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Supprimer la ligne du tableau
+                const row = button.closest('tr');
+                row.remove();
+                
+                // Afficher un message de succès
+                showNotification(data.message, 'success');
+                
+                // Mettre à jour les statistiques si nécessaire
+                updateStats();
+            } else {
+                showNotification(data.message, 'error');
+                // Réactiver le bouton
+                button.disabled = false;
+                button.innerHTML = '<i class="bi bi-trash"></i> Del';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+            // Réactiver le bouton
+            button.disabled = false;
+            button.innerHTML = '<i class="bi bi-trash"></i> Del';
+        });
+    }
+}
+
+function showNotification(message, type) {
+    // Créer une notification temporaire
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    if (type === 'success') {
+        notification.style.backgroundColor = '#10b981';
+    } else {
+        notification.style.backgroundColor = '#ef4444';
+    }
+    
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Supprimer après 3 secondes
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+function updateStats() {
+    // Recharger la page pour mettre à jour les statistiques
+    // Ou implémenter une mise à jour AJAX des KPIs si nécessaire
+    location.reload();
+}
+
+// Styles pour les notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
 </script>

@@ -20,3 +20,8 @@ $routes->get('/bo/dashboard/regime', 'BackOfficeController::crud_regime');
 $routes->get('/bo/dashboard/sport', 'BackOfficeController::crud_sport');
 $routes->get('/bo/dashboard/code', 'BackOfficeController::crud_code');
 $routes->get('/bo/dashboard/user', 'BackOfficeController::crud_user');
+$routes->post('/bo/dashboard/user/delete/(:num)', 'BackOfficeController::deleteUserAjax/$1');
+$routes->post('/bo/dashboard/regime/delete/(:num)', 'BackOfficeController::deleteRegimeAjax/$1');
+$routes->get('/bo/dashboard/regime/get/(:num)', 'BackOfficeController::getRegimeAjax/$1');
+$routes->post('/bo/dashboard/regime/create', 'BackOfficeController::createRegimeAjax');
+$routes->put('/bo/dashboard/regime/update/(:num)', 'BackOfficeController::updateRegimeAjax/$1');
