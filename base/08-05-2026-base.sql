@@ -61,8 +61,6 @@ CREATE TABLE activites_sportives (
     variation_poids_par_heure DECIMAL(5, 2) 
 );
 
-drop table code_users;
-drop table codes_portefeuille;
 CREATE TABLE codes_portefeuille (
     id INT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(20) UNIQUE,
