@@ -8,7 +8,7 @@ class RegimeModel extends Model{
     protected $table = 'regimes';
     protected $primaryKey = 'id';
     protected $allowedFields = ['nom', 'description', 'pourcentage_viande', 'pourcentage_poisson', 'pourcentage_volaille'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     public function getAllRegimes(){
         return $this->findAll();

@@ -23,11 +23,11 @@ $routes->post('/profil/gold', 'UserController::acheterGold');
 
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
 
-$routes->get('/bo/dashboard/regime', 'BackOfficeController::crud_regime');
-$routes->post('/bo/dashboard/regime/delete/(:num)', 'BackOfficeController::deleteRegimeAjax/$1');
-$routes->get('/bo/dashboard/regime/get/(:num)', 'BackOfficeController::getRegimeAjax/$1');
-$routes->post('/bo/dashboard/regime/create', 'BackOfficeController::createRegimeAjax');
-$routes->put('/bo/dashboard/regime/update/(:num)', 'BackOfficeController::updateRegimeAjax/$1');
+$routes->get('/bo/dashboard/regime', 'BORegimeController::crud_regime');
+$routes->post('/bo/dashboard/regime/delete/(:num)', 'BORegimeController::deleteRegimeAjax/$1');
+$routes->get('/bo/dashboard/regime/get/(:num)', 'BORegimeController::getRegimeAjax/$1');
+$routes->post('/bo/dashboard/regime/create', 'BORegimeController::createRegimeAjax');
+$routes->put('/bo/dashboard/regime/update/(:num)', 'BORegimeController::updateRegimeAjax/$1');
 
 $routes->get('/bo/dashboard/sport', 'BOSportController::index');
 $routes->post('/bo/dashboard/sport/delete/(:num)', 'BOSportController::deleteSportAjax/$1');
