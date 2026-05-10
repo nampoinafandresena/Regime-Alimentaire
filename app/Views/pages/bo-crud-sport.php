@@ -1,270 +1,321 @@
-  <div class="bo-content">
+<div class="bo-content">
     <div class="page-header">
-      <h2>Gestion des activités sportives</h2>
-      <p>Créer, modifier ou supprimer les programmes sportifs</p>
+        <h2>Gestion des activités sportives</h2>
+        <p>Créer, modifier ou supprimer les programmes sportifs</p>
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr 420px; gap: 24px;">
-      <div>
-        <div class="bo-table">
-          <div class="bo-table-header">
-            <h3>Liste des activités (8)</h3>
-            <button class="btn-add-bo" onclick="resetForm()">+ Nouvelle activité</button>
-          </div>
-          <table id="sportsTable">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Catégorie</th>
-                <th>Calories/30min</th>
-                <th>Fréquence</th>
-                <th>Intensité</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="sportsTableBody">
-              <tr data-id="1">
-                <td><strong>Course à pied</strong></td>
-                <td><span class="badge-category badge-cardio">🏃 Cardio</span></td>
-                <td>450 cal</td>
-                <td>3-5x/semaine</td>
-                <td>Élevée</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(1)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(1)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="2">
-                <td><strong>Natation</strong></td>
-                <td><span class="badge-category badge-cardio">🏊 Cardio</span></td>
-                <td>350 cal</td>
-                <td>2-3x/semaine</td>
-                <td>Modérée</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(2)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(2)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="3">
-                <td><strong>Musculation</strong></td>
-                <td><span class="badge-category badge-force">💪 Force</span></td>
-                <td>300 cal</td>
-                <td>3-4x/semaine</td>
-                <td>Élevée</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(3)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(3)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="4">
-                <td><strong>Yoga</strong></td>
-                <td><span class="badge-category badge-flexibilite">🧘 Flexibilité</span></td>
-                <td>180 cal</td>
-                <td>2-4x/semaine</td>
-                <td>Faible</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(4)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(4)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="5">
-                <td><strong>Vélo / Cyclisme</strong></td>
-                <td><span class="badge-category badge-plein-air">🌳 Plein air</span></td>
-                <td>400 cal</td>
-                <td>2-3x/semaine</td>
-                <td>Modérée</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(5)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(5)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="6">
-                <td><strong>Marche rapide</strong></td>
-                <td><span class="badge-category badge-douceur">🚶 Douceur</span></td>
-                <td>200 cal</td>
-                <td>5-7x/semaine</td>
-                <td>Faible</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(6)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(6)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="7">
-                <td><strong>Pilates</strong></td>
-                <td><span class="badge-category badge-flexibilite">🤸 Flexibilité</span></td>
-                <td>200 cal</td>
-                <td>2-3x/semaine</td>
-                <td>Faible</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(7)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(7)">🗑️</button></div></td>
-              </tr>
-              <tr data-id="8">
-                <td><strong>CrossFit</strong></td>
-                <td><span class="badge-category badge-force">🏋️ Force</span></td>
-                <td>500 cal</td>
-                <td>3-4x/semaine</td>
-                <td>Élevée</td>
-                <td><div class="action-btns"><button class="btn-edit" onclick="editSport(8)">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(8)">🗑️</button></div></td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Liste des activités -->
+        <div>
+            <div class="bo-table">
+                <div class="bo-table-header">
+                    <h3>Liste des activités (<?= count($sports ?? []) ?>)</h3>
+                    <div style="display: flex; gap: 12px;">
+                        <form method="GET" action="<?= current_url() ?>" style="display: flex; gap: 12px;">
+                            <input type="text" name="search" class="search-input" placeholder="Rechercher..." value="<?= esc($searchTerm ?? '') ?>">
+                            <select name="categorie" class="search-input">
+                                <option value="">Toutes catégories</option>
+                                <?php foreach($categories as $cat): ?>
+                                    <option value="<?= $cat['id'] ?>" <?= ($filtreCategorie ?? '') == $cat['id'] ? 'selected' : '' ?>>
+                                        <?= esc($cat['nom']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <select name="intensite" class="search-input">
+                                <option value="">Toutes intensités</option>
+                                <?php foreach($intensites as $int): ?>
+                                    <option value="<?= $int['id'] ?>" <?= ($filtreIntensite ?? '') == $int['id'] ? 'selected' : '' ?>>
+                                        <?= esc($int['nom']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="submit" class="btn-add-bo" style="background: #3b82f6;">🔍 Filtrer</button>
+                            <?php if(isset($searchTerm) && $searchTerm): ?>
+                                <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">Réinitialiser</a>
+                            <?php endif; ?>
+                        </form>
+                        <button class="btn-add-bo" onclick="resetForm()">+ Nouvelle activité</button>
+                    </div>
+                </div>
+                
+                <table id="sportsTable">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Catégorie</th>
+                            <th>Calories/heure</th>
+                            <th>Intensité</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sportsTableBody">
+                        <?php if(empty($sports)): ?>
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px;">
+                                    Aucune activité sportive trouvée
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach($sports as $sport): ?>
+                                <tr data-id="<?= $sport['id'] ?>">
+                                    <td><strong><?= esc($sport['nom']) ?></strong></td>
+                                    <td>
+                                        <span class="badge-category badge-<?= strtolower(str_replace(' ', '-', $sport['categorie'])) ?>">
+                                            <?= esc($sport['categorie']) ?>
+                                        </span>
+                                    </td>
+                                    <td><?= number_format($sport['variation_poids_par_heure'], 1) ?> cal/h</td>
+                                    <td>
+                                        <span class="badge-intensity intensity-<?= strtolower($sport['intensite']) ?>">
+                                            <?= esc($sport['intensite']) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn-edit" onclick="editSport(<?= $sport['id'] ?>)">✏️ Éditer</button>
+                                            <button class="btn-del" onclick="deleteSport(<?= $sport['id'] ?>, '<?= esc($sport['nom']) ?>')">🗑️ Supprimer</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
 
-      <!-- Formulaire CRUD -->
-      <div class="form-page">
-        <div class="form-card" id="formCard">
-          <h3 id="formTitle">✏️ Ajouter / Modifier un sport</h3>
-          <div class="form-group">
-            <label>Nom de l'activité</label>
-            <input type="text" id="sportName" placeholder="Ex: Course à pied">
-          </div>
-          <div class="form-group">
-            <label>Description</label>
-            <textarea rows="3" id="sportDesc" placeholder="Description détaillée de l'activité..."></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Catégorie</label>
-              <select id="sportCategory">
-                <option value="cardio">🏃 Cardio</option>
-                <option value="force">💪 Force</option>
-                <option value="flexibilite">🧘 Flexibilité</option>
-                <option value="plein-air">🌳 Plein air</option>
-                <option value="douceur">🌸 Douceur</option>
-              </select>
+        <!-- Formulaire CRUD -->
+        <div class="form-page">
+            <div class="form-card" id="formCard">
+                <h3 id="formTitle">➕ Ajouter une activité</h3>
+                <form id="sportForm">
+                    <input type="hidden" id="sportId" name="id">
+                    
+                    <div class="form-group">
+                        <label>Nom de l'activité</label>
+                        <input type="text" id="sportName" name="nom" required placeholder="Ex: Course à pied">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="sportDesc" name="description" rows="3" placeholder="Description détaillée de l'activité..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Catégorie</label>
+                            <select id="sportCategory" name="categorie" required>
+                                <option value="">Sélectionner une catégorie</option>
+                                <?php foreach($categories as $cat): ?>
+                                    <option value="<?= $cat['id'] ?>"><?= esc($cat['nom']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Intensité</label>
+                            <select id="sportIntensity" name="intensite" required>
+                                <option value="">Sélectionner une intensité</option>
+                                <?php foreach($intensites as $int): ?>
+                                    <option value="<?= $int['id'] ?>"><?= esc($int['nom']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Calories brûlées par heure (kg/semaine)</label>
+                        <input type="number" id="sportCalories" name="variation_poids_par_heure" step="0.1" required placeholder="Ex: 0.5">
+                        <small style="color: var(--slate-500);">Variation de poids estimée par heure d'activité (en kg)</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="resetForm()">Annuler</button>
+                        <button type="submit" class="btn-save">Enregistrer</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-              <label>Intensité</label>
-              <select id="sportIntensity">
-                <option value="faible">🍃 Faible</option>
-                <option value="moyen">🌊 Modérée</option>
-                <option value="eleve">⚡ Élevée</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Calories / 30 min</label>
-              <input type="number" id="sportCalories" placeholder="450">
-            </div>
-            <div class="form-group">
-              <label>Fréquence (par semaine)</label>
-              <input type="text" id="sportFrequency" placeholder="3-5x/semaine">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Durée (minutes)</label>
-              <input type="text" id="sportDuration" placeholder="30-45 min">
-            </div>
-            <div class="form-group">
-              <label>Niveau requis</label>
-              <select id="sportLevel">
-                <option>Débutant</option>
-                <option selected>Intermédiaire</option>
-                <option>Avancé</option>
-                <option>Tous niveaux</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button class="btn-cancel" onclick="resetForm()">Annuler</button>
-            <button class="btn-save" onclick="saveSport()">Enregistrer</button>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <script>
-let currentEditId = null;
-
-const sportsData = {
-  1: { name: "Course à pied", desc: "Idéal pour brûler des calories et améliorer votre endurance cardiovasculaire.", category: "cardio", intensity: "eleve", calories: "450", frequency: "3-5x/semaine", duration: "30-45 min", level: "Intermédiaire" },
-  2: { name: "Natation", desc: "Activité complète sans impact sur les articulations, idéale pour tous les âges.", category: "cardio", intensity: "moyen", calories: "350", frequency: "2-3x/semaine", duration: "30-60 min", level: "Tous niveaux" },
-  3: { name: "Musculation", desc: "Renforcez votre masse musculaire, améliorez votre métabolisme de base.", category: "force", intensity: "eleve", calories: "300", frequency: "3-4x/semaine", duration: "45-60 min", level: "Intermédiaire" },
-  4: { name: "Yoga", desc: "Améliorez votre souplesse, réduisez le stress et tonifiez votre corps.", category: "flexibilite", intensity: "faible", calories: "180", frequency: "2-4x/semaine", duration: "45-75 min", level: "Débutant" },
-  5: { name: "Vélo / Cyclisme", desc: "Parfait pour explorer tout en faisant du sport, excellent pour le cardio.", category: "plein-air", intensity: "moyen", calories: "400", frequency: "2-3x/semaine", duration: "45-90 min", level: "Tous niveaux" },
-  6: { name: "Marche rapide", desc: "Accessible à tous, idéal pour débuter une activité physique régulière.", category: "douceur", intensity: "faible", calories: "200", frequency: "5-7x/semaine", duration: "30-60 min", level: "Débutant" },
-  7: { name: "Pilates", desc: "Renforcez vos muscles profonds, améliorez votre posture et votre équilibre.", category: "flexibilite", intensity: "faible", calories: "200", frequency: "2-3x/semaine", duration: "45-60 min", level: "Débutant" },
-  8: { name: "CrossFit", desc: "Entraînement intense mêlant cardio et force pour des résultats rapides.", category: "force", intensity: "eleve", calories: "500", frequency: "3-4x/semaine", duration: "45-60 min", level: "Avancé" }
-};
-
+// ========== CRUD SPORTS ==========
 function editSport(id) {
-  currentEditId = id;
-  const sport = sportsData[id];
-  if (sport) {
-    document.getElementById('sportName').value = sport.name;
-    document.getElementById('sportDesc').value = sport.desc;
-    document.getElementById('sportCategory').value = sport.category;
-    document.getElementById('sportIntensity').value = sport.intensity;
-    document.getElementById('sportCalories').value = sport.calories;
-    document.getElementById('sportFrequency').value = sport.frequency;
-    document.getElementById('sportDuration').value = sport.duration;
-    document.getElementById('sportLevel').value = sport.level;
-    document.getElementById('formTitle').innerHTML = '✏️ Modifier un sport';
-  }
+    fetch(`<?= base_url('bo/dashboard/sport/get') ?>/${id}`, {
+        method: 'GET',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            const sport = data.sport;
+            document.getElementById('sportId').value = sport.id;
+            document.getElementById('sportName').value = sport.nom;
+            document.getElementById('sportDesc').value = sport.description || '';
+            document.getElementById('sportCategory').value = sport.id_categorie;
+            document.getElementById('sportIntensity').value = sport.id_intensite;
+            document.getElementById('sportCalories').value = sport.variation_poids_par_heure;
+            document.getElementById('formTitle').innerHTML = '✏️ Modifier une activité';
+            
+            // Faire défiler vers le formulaire
+            document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            showNotification(data.message || 'Erreur lors du chargement', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        showNotification('Erreur lors du chargement de l\'activité', 'error');
+    });
 }
 
-function deleteSport(id) {
-  if (confirm('Supprimer cette activité sportive ?')) {
-    const row = document.querySelector(`tr[data-id="${id}"]`);
-    if (row) row.remove();
-    delete sportsData[id];
-  }
-}
-
-function saveSport() {
-  const name = document.getElementById('sportName').value;
-  const desc = document.getElementById('sportDesc').value;
-  const category = document.getElementById('sportCategory').value;
-  const intensity = document.getElementById('sportIntensity').value;
-  const calories = document.getElementById('sportCalories').value;
-  const frequency = document.getElementById('sportFrequency').value;
-  const duration = document.getElementById('sportDuration').value;
-  const level = document.getElementById('sportLevel').value;
-
-  if (!name) {
-    alert('Veuillez saisir un nom');
-    return;
-  }
-
-  const categoryLabels = {
-    cardio: '🏃 Cardio', force: '💪 Force', flexibilite: '🧘 Flexibilité',
-    'plein-air': '🌳 Plein air', douceur: '🌸 Douceur'
-  };
-  const intensityLabels = { faible: 'Faible', moyen: 'Modérée', eleve: 'Élevée' };
-  const badgeClasses = {
-    cardio: 'badge-cardio', force: 'badge-force', flexibilite: 'badge-flexibilite',
-    'plein-air': 'badge-plein-air', douceur: 'badge-douceur'
-  };
-
-  if (currentEditId && sportsData[currentEditId]) {
-    // Update existing
-    sportsData[currentEditId] = { name, desc, category, intensity, calories, frequency, duration, level };
-    const row = document.querySelector(`tr[data-id="${currentEditId}"]`);
-    if (row) {
-      row.innerHTML = `
-        <td><strong>${name}</strong></td>
-        <td><span class="badge-category ${badgeClasses[category]}">${categoryLabels[category]}</span></td>
-        <td>${calories} cal</td>
-        <td>${frequency}</td>
-        <td>${intensityLabels[intensity]}</td>
-        <td><div class="action-btns"><button class="btn-edit" onclick="editSport(${currentEditId})">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(${currentEditId})">🗑️</button></div></td>
-      `;
+function deleteSport(id, name) {
+    if(confirm(`Supprimer définitivement l'activité "${name}" ?`)) {
+        fetch(`<?= base_url('bo/dashboard/sport/delete') ?>/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                const row = document.querySelector(`tr[data-id="${id}"]`);
+                if(row) row.remove();
+                showNotification(data.message, 'success');
+                
+                // Mettre à jour le compteur
+                const count = document.querySelectorAll('#sportsTableBody tr:not(.no-data)').length;
+                document.querySelector('.bo-table-header h3').innerHTML = `Liste des activités (${count})`;
+                
+                if(count === 0) {
+                    document.getElementById('sportsTableBody').innerHTML = `
+                        <tr class="no-data">
+                            <td colspan="5" style="text-align: center; padding: 40px;">
+                                Aucune activité sportive trouvée
+                            </td>
+                        </tr>
+                    `;
+                }
+            } else {
+                showNotification(data.message || 'Erreur lors de la suppression', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        });
     }
-  } else {
-    // Create new
-    const newId = Date.now();
-    sportsData[newId] = { name, desc, category, intensity, calories, frequency, duration, level };
-    const tbody = document.getElementById('sportsTableBody');
-    const newRow = document.createElement('tr');
-    newRow.setAttribute('data-id', newId);
-    newRow.innerHTML = `
-      <td><strong>${name}</strong></td>
-      <td><span class="badge-category ${badgeClasses[category]}">${categoryLabels[category]}</span></td>
-      <td>${calories} cal</td>
-      <td>${frequency}</td>
-      <td>${intensityLabels[intensity]}</td>
-      <td><div class="action-btns"><button class="btn-edit" onclick="editSport(${newId})">✏️ Éditer</button><button class="btn-del" onclick="deleteSport(${newId})">🗑️</button></div></td>
-    `;
-    tbody.appendChild(newRow);
-  }
-  resetForm();
 }
 
 function resetForm() {
-  currentEditId = null;
-  document.getElementById('sportName').value = '';
-  document.getElementById('sportDesc').value = '';
-  document.getElementById('sportCategory').value = 'cardio';
-  document.getElementById('sportIntensity').value = 'moyen';
-  document.getElementById('sportCalories').value = '';
-  document.getElementById('sportFrequency').value = '';
-  document.getElementById('sportDuration').value = '';
-  document.getElementById('sportLevel').value = 'Intermédiaire';
-  document.getElementById('formTitle').innerHTML = '➕ Ajouter un sport';
+    document.getElementById('sportForm').reset();
+    document.getElementById('sportId').value = '';
+    document.getElementById('formTitle').innerHTML = '➕ Ajouter une activité';
 }
+
+// ========== SOUMISSION DU FORMULAIRE ==========
+document.getElementById('sportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const sportId = document.getElementById('sportId').value;
+    const isEdit = sportId && sportId !== '';
+    
+    const formData = {
+        nom: document.getElementById('sportName').value.trim(),
+        description: document.getElementById('sportDesc').value.trim(),
+        id_categorie: document.getElementById('sportCategory').value,
+        id_intensite: document.getElementById('sportIntensity').value,
+        variation_poids_par_heure: parseFloat(document.getElementById('sportCalories').value)
+    };
+    
+    if(!formData.nom || !formData.id_categorie || !formData.id_intensite || isNaN(formData.variation_poids_par_heure)) {
+        showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+        return;
+    }
+    
+    const submitBtn = this.querySelector('.btn-save');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enregistrement...';
+    
+    const url = isEdit 
+        ? `<?= base_url('bo/dashboard/sport/update') ?>/${sportId}`
+        : `<?= base_url('bo/dashboard/sport/create') ?>`;
+    
+    fetch(url, {
+        method: isEdit ? 'POST' : 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            showNotification(data.message, 'success');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showNotification(data.message || 'Erreur lors de la sauvegarde', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        showNotification('Erreur lors de la sauvegarde', 'error');
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    });
+});
+
+// ========== NOTIFICATIONS ==========
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.style.cssText = `
+        position: fixed; bottom: 20px; right: 20px; padding: 12px 20px;
+        border-radius: 8px; color: white; font-weight: 500;
+        z-index: 1000; animation: slideIn 0.3s ease-out;
+        background-color: ${type === 'success' ? '#10b981' : '#ef4444'};
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// ========== STYLES DYNAMIQUES ==========
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    .badge-category, .badge-intensity {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    .badge-cardio { background: #dbeafe; color: #1e40af; }
+    .badge-force { background: #fee2e2; color: #991b1b; }
+    .badge-flexibilite { background: #e0e7ff; color: #3730a3; }
+    .badge-plein-air { background: #dcfce7; color: #166534; }
+    .badge-douceur { background: #fef9c3; color: #854d0e; }
+    .intensity-faible { background: #dcfce7; color: #166534; }
+    .intensity-modérée { background: #fef9c3; color: #854d0e; }
+    .intensity-élevée { background: #fee2e2; color: #991b1b; }
+`;
+document.head.appendChild(style);
 </script>

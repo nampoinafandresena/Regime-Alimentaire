@@ -16,10 +16,10 @@ class SportModel extends Model{
 
     public function getAllInfosSports($filtre_nom = null, $filtre_categorie = null, $filtre_intensite = null){
         $sql = "SELECT sport.id, sport.nom, sport.description, sport.variation_poids_par_heure, 
-                c.libelle AS categorie, i.libelle AS intensite
+                c.nom AS categorie, i.nom AS intensite
          FROM sport 
-         INNER JOIN categories_sport c ON sport.id_categorie = c.id
-         INNER JOIN intensites_sport i ON sport.id_intensite = i.id";
+         INNER JOIN sport_categorie c ON sport.id_categorie = c.id
+         INNER JOIN sport_intensite i ON sport.id_intensite = i.id";
 
         if($filtre_nom) {
             $sql .= " WHERE sport.nom LIKE '%" . $this->db->escapeLikeString($filtre_nom) . "%'";
