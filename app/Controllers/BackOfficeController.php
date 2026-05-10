@@ -15,7 +15,7 @@ class BackOfficeController extends BaseController
         $dataGold = $userModel->countGoldUsers();
         $dataUserInfos = $userModel->getInfosGeneralesUsers(5, null, null);
         
-        // Calculer les statistiques des objectifs pour TOUS les utilisateurs
+        // satiststiques
         $ObjectifModel = new ObjectifModel();
         $objectifsStatsResult = $ObjectifModel->getObjectifsStatistics();
         $objectifsStats = $objectifsStatsResult['data'] ?? [];
@@ -23,6 +23,7 @@ class BackOfficeController extends BaseController
         
         $regimeModel = new RegimeModel();
         $dataRegimes = $regimeModel->countActiveRegimes();
+
         $codeModel = new CodeModel();
         $dataCodes = $codeModel->countValidatedCodes();
         
