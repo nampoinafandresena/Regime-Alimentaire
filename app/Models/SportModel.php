@@ -14,7 +14,7 @@ class SportModel extends Model{
         return $this->findAll();
     }
 
-    public function getAllInfosSports($filtre_nom = null){
+    public function getAllInfosSports($filtre_nom = null, $filtre_categorie = null, $filtre_intensite = null){
         $sql = "SELECT sport.id, sport.nom, sport.description, sport.variation_poids_par_heure, 
                 c.libelle AS categorie, i.libelle AS intensite
          FROM sport 
@@ -23,6 +23,12 @@ class SportModel extends Model{
 
         if($filtre_nom) {
             $sql .= " WHERE sport.nom LIKE '%" . $this->db->escapeLikeString($filtre_nom) . "%'";
+        }
+        if($filtre_categorie) {
+            $sql .= " AND sport.id_categorie = " . $this->db->escape($filtre_categorie);
+        }
+        if($filtre_intensite) {
+            $sql .= " AND sport.id_intensite = " . $this->db->escape($filtre_intensite);
         }
         $query = $this->db->query($sql);
         return $query->getResultArray();
