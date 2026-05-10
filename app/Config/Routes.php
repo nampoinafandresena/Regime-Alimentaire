@@ -13,6 +13,7 @@ $routes->post('/inscription/etape-2', 'UserController::storeStep2');
 $routes->get('/formulaire', 'AuthController::form');
 $routes->post('/login', 'AuthController::login');   
 $routes->get('/index', 'RegimeController::index');
+$routes->match(['get', 'post'], '/regimes', 'RegimeController::index');
 $routes->get('/profil', 'UserController::profil');
 $routes->post('/profil/update', 'UserController::updateProfil');
 $routes->post('/profil/sante', 'UserController::updateSante');

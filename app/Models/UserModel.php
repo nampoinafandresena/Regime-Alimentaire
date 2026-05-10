@@ -77,7 +77,7 @@ class UserModel extends Model{
             $sql .= " AND (utilisateurs.nom LIKE '%" . $this->db->escapeLikeString($search) . "%' 
                     OR utilisateurs.email LIKE '%" . $this->db->escapeLikeString($search) . "%')";
         }
-
+        
         if ($order == "DESC") {
             $sql .= " ORDER BY utilisateurs.id DESC";
         } else {
@@ -90,6 +90,13 @@ class UserModel extends Model{
         
         $query = $this->db->query($sql);
         return $query->getResultArray();
+    }
+
+    function getPoidsTailleActuel($id_utilisateur) {
+        $sql = "SELECT poids_kg, taille_cm FROM donnees_sante WHERE id_utilisateur = ? ORDER BY date_mesure DESC LIMIT 1";
+        $query = $this->db->query($sql, [$id_utilisateur]);
+        $result = $query->getRowArray();
+        return $result ? $result  : null;
     }
 
 }

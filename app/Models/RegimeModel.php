@@ -46,4 +46,27 @@ class RegimeModel extends Model{
         return $query->getRowArray();
     }
 
+
+    public function getRecommendedPlansByObjectifAndVariation(int $objectifId, float $variationSouhaitee, int $limit = 3): array
+    {
+        $cible = round($variationSouhaitee, 2);
+
+        $builder = $this->db->table('regimes r');
+        $builder->select(
+            'r.id, r.nom, r.description, r.pourcentage_viande, r.pourcentage_poisson, r.pourcentage_volaille, ' .
+            'rpd.duree_semaines, rpd.variation_poids, rpd.prix'
+        );
+        $builder->join('regimes_prix_duree rpd', 'r.id = rpd.id_regime', 'inner');
+
+        if ($objectifId === 1) {
+            $builder->where('rpd.variation_poids >', 0);
+        } elseif ($objectifId === 2) {
+            $builder->where('rpd.variation_poids <', 0);
+        }
+
+        $builder->orderBy('ABS(rpd.variation_poids - ' . $cible . ')', 'ASC', false);
+        $builder->limit($limit);
+
+        return $builder->get()->getResultArray();
+    }
 }
