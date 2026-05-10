@@ -29,12 +29,18 @@
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <button type="submit" class="btn-add-bo" style="background: #3b82f6;">🔍 Filtrer</button>
+                            <button type="submit" class="btn-add-bo" style="background: #3b82f6;">
+                                <i class="bi bi-funnel-fill"></i> Filtrer
+                            </button>                            
                             <?php if(isset($searchTerm) && $searchTerm): ?>
-                                <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">Réinitialiser</a>
+                                <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">
+                                    <i class="bi bi-arrow-clockwise"></i> Réinitialiser
+                                </a>
                             <?php endif; ?>
                         </form>
-                        <button class="btn-add-bo" onclick="resetForm()">+ Nouvelle activité</button>
+                        <button class="btn-add-bo" onclick="resetForm()">
+                            <i class="bi bi-plus-circle-fill"></i> Nouvelle activité
+                        </button>
                     </div>
                 </div>
                 
@@ -72,9 +78,13 @@
                                     </td>
                                     <td>
                                         <div class="action-btns">
-                                            <button class="btn-edit" onclick="editSport(<?= $sport['id'] ?>)">✏️ Éditer</button>
-                                            <button class="btn-del" onclick="deleteSport(<?= $sport['id'] ?>, '<?= esc($sport['nom']) ?>')">🗑️ Supprimer</button>
-                                        </div>
+                                          <button class="btn-edit" onclick="editSport(<?= $sport['id'] ?>)">
+                                              <i class="bi bi-pencil-fill" style="color: #3b82f6;"></i> Éditer
+                                          </button>
+                                          <button class="btn-del" onclick="deleteSport(<?= $sport['id'] ?>, '<?= esc($sport['nom']) ?>')">
+                                              <i class="bi bi-trash-fill" style="color: #ef4444;"></i> Supprimer
+                                          </button>
+                                      </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -87,7 +97,7 @@
         <!-- Formulaire CRUD -->
         <div class="form-page">
             <div class="form-card" id="formCard">
-                <h3 id="formTitle">➕ Ajouter une activité</h3>
+                <h3 id="formTitle"><i class="bi bi-plus-circle-fill"></i> Ajouter une activité</h3>
                 <form id="sportForm">
                     <input type="hidden" id="sportId" name="id">
                     
@@ -101,7 +111,7 @@
                         <textarea id="sportDesc" name="description" rows="3" placeholder="Description détaillée de l'activité..."></textarea>
                     </div>
                     
-                    <div class="form-row">
+                    <!-- <div class="form-row"> -->
                         <div class="form-group">
                             <label>Catégorie</label>
                             <select id="sportCategory" name="categorie" required>
@@ -120,7 +130,7 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    </div>
+                    <!-- </div> -->
                     
                     <div class="form-group">
                         <label>Calories brûlées par heure (kg/semaine)</label>

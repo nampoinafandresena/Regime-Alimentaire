@@ -95,7 +95,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 .page-header p { color: var(--slate-500); font-size: 15px; margin-top: 4px; }
 
 /* KPI cards - version 4 colonnes avec tendance verte */
-.kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
 .kpi-card { background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--slate-200); }
 .kpi-label { font-size: 12px; color: var(--slate-500); margin-bottom: 8px; }
 .kpi-value { font-size: 32px; font-weight: 700; color: var(--slate-900); margin-bottom: 6px; }
