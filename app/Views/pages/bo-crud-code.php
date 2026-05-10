@@ -113,15 +113,23 @@
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <div class="action-btns">
-                                            <?php if(!$aEteUtilise && $estValide && !$estExpire): ?>
-                                                <button class="btn-edit" onclick="validerCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')">✅ Valider</button>
-                                                <button class="btn-del" onclick="invaliderCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')">❌ Invalider</button>
-                                            <?php else: ?>
-                                                <button class="btn-edit" onclick="voirCode(<?= $code['id'] ?>)">👁️ Voir</button>
-                                            <?php endif; ?>
-                                            <button class="btn-del" onclick="deleteCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')">🗑️ Supprimer</button>
-                                        </div>
+<div class="action-btns">
+    <?php if(!$aEteUtilise && $estValide && !$estExpire): ?>
+        <button class="btn-edit" onclick="validerCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')" title="Valider">
+            <i class="bi bi-check-circle-fill"></i>
+        </button>
+        <button class="btn-del" onclick="invaliderCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')" title="Invalider">
+            <i class="bi bi-x-circle-fill"></i>
+        </button>
+    <?php else: ?>
+        <button class="btn-edit" onclick="voirCode(<?= $code['id'] ?>)" title="Voir">
+            <i class="bi bi-eye-fill"></i>
+        </button>
+    <?php endif; ?>
+    <button class="btn-del" onclick="deleteCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')" title="Supprimer">
+        <i class="bi bi-trash-fill"></i>
+    </button>
+</div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
