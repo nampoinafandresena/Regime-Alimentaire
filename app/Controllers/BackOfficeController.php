@@ -27,6 +27,7 @@ class BackOfficeController extends BaseController
         $dataCodes = $codeModel->countValidatedCodes();
         
         return view('Modal-BO', [
+            'title' => 'Dashboard',
             'page' => 'pages/bo-dashboard', 
             'dataUser' => $dataUser,
             'dataGold' => $dataGold,
@@ -43,13 +44,15 @@ class BackOfficeController extends BaseController
         $regimes = $regimeModel->getAllInfosRegimes($searchTerm);
         return view('Modal-BO', [
             'page' => 'pages/bo-crud-regime',
-            'regimes' => $regimes
+            'regimes' => $regimes,
+            'title' => 'Régimes'
         ]);
     }
 
     public function crud_sport(): string{
         return view('Modal-BO', [
-            'page' => 'pages/bo-crud-sport'
+            'page' => 'pages/bo-crud-sport',
+            'title' => 'Sports'
         ]);
     }
 
@@ -76,6 +79,7 @@ class BackOfficeController extends BaseController
         
         return view('Modal-BO', [
             'page' => 'pages/bo-crud-user',
+            'title' => 'Utilisateurs',
             'dataUser' => $dataUser,
             'dataGold' => $dataGold,
             'dataUserInfos' => $dataUserInfos,

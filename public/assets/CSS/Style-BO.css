@@ -58,6 +58,37 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 .bo-item.active { color: #fff; background: rgba(230,168,23,0.15); border-left: 3px solid #e6a817; }
 .bo-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #4a4f5a; padding: 16px 20px 6px; }
 
+.bo-sidebar .bo-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        font-size: 14px;
+        color: var(--slate-700);
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    
+    .bo-sidebar .bo-item i {
+        width: 24px;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+    
+    .bo-sidebar .bo-item:hover {
+        background: var(--slate-100);
+        border-radius: 8px;
+    }
+    
+    .bo-sidebar .bo-item.active {
+        background: #3bf6649d;
+        color: white;
+        border-radius: 8px;
+    }
+    
+    .bo-sidebar .bo-item.active i {
+        color: rgb(168, 236, 168);
+    }
+
 .bo-content { flex: 1; padding: 32px 36px; background: #f0f2f5; }
 .page-header { margin-bottom: 28px; }
 .page-header h2 { font-size: 28px; color: var(--slate-900); }

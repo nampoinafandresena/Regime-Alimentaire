@@ -24,6 +24,7 @@ class BOSportController extends BaseController
         $intensites = $intensiteModel->findAll();
         
         return view('Modal-BO', [
+            'title' => 'Sports',
             'page' => 'pages/bo-crud-sport',
             'sports' => $sports,
             'categories' => $categories,

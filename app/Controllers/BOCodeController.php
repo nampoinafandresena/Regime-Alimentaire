@@ -23,6 +23,7 @@ class BOCodeController extends BaseController
         ];
         
         return view('Modal-BO', [
+            'title' => 'Codes',
             'page' => 'pages/bo-crud-code',
             'data' => $data
         ]);
