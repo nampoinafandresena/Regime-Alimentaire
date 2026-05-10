@@ -6,11 +6,41 @@
     
     <!-- KPI stats -->
     <div class="kpi-row" id="kpiStats">
-        <div class="kpi-card"><div class="kpi-label">👥 Total utilisateurs</div><div class="kpi-value"><?= $dataUser ?></div></div>
-        <div class="kpi-card"><div class="kpi-label">⭐ Membres Gold</div><div class="kpi-value"><?= $dataGold ?></div><div class="kpi-trend">-15% sur régimes</div></div>
-        <div class="kpi-card"><div class="kpi-label">💰 Porte-monnaie total</div><div class="kpi-value"><?= number_format($soldePortefeuille ?? 0, 2, ',', ' ') ?> €</div><div class="kpi-trend">Fonds cumulés</div></div>
-        <div class="kpi-card"><div class="kpi-label">📊 IMC moyen</div><div class="kpi-value"><?= number_format($imcMoyen ?? 0, 1) ?></div><div class="kpi-trend">Normale ~18.5-25</div></div>
+    <div class="kpi-card">
+        <div class="kpi-label">
+            <i class="fas fa-users" style="font-size: 1rem; margin-right: 8px;"></i> 
+            Total utilisateurs
+        </div>
+        <div class="kpi-value"><?= $dataUser ?></div>
     </div>
+    
+    <div class="kpi-card">
+        <div class="kpi-label">
+            <i class="fas fa-crown" style="font-size: 1rem; margin-right: 8px; color: #e6a817;"></i> 
+            Membres Gold
+        </div>
+        <div class="kpi-value"><?= $dataGold ?></div>
+        <div class="kpi-trend">-15% sur régimes</div>
+    </div>
+    
+    <div class="kpi-card">
+        <div class="kpi-label">
+            <i class="fas fa-coins" style="font-size: 1rem; margin-right: 8px;"></i> 
+            Porte-monnaie total
+        </div>
+        <div class="kpi-value"><?= number_format($soldePortefeuille ?? 0, 2, ',', ' ') ?> €</div>
+        <div class="kpi-trend">Fonds cumulés</div>
+    </div>
+    
+    <div class="kpi-card">
+        <div class="kpi-label">
+            <i class="fas fa-chart-line" style="font-size: 1rem; margin-right: 8px;"></i> 
+            IMC moyen
+        </div>
+        <div class="kpi-value"><?= number_format($imcMoyen ?? 0, 1) ?></div>
+        <div class="kpi-trend">Normale ~18.5-25</div>
+    </div>
+</div>
 
     <!-- Graphiques IMC / Objectifs (avec Chart.js) -->
     <div class="chart-stats">
