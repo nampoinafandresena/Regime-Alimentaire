@@ -39,8 +39,8 @@ class BackOfficeController extends BaseController
 
     public function crud_regime(): string{
         $regimeModel = new RegimeModel();
-        $search_regime = $this->request->getGet('search');
-        $regimes = $regimeModel->getAllInfosRegimes($search_regime);
+        $searchTerm = $this->request->getGet('search');
+        $regimes = $regimeModel->getAllInfosRegimes($searchTerm);
         return view('Modal-BO', [
             'page' => 'pages/bo-crud-regime',
             'regimes' => $regimes

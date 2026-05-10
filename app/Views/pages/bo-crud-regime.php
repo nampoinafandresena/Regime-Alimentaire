@@ -3,7 +3,17 @@
     <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px;">
       <div>
         <div class="bo-table">
-          <div class="bo-table-header"><h3>Liste des régimes</h3><button class="btn-add-bo" onclick="cancelEdit()">+ Nouveau régime</button></div>
+          <div class="bo-table-header">
+            <h3>Liste des régimes</h3>
+            <form method="GET" action="<?= current_url() ?>" style="display: flex; gap: 12px;">
+              <input type="text" name="search" class="search-input" placeholder="Nom du Regime" value="<?= esc($searchTerm ?? '') ?>">
+              <button type="submit" class="btn-add-bo" style="background: #3b82f6;"><i class="bi bi-search"></i> Rechercher</button>
+              <?php if(isset($searchTerm) && $searchTerm): ?>
+                <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">Réinitialiser</a>
+                <?php endif; ?>
+              </form>
+              <button class="btn-add-bo" onclick="cancelEdit()">+ Nouveau régime</button>
+            </div>
           <table>
             <thead><tr><th>Nom</th><th>Durée</th><th>Variation poids</th><th>Prix (4 sem.)</th><th>Actions</th></tr></thead>
             <tbody>
