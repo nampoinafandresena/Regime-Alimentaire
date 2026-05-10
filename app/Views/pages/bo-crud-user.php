@@ -54,13 +54,13 @@
             <h3><i class="bi bi-people"></i> Liste des utilisateurs</h3>
             <div style="display: flex; gap: 12px;">
                 <form method="GET" action="<?= current_url() ?>" style="display: flex; gap: 12px;">
-                    <input type="text" name="search" class="search-input" placeholder="🔍 Nom, email..." value="<?= esc($searchTerm ?? '') ?>">
+                    <input type="text" name="search" class="search-input" placeholder="Nom utilisateur" value="<?= esc($searchTerm ?? '') ?>">
                     <button type="submit" class="btn-add-bo" style="background: #3b82f6;"><i class="bi bi-search"></i> Rechercher</button>
                     <?php if(isset($searchTerm) && $searchTerm): ?>
                         <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">Réinitialiser</a>
                     <?php endif; ?>
                 </form>
-                <a href="<?= base_url('backoffice/addUserForm') ?>" class="btn-add-bo"><i class="bi bi-person-plus"></i> Nouvel utilisateur</a>
+                <a href="/inscription/etape-1" class="btn-add-bo"><i class="bi bi-person-plus"></i> Nouvel utilisateur</a>
             </div>
         </div>
         <div style="overflow-x: auto;">

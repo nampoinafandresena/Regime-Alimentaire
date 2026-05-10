@@ -44,6 +44,7 @@ class UserModel extends Model{
         return $this->selectSum('solde_portefeuille')->first()['solde_portefeuille'];
     }
 
+    // sans l admin
     public function getInfosGeneralesUsers($limit = null, $search = null, $order = null)
     {
         $sql = "
@@ -66,6 +67,7 @@ class UserModel extends Model{
                 FROM donnees_sante ds2 
                 WHERE ds2.id_utilisateur = utilisateurs.id
             )
+            AND utilisateurs.role != 'admin'
         ";
         
         if($search) {
@@ -80,7 +82,9 @@ class UserModel extends Model{
 
         if ($order == "DESC") {
             $sql .= " ORDER BY utilisateurs.id DESC";
-        } 
+        } else {
+            $sql .= " ORDER BY utilisateurs.id ASC";
+        }
         
         $query = $this->db->query($sql);
         return $query->getResultArray();
