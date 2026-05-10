@@ -16,7 +16,7 @@
 <nav class="demo-nav">
   <span>PAGES →</span>
   <a href="/"><i class="bi bi-house-fill"></i> Landing</a>
-  <a href="/formulaire"><i class="bi bi-lock-fill"></i> Login</a>
+  <a href="/formulaire"><i class="bi bi-lock-fill"></i> Se connecter</a>
   <a href="/bo/dashboard/general" class="active"><i class="bi bi-pencil-fill"></i> BO Dashboard</a>
   <a href="/bo/dashboard/regime"><i class="fas fa-utensils"></i> BO Régime CRUD</a>
   <a href="/bo/dashboard/sport"><i class="bi bi-bicycle"></i> BO Sports CRUD</a>
