@@ -8,14 +8,16 @@
     <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
         <button class="btn-add-bo" onclick="openGenerateModal()">+ Générer des codes</button>
         <form method="GET" action="<?= current_url() ?>" style="display: flex; gap: 12px; flex: 1;">
-            <input type="text" name="search" class="search-input" placeholder="🔍 Rechercher un code..." value="<?= esc($data['searchTerm'] ?? '') ?>" style="flex: 1;">
+            <input type="text" name="search" class="search-input" placeholder="Rechercher un code..." value="<?= esc($data['searchTerm'] ?? '') ?>" style="flex: 1;">
             <select name="statut" class="search-input">
                 <option value="">Tous les statuts</option>
                 <option value="valide" <?= ($data['statutFilter'] ?? '') === 'valide' ? 'selected' : '' ?>>Validés</option>
                 <option value="attente" <?= ($data['statutFilter'] ?? '') === 'attente' ? 'selected' : '' ?>>En attente</option>
                 <option value="expire" <?= ($data['statutFilter'] ?? '') === 'expire' ? 'selected' : '' ?>>Expirés</option>
             </select>
-            <button type="submit" class="btn-add-bo" style="background: #3b82f6;">🔍 Filtrer</button>
+            <button type="submit" class="btn-add-bo" style="background: #3b82f6;">
+    <i class="bi bi-funnel-fill"></i> Filtrer
+</button>
             <?php if(isset($data['searchTerm']) && $data['searchTerm']): ?>
                 <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">Réinitialiser</a>
             <?php endif; ?>
@@ -166,27 +168,84 @@
 <script>
 // ========== GESTION DES MODALES ==========
 function openGenerateModal() {
-    document.getElementById('generateModal').style.display = 'flex';
+    const modal = document.getElementById('generateModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        // Debug
+        console.log('Modal ouverte');
+    } else {
+        console.error('Modal #generateModal non trouvée dans le DOM');
+        alert('Erreur: La modal n\'existe pas');
+    }
 }
 
 function closeGenerateModal() {
-    document.getElementById('generateModal').style.display = 'none';
-    document.getElementById('generateForm').reset();
+    const modal = document.getElementById('generateModal');
+    if (modal) {
+        modal.style.display = 'none';
+        // Réinitialiser le formulaire
+        const form = document.getElementById('generateForm');
+        if (form) {
+            form.reset();
+            // Remettre les valeurs par défaut
+            const codeNombre = document.getElementById('codeNombre');
+            const codeMontant = document.getElementById('codeMontant');
+            const codeExpiration = document.getElementById('codeExpiration');
+            
+            if (codeNombre) codeNombre.value = 10;
+            if (codeMontant) codeMontant.value = 10000;
+            if (codeExpiration) {
+                const today = new Date();
+                const nextYear = new Date(today.setFullYear(today.getFullYear() + 1));
+                codeExpiration.value = nextYear.toISOString().split('T')[0];
+            }
+        }
+    }
 }
 
 // ========== CRUD CODES ==========
 function generateCodes() {
+    console.log('Function generateCodes appelée');
+    
+    // Récupérer les valeurs
+    const nombreInput = document.getElementById('codeNombre');
+    const montantSelect = document.getElementById('codeMontant');
+    const expirationInput = document.getElementById('codeExpiration');
+    
+    if (!nombreInput || !montantSelect) {
+        console.error('Champs du formulaire non trouvés');
+        showNotification('Erreur technique', 'error');
+        return;
+    }
+    
     const formData = {
-        nombre: parseInt(document.getElementById('codeNombre').value),
-        montant: parseFloat(document.getElementById('codeMontant').value),
-        date_expiration: document.getElementById('codeExpiration').value || null
+        nombre: parseInt(nombreInput.value),
+        montant: parseFloat(montantSelect.value),
+        date_expiration: expirationInput ? expirationInput.value || null : null
     };
     
-    if(formData.nombre < 1 || formData.nombre > 100) {
+    console.log('Données à envoyer:', formData);
+    
+    // Validation
+    if (formData.nombre < 1 || formData.nombre > 100) {
         showNotification('Le nombre doit être entre 1 et 100', 'error');
         return;
     }
     
+    if (isNaN(formData.montant) || formData.montant <= 0) {
+        showNotification('Le montant doit être valide', 'error');
+        return;
+    }
+    
+    // Désactiver le bouton pendant l'envoi
+    const submitBtn = document.querySelector('#generateForm .btn-save');
+    const originalText = submitBtn ? submitBtn.textContent : 'Générer';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Génération...';
+    }
+    
+    // Envoyer la requête
     fetch('<?= base_url('bo/dashboard/code/generate') ?>', {
         method: 'POST',
         headers: {
@@ -195,21 +254,68 @@ function generateCodes() {
         },
         body: JSON.stringify(formData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur HTTP: ' + response.status);
+        }
+        return response.json();
+    })
     .then(data => {
-        if(data.success) {
+        console.log('Réponse:', data);
+        if (data.success) {
             showNotification(data.message, 'success');
             closeGenerateModal();
             setTimeout(() => location.reload(), 1500);
         } else {
-            showNotification(data.message, 'error');
+            showNotification(data.message || 'Erreur lors de la génération', 'error');
         }
     })
     .catch(error => {
-        console.error('Erreur:', error);
-        showNotification('Erreur lors de la génération', 'error');
+        console.error('Erreur détaillée:', error);
+        showNotification('Erreur: ' + error.message, 'error');
+    })
+    .finally(() => {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
     });
 }
+
+// ========== INITIALISATION ==========
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM chargé - initialisation des événements');
+    
+    // Gérer la soumission du formulaire
+    const generateForm = document.getElementById('generateForm');
+    if (generateForm) {
+        // Supprimer les anciens écouteurs pour éviter les doublons
+        const newForm = generateForm.cloneNode(true);
+        generateForm.parentNode.replaceChild(newForm, generateForm);
+        
+        newForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Formulaire soumis');
+            generateCodes();
+        });
+        
+        console.log('Formulaire initialisé');
+    } else {
+        console.error('Formulaire #generateForm non trouvé');
+    }
+    
+    // Gérer la fermeture avec la touche Echap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('generateModal');
+            if (modal && modal.style.display === 'flex') {
+                closeGenerateModal();
+            }
+        }
+    });
+});
+
 
 function validerCode(id, code) {
     if(confirm(`Valider l'utilisation du code "${code}" ?`)) {
