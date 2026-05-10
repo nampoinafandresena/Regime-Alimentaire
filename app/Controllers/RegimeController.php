@@ -11,6 +11,8 @@ class RegimeController extends BaseController
 {
     public function index()
     {
+        $hasGeneratedSuggestions = strtolower($this->request->getMethod()) === 'post';
+
         $userModel = new UserModel();
         $user = session()->get('user');
         if (!$user) {
@@ -83,6 +85,7 @@ class RegimeController extends BaseController
             'selectedObjectifId' => $selectedObjectifId,
             'variationKg' => $variationKg,
             'variationSouhaitee' => $variationSouhaitee,
+            'hasGeneratedSuggestions' => $hasGeneratedSuggestions,
             'objectifLabel' => $objectifLabel,
             'recommendedRegimes' => $recommendedRegimes,
             'suggestedActivities' => $suggestedActivities,
