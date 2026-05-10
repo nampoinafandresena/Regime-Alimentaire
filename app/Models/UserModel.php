@@ -74,16 +74,15 @@ class UserModel extends Model{
             $sql .= " AND (utilisateurs.nom LIKE '%" . $this->db->escapeLikeString($search) . "%' 
                     OR utilisateurs.email LIKE '%" . $this->db->escapeLikeString($search) . "%')";
         }
-        
-        if ($limit !== null) {
-            $sql .= " LIMIT " . (int)$limit;
-        }
-        
 
         if ($order == "DESC") {
             $sql .= " ORDER BY utilisateurs.id DESC";
         } else {
             $sql .= " ORDER BY utilisateurs.id ASC";
+        }
+
+        if ($limit !== null) {
+            $sql .= " LIMIT " . (int)$limit;
         }
         
         $query = $this->db->query($sql);
