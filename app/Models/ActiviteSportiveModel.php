@@ -11,10 +11,7 @@ class ActiviteSportiveModel extends Model
     protected $allowedFields = ['nom', 'description', 'id_categorie', 'id_intensite', 'variation_poids_par_heure'];
     protected $useTimestamps = true;
 
-    /**
-     * Même principe que les régimes : rapprocher variation_poids_par_heure de la cible.
-     * La cible est la même échelle que en base (kg par heure), passée depuis le contrôleur.
-     */
+
     public function getRecommendedByObjectifAndVariation(float $variationSouhaitee, int $limit = 3): array
     {
         $cible = round($variationSouhaitee, 4);

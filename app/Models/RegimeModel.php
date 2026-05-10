@@ -46,10 +46,7 @@ class RegimeModel extends Model{
         return $query->getRowArray();
     }
 
-    /**
-     * Suggestions de régimes : on rapproche rpd.variation_poids (kg sur la durée du pack)
-     * de la variation souhaitée (même signe : +prise, -perte, 0 pour équilibre / IMC idéal).
-     */
+
     public function getRecommendedPlansByObjectifAndVariation(int $objectifId, float $variationSouhaitee, int $limit = 3): array
     {
         $cible = round($variationSouhaitee, 2);
