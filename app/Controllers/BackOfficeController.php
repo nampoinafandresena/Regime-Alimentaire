@@ -23,6 +23,7 @@ class BackOfficeController extends BaseController
         
         $regimeModel = new RegimeModel();
         $dataRegimes = $regimeModel->countActiveRegimes();
+        $dataRegimesInfos = $regimeModel->getAllInfosRegimes();
 
         $codeModel = new CodeModel();
         $dataCodes = $codeModel->countValidatedCodes();
@@ -34,6 +35,7 @@ class BackOfficeController extends BaseController
             'dataGold' => $dataGold,
             'dataUserInfos' => $dataUserInfos,
             'dataRegimes' => $dataRegimes,
+            'dataRegimesInfos' => $dataRegimesInfos,
             'dataCodes' => $dataCodes,
             'objectifsStats' => $objectifsStats 
         ]);
