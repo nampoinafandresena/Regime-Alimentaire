@@ -35,7 +35,7 @@ class BOSportController extends BaseController
         ]);
     }
     
-    public function getSport($id)
+    public function getSportAjax($id)
     {
         if ($this->request->isAJAX()) {
             $sportModel = new SportModel();
@@ -55,7 +55,7 @@ class BOSportController extends BaseController
         ]);
     }
     
-    public function createSport()
+    public function createSportAjax()
     {
         if ($this->request->isAJAX()) {
             $sportModel = new SportModel();
@@ -92,7 +92,7 @@ class BOSportController extends BaseController
         ]);
     }
     
-    public function updateSport($id)
+    public function updateSportAjax($id)
     {
         if ($this->request->isAJAX()) {
             $sportModel = new SportModel();
@@ -120,7 +120,7 @@ class BOSportController extends BaseController
         ]);
     }
     
-    public function deleteSport($id)
+    public function deleteSportAjax($id)
     {
         if ($this->request->isAJAX()) {
             $sportModel = new SportModel();
