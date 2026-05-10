@@ -1,16 +1,13 @@
 use regime_db;
 
 drop table activites_sportives;
-drop table categorie_sport;
-drop table intensite_sport;
-drop table sport;
 
-create table categorie_sport (
+create table sport_categorie (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100)
 );
 
-create table intensite_sport (
+create table sport_intensite (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100)
 );
@@ -22,19 +19,19 @@ CREATE TABLE sport (
     id_categorie INT,
     id_intensite INT,
     variation_poids_par_heure DECIMAL(5, 2),
-    foreign key (id_categorie) references categorie_sport(id),
-    foreign key (id_intensite) references intensite_sport(id)
+    foreign key (id_categorie) references sport_categorie(id),
+    foreign key (id_intensite) references sport_intensite(id)
 );
 
 -- Activités sportives (5 fournies + ajout)
-insert into categorie_sport (nom) values 
+insert into sport_categorie (nom) values 
 ('Cardio'),
 ('Renforcement musculaire'),
 ('Flexibilité'),
 ('Endurance'),
 ('HIIT');
 
-insert into intensite_sport (nom) values 
+insert into sport_intensite (nom) values 
 ('Légère'),
 ('Modérée'),
 ('Intense');
