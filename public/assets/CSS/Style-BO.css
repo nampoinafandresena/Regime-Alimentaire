@@ -80,7 +80,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
     }
     
     .bo-sidebar .bo-item.active {
-        background: #3bf6649d;
+        background: #007a1b9d;
         color: white;
         border-radius: 8px;
     }

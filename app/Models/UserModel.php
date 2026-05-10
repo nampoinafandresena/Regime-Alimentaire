@@ -30,12 +30,14 @@ class UserModel extends Model{
         return $this->insert($data);
     }
 
+    // compter le nombre de users sans l admin
     public function countUser(){
-        return $this->countAllResults();
+        return $this->where('role !=', 'admin')->countAllResults();
     }
     
+    // compter le nombre de users sans l admin et qui sont gold
     public function countGoldUsers(){
-        return $this->where('est_gold', 1)->countAllResults();
+        return $this->where('role !=', 'admin')->where('est_gold', 1)->countAllResults();
     }
 
     public function getTotalWallet(){
