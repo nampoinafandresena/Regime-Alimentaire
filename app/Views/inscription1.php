@@ -49,7 +49,7 @@
         <input type="hidden" name="genre" id="genre" value="Femme">
       </div>
       <button class="form-submit" type="submit">Continuer →</button>
-      <p class="form-link">Deja inscrit ? <a href="/login">Se connecter</a></p>
+      <p class="form-link">Deja inscrit ? <a href="/formulaire">Se connecter</a></p>
     </form>
   </div>
 </div>

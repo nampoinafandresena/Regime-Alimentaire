@@ -3,35 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NutriPath </title>
+<meta name="csrf-token" content="<?= csrf_hash() ?>">
+<title>NutriPath — <?= $title ?? 'Accueil' ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="<?= base_url('assets/CSS/Style.css') ?>">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-<style>
-  
-</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
-<!-- META NAVIGATION (démo) -->
 <nav class="demo-nav">
-  <span>PAGES →</span>
-  <a href="index.html" class="active"><i class="bi bi-house-fill"></i> Landing</a>
-  <a href="login.html"><i class="bi bi-lock-fill"></i> Login</a>
-  <a href="inscription1.html"><i class="bi bi-pencil-fill"></i> Inscription #1</a>
-  <a href="inscription2.html"><i class="bi bi-clipboard-check"></i> Inscription #2</a>
-  <a href="dashboard.html"><i class="bi bi-graph-up"></i> Dashboard</a>
-  <a href="regimes.html"><i class="bi bi-leaf"></i> Régimes</a>
-  <a href="profil.html"><i class="bi bi-person-circle"></i> Profil & Plan</a>
-  <a href="bo-dashboard.html"><i class="bi bi-gear-fill"></i> BO Dashboard</a>
-  <a href="bo-crud.html"><i class="bi bi-pencil-square"></i> BO Régime CRUD</a>
-  <a href="bo-codes.html"><i class="bi bi-credit-card"></i> BO Codes</a>
+    <span>MENU →</span>
+    <a href="/" class="<?= ($page ?? '') === 'Home' ? 'active' : '' ?>">
+        <i class="bi bi-house-fill"></i> Accueil
+    </a>
+    <a href="/formulaire" class="<?= ($page ?? '') === 'auth/Login' ? 'active' : '' ?>">
+        <i class="bi bi-lock-fill"></i> Connexion
+    </a>
+    <a href="/inscription/etape-1" class="<?= ($page ?? '') === 'inscription1' ? 'active' : '' ?>">
+        <i class="bi bi-pencil-fill"></i> Inscription
+    </a>
+    <a href="/dashboard" class="<?= ($page ?? '') === 'pages/dashboard' ? 'active' : '' ?>">
+        <i class="bi bi-graph-up"></i> Mon tableau
+    </a>
+    <a href="/regimes" class="<?= ($page ?? '') === 'pages/regimes' ? 'active' : '' ?>">
+        <i class="fas fa-utensils"></i> Régimes
+    </a>
+    <a href="/sports" class="<?= ($page ?? '') === 'pages/sports' ? 'active' : '' ?>">
+        <i class="bi bi-bicycle"></i> Sports
+    </a>
+    <a href="/profil" class="<?= ($page ?? '') === 'pages/profil' ? 'active' : '' ?>">
+        <i class="bi bi-person-circle"></i> Mon profil
+    </a>
 </nav>
+
+
     <?php include $page . '.php' ?>
 </body>
 </html>

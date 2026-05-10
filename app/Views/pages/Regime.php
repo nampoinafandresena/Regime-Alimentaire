@@ -1,21 +1,41 @@
 <div class="app-layout">
+<!-- SIDEBAR AVEC ICÔNES MODERNES (comme le BO) -->
   <div class="sidebar">
     <div class="sidebar-logo">Nutri<span>Path</span></div>
+    
     <div class="sidebar-section">Menu</div>
-    <a href="dashboard.html" class="sidebar-item"><span class="icon">📊</span> Tableau de bord</a>
-    <a href="regimes.html" class="sidebar-item active"><span class="icon">🥗</span> Régimes</a>
-    <a href="sports.html" class="sidebar-item"><span class="icon">🏃</span> Activités</a>
-    <a href="profil.html" class="sidebar-item"><span class="icon">👤</span> Mon profil</a>
-    <div class="sidebar-section" style="margin-top:20px;">Compte</div>
-    <div class="sidebar-item"><span class="icon">💰</span> Porte-monnaie</div>
-    <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+    <a href="/dashboard" class="sidebar-item">
+      <i class="bi bi-speedometer2" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
+    </a>
+    <a href="/regimes" class="sidebar-item active">
+      <i class="fas fa-utensils" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
+    </a>
+    <a href="/sports" class="sidebar-item">
+      <i class="bi bi-bicycle" style="font-size: 1.2rem; margin-right: 10px;"></i> Activités
+    </a>
+    <a href="/profil" class="sidebar-item">
+      <i class="bi bi-person-circle" style="font-size: 1.2rem; margin-right: 10px;"></i> Mon profil
+    </a>
+    
+    <div class="sidebar-section" style="margin-top: 20px;">Compte</div>
+    <div class="sidebar-item">
+      <i class="bi bi-wallet-fill" style="font-size: 1.2rem; margin-right: 10px;"></i> Porte-monnaie
+    </div>
+    <div class="sidebar-item">
+      <i class="bi bi-star-fill" style="font-size: 1.2rem; margin-right: 10px; color: var(--gold-400);"></i> Option Gold
+    </div>
+    
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="avatar">MD</div>
-        <div class="avatar-info"><p>Marie Dupont</p><span>Compte standard</span></div>
+        <div class="avatar-info">
+          <p>Marie Dupont</p>
+          <span>Compte standard</span>
+        </div>
       </div>
     </div>
   </div>
+  
   <div class="main-content">
     <div class="page-header">
       <h2>Choisir un régime</h2>
