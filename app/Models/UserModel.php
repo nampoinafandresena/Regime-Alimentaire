@@ -89,4 +89,11 @@ class UserModel extends Model{
         return $query->getResultArray();
     }
 
+    function getPoidsTailleActuel($id_utilisateur) {
+        $sql = "SELECT poids_kg, taille_cm FROM donnees_sante WHERE id_utilisateur = ? ORDER BY date_mesure DESC LIMIT 1";
+        $query = $this->db->query($sql, [$id_utilisateur]);
+        $result = $query->getRowArray();
+        return $result ? $result  : null;
+    }
+
 }

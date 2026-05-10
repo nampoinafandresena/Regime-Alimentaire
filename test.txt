@@ -1,1 +1,28 @@
-DEv 2 TSIKA ZAO !!!
+    <div class="card objective-card">
+      <div class="card-title">Choisir un objectif</div>
+      <form class="objective-form" action="#" method="post">
+        <label class="objective-option">
+          <input type="radio" name="objectif" value="augmenter_poids" checked>
+          <span class="objective-content">
+            <span class="objective-name">Augmenter son poids</span>
+            <span class="objective-desc">Prendre de la masse de facon progressive et controlee.</span>
+          </span>
+        </label>
+
+        <label class="objective-option">
+          <input type="radio" name="objectif" value="reduire_poids">
+          <span class="objective-content">
+            <span class="objective-name">Reduire son poids</span>
+            <span class="objective-desc">Perdre du poids avec un deficit calorique adapte.</span>
+          </span>
+        </label>
+
+        <label class="objective-option">
+          <input type="radio" name="objectif" value="imc_ideal">
+          <span class="objective-content">
+            <span class="objective-name">Atteindre son IMC ideal</span>
+            <span class="objective-desc">Trouver un equilibre pour atteindre la zone IMC recommandee.</span>
+          </span>
+        </label>
+      </form>
+    </div>
