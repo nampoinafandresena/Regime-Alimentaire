@@ -48,7 +48,9 @@ class BackOfficeController extends BaseController
     }
 
     public function crud_sport(): string{
-        return view('Modal-BO', ['page' => 'pages/bo-crud-sport']);
+        return view('Modal-BO', [
+            'page' => 'pages/bo-crud-sport'
+        ]);
     }
 
     public function crud_code(): string{
