@@ -13,8 +13,11 @@ $routes->post('/inscription/etape-2', 'UserController::storeStep2');
 $routes->get('/formulaire', 'AuthController::form');
 $routes->post('/login', 'AuthController::login');   
 $routes->get('/index', 'RegimeController::index');
+$routes->get('/profil', 'UserController::profil');
+$routes->post('/profil/update', 'UserController::updateProfil');
+$routes->post('/profil/sante', 'UserController::updateSante');
+$routes->post('/profil/objectifs', 'UserController::updateObjectifs');
 
-// routes dashboard back-office
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
 
 $routes->get('/bo/dashboard/regime', 'BackOfficeController::crud_regime');
