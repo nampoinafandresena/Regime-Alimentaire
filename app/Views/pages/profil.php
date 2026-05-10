@@ -2,6 +2,7 @@
   $nom = $user['nom'] ?? '';
   $email = $user['email'] ?? '';
   $genre = $user['genre'] ?? '';
+  $isGold = (int) ($user['est_gold'] ?? 0) === 1;
   $initials = '';
   if ($nom !== '') {
     $parts = preg_split('/\s+/', trim($nom));
@@ -48,7 +49,9 @@
     <a href="/profil" class="sidebar-item active"><span class="icon">👤</span> Mon profil</a>
     <div class="sidebar-section" style="margin-top:20px;">Compte</div>
     <div class="sidebar-item"><span class="icon">💰</span> Porte-monnaie</div>
-    <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+    <?php if (! $isGold): ?>
+      <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+    <?php endif; ?>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="avatar"><?= esc($initials) ?></div>
@@ -71,26 +74,38 @@
           <div class="profile-stat"><span class="profile-stat-label">Objectif</span><span class="profile-stat-val"><?= esc($objectifLabel ?: '-') ?></span></div>
           <button id="edit-profile-btn" style="width:100%; margin-top:16px; padding: 11px; border: 1.5px solid var(--slate-200); border-radius: var(--radius-sm); background: #fff; font-family: 'DM Sans'; font-size: 14px; cursor: pointer; color: var(--slate-700);">✏️ Modifier le profil</button>
         </div>
-        <div class="gold-option">
-          <div class="gold-title">⭐ Option Gold</div>
-          <div style="font-size:13px; color: var(--slate-600); margin-bottom: 8px;">Paiement unique</div>
-          <div class="gold-price">25 000 Ar</div>
-          <div class="gold-features">
-            <div class="gold-feat"><span class="check">✓</span> 15% de remise sur tous les regimes</div>
-            <div class="gold-feat"><span class="check">✓</span> Suivi personnalise avance</div>
-            <div class="gold-feat"><span class="check">✓</span> Export PDF illimite</div>
-            <div class="gold-feat"><span class="check">✓</span> Support prioritaire</div>
+        <?php if (! $isGold): ?>
+          <div class="gold-option">
+            <div class="gold-title">⭐ Option Gold</div>
+            <div style="font-size:13px; color: var(--slate-600); margin-bottom: 8px;">Paiement unique</div>
+            <div class="gold-price"><?= number_format((float) ($goldOption['prix'] ?? 29.99), 2, ',', ' ') ?> Ar</div>
+            <div class="gold-features">
+              <div class="gold-feat"><span class="check">✓</span> 15% de remise sur tous les regimes</div>
+              <div class="gold-feat"><span class="check">✓</span> Suivi personnalise avance</div>
+              <div class="gold-feat"><span class="check">✓</span> Export PDF illimite</div>
+              <div class="gold-feat"><span class="check">✓</span> Support prioritaire</div>
+            </div>
+            <form method="post" action="/profil/gold">
+              <?= csrf_field() ?>
+              <button class="btn-gold" type="submit">Activer Gold</button>
+            </form>
           </div>
-          <button class="btn-gold">Activer Gold</button>
-        </div>
+        <?php else: ?>
+          <div class="gold-option">
+            <div class="gold-title">⭐ Compte Gold actif</div>
+            <div style="font-size:13px; color: var(--slate-600);">Vous bénéficiez déjà des avantages Gold.</div>
+          </div>
+        <?php endif; ?>
         <div class="wallet-section">
           <div style="font-size:13px; color:var(--slate-400); margin-bottom:4px;">Mon porte-monnaie</div>
-          <div class="wallet-balance"><?= number_format((float) ($user['solde_portefeuille'] ?? 0), 0, ',', ' ') ?> Ar</div>
+          <div id="wallet-balance" class="wallet-balance" data-value="<?= number_format((float) ($user['solde_portefeuille'] ?? 0), 0, ',', ' ') ?>"><?= number_format((float) ($user['solde_portefeuille'] ?? 0), 0, ',', ' ') ?> Ar</div>
           <div class="wallet-sub">Solde disponible</div>
-          <div class="wallet-code">
-            <input placeholder="Entrer un code cadeau...">
-            <button>Valider</button>
-          </div>
+          <form id="redeem-form" method="post" action="/profil/redeem" class="wallet-code">
+            <?= csrf_field() ?>
+            <input name="code" placeholder="Entrer un code cadeau..." required>
+            <button id="redeem-btn" type="submit">Valider</button>
+          </form>
+          <div id="redeem-feedback" style="margin-top:8px; font-size:14px;"></div>
         </div>
       </div>
       <div>
@@ -168,8 +183,8 @@
             <div style="color:var(--slate-500);">Aucun régime recommandé pour le moment.</div>
           <?php endif; ?>
 
-          <h4 style="margin-top:18px;">Objectifs sélectionnés</h4>
-          <div style="display:flex; flex-direction:column; gap:8px;">
+          <h4 id="objectifs-summary-title" style="margin-top:18px;">Objectifs sélectionnés</h4>
+          <div id="objectifs-summary" style="display:flex; flex-direction:column; gap:8px;">
             <?php if (! empty($selectedObjectifIds)): ?>
               <?php foreach ($objectifs as $obj): ?>
                 <?php if (in_array((int)$obj['id'], $selectedObjectifIds, true)): ?>
@@ -186,22 +201,4 @@
   </div>
 </div>
 
-<script>
-  (function(){
-    var btn = document.getElementById('edit-profile-btn');
-    var edit = document.getElementById('profil-edit');
-    if (!btn || !edit) return;
-    btn.addEventListener('click', function(){
-      var isHidden = edit.style.display === 'none' || getComputedStyle(edit).display === 'none';
-      if (isHidden) {
-        edit.style.display = 'block';
-        edit.scrollIntoView({behavior: 'smooth'});
-        btn.textContent = 'Fermer la modification';
-      } else {
-        edit.style.display = 'none';
-        btn.textContent = '✏️ Modifier le profil';
-        btn.scrollIntoView({behavior: 'smooth'});
-      }
-    });
-  })();
-</script>
+<script src="<?= base_url('assets/js/profil.js') ?>"></script>
