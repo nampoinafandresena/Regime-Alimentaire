@@ -70,19 +70,6 @@ class CodeModel extends Model{
         ]);
     }
 
-    // public function generateCodes($nombre, $montant, $dateExpiration){
-    //     $codes = [];
-    //     for ($i = 0; $i < $nombre; $i++) {
-    //         $codes[] = [
-    //             'code' => $this->generateUniqueCode(),
-    //             'montant' => $montant,
-    //             'est_valide' => 1,
-    //             'date_expiration' => $dateExpiration
-    //         ];
-    //     }
-    //     return $this->insertBatch($codes);
-    // }
-
     private function generateUniqueCode(){
         $prefix = 'NUTR-';
         $code = $prefix . strtoupper(substr(bin2hex(random_bytes(4)), 0, 6));
