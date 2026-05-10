@@ -14,6 +14,12 @@ class SanteModel extends Model{
         return $this->where('id_utilisateur', $userId)->orderBy('date_mesure', 'DESC')->findAll();
     }
 
+    public function getLatestSanteByUserId($userId){
+        return $this->where('id_utilisateur', $userId)
+            ->orderBy('date_mesure', 'DESC')
+            ->first();
+    }
+
     public function ajouterSante($userId, $taille, $poids){
         $data = [
             'id_utilisateur' => $userId,
