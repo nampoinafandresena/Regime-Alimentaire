@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-
 class CodeModel extends Model{
     protected $table = 'codes_portefeuille';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['code', 'montant', 'est_valide', 'date_expiration'];
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $allowedFields = ['code', 'montant', 'est_valide', 'date_expiration', 'created_at', 'updated_at'];
+    protected $useTimestamps = false;
 
     public function getAllCodes(){
         return $this->orderBy('id', 'DESC')->findAll();
@@ -64,17 +61,13 @@ class CodeModel extends Model{
                     ->countAllResults();
     }
 
-    public function generateCodes($nombre, $montant, $dateExpiration){
-        $codes = [];
-        for ($i = 0; $i < $nombre; $i++) {
-            $codes[] = [
-                'code' => $this->generateUniqueCode(),
-                'montant' => $montant,
-                'est_valide' => 1,
-                'date_expiration' => $dateExpiration
-            ];
-        }
-        return $this->insertBatch($codes);
+    public function createCode($code, $montant, $dateExpiration = null){
+        return $this->insert([
+            'code' => $code,
+            'montant' => $montant,
+            'est_valide' => 1,
+            'date_expiration' => $dateExpiration
+        ]);
     }
 
     private function generateUniqueCode(){
