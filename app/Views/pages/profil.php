@@ -1,9 +1,3 @@
-<style>
-  @import url("<?= base_url('assets/CSS/Style.css') ?>");
-</style>
-
-
-
 <div class="app-layout">
   <?php include ('Sidebar.php') ?>
   <div class="main-content">
