@@ -1,34 +1,15 @@
-<div class="app-layout">
-  <div class="sidebar">
-    <div class="sidebar-logo">Nutri<span>Path</span></div>
-    <div class="sidebar-section">Menu</div>
-    <a href="/dashboard" class="sidebar-item">
-      <i class="fas fa-chart-line" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
-    </a>
-    <a href="/regimes" class="sidebar-item active">
-      <i class="fas fa-utensils" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
-    </a>
-    <a href="/sports" class="sidebar-item">
-      <i class="fas fa-dumbbell" style="font-size: 1.2rem; margin-right: 10px;"></i> Activités
-    </a>
-    <a href="/profil" class="sidebar-item">
-      <i class="fas fa-user-circle" style="font-size: 1.2rem; margin-right: 10px;"></i> Mon profil
-    </a>
-    <div class="sidebar-section" style="margin-top: 16px;">Compte</div>
-    <a href="/logout" class="sidebar-item">
-      <i class="fas fa-sign-out-alt" style="font-size: 1.2rem; margin-right: 10px;"></i> Se déconnecter
-    </a>
-  </div>
 
+<div class="app-layout">
+  <?php include ('Sidebar.php') ?>
   <div class="main-content">
     <div class="page-header">
       <h2>Objectif et variation de poids</h2>
       <p>Choisissez votre objectif puis le poids a gagner ou a perdre : le systeme classe les regimes et sports dont la variation est la plus proche.</p>
     </div>
-
+    
     <div class="card objective-card">
       <div class="card-title">Parametrer votre plan</div>
-      <form class="objective-form-wrap" method="post" action="/regimes">
+      <form class="objective-form-wrap" method="post" action="/regimes#results-section">
         <?= csrf_field() ?>
         <div class="objective-form">
           <?php foreach (($objectifs ?? []) as $objectif): ?>
@@ -62,14 +43,14 @@
       <p><strong>IMC:</strong> <?= esc($imc ?? 'N/A') ?></p>
     </div>
 
-    <div class="card">
+    <div class="card" id="results-section">
       <div class="card-title">Regimes suggeres</div>
       <div class="regime-grid">
         <?php if (!empty($recommendedRegimes)): ?>
           <?php foreach ($recommendedRegimes as $regime): ?>
             <?php $variation = (float) $regime['variation_poids']; ?>
             <div class="regime-card">
-              <div class="regime-banner green"><i class="bi bi-cup-straw"></i></div>
+              <div class="regime-banner green">🥗</div>
               <div class="regime-body">
                 <div class="regime-name"><?= esc($regime['nom']) ?></div>
                 <div class="regime-desc"><?= esc($regime['description']) ?></div>

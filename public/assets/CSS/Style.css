@@ -300,7 +300,11 @@
   .sidebar-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--slate-500); padding: 0 24px 8px; }
   .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 11px 24px; font-size: 14px; color: var(--slate-400); cursor: pointer; transition: background .12s, color .12s; text-decoration: none; }
   .sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
-  .sidebar-item.active { background: rgba(58, 170, 107, 0.15); color: var(--green-400); }
+  .sidebar-item.active {
+    background: var(--green-500);
+    color: #fff;
+    box-shadow: inset 3px 0 0 var(--gold-400);
+  }
   .sidebar-item .icon { font-size: 18px; }
   .sidebar-footer { margin-top: auto; padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.07); }
   .sidebar-user { display: flex; align-items: center; gap: 10px; }

@@ -17,6 +17,8 @@ class RegimeController extends BaseController
             return redirect()->to('/formulaire');
         }
 
+        $user = $userModel->find($user['id']) ?? $user;
+
         $poids = $userModel->getPoidsTailleActuel($user['id']);
         $poidsKg = $poids['poids_kg'] ?? 0;
         $tailleCm = $poids['taille_cm'] ?? 0;
