@@ -49,9 +49,9 @@
         </a>
         
         <div class="bo-section">Paramètres</div>
-        <div class="bo-item">
+        <!-- <div class="bo-item">
             <i class="fas fa-cog" style="font-size: 1.2rem; margin-right: 10px;"></i> Paramètres
-        </div>
+        </div> -->
         <a href="/logout" class="bo-item">
             <i class="fas fa-sign-out-alt" style="font-size: 1.2rem; margin-right: 10px;"></i> Se déconnecter
         </a>

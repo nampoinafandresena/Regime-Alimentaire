@@ -362,7 +362,7 @@
             </div>
             <div class="user-badge">
                 <span id="userGoldBadge" class="gold-status"><i class="fas fa-gem"></i> Standard</span>
-                <span class="wallet"><i class="fas fa-coins"></i> <span id="walletAmount">35.00</span> €</span>
+                <span class="wallet"><i class="fas fa-coins"></i> <span id="walletAmount">35.00</span> Ar</span>
                 <i class="fas fa-bell" style="color:#7c8f9e"></i>
             </div>
         </div>
@@ -407,7 +407,7 @@
             <!-- options gold teaser -->
             <div class="gold-offer" id="goldOfferBox">
                 <div><i class="fas fa-crown" style="color:#f0a500; font-size:1.8rem;"></i> <strong>Option GOLD</strong><br> -15% sur tous les régimes, accès illimité aux programmes premium</div>
-                <button class="btn" id="upgradeGoldBtn">Passer Gold (39,99€)</button>
+                <button class="btn" id="upgradeGoldBtn">Passer Gold (39,99Ar)</button>
             </div>
         </div>
 
@@ -452,7 +452,7 @@
                 <h3><i class="fas fa-database"></i> CRUD Régimes</h3>
                 <div class="form-row">
                     <input type="text" id="regimeName" placeholder="Nom régime (ex: Hyperprotéiné)">
-                    <input type="number" id="regimePrice" placeholder="Prix (€)">
+                    <input type="number" id="regimePrice" placeholder="Prix (Ar)">
                     <input type="number" id="regimeDuration" placeholder="Durée (semaines)">
                     <select id="regimeEffect"><option value="perte">Perte poids</option><option value="gain">Gain poids</option></select>
                     <button class="btn" id="addRegimeBtn">Ajouter régime</button>
@@ -472,7 +472,7 @@
                 <h3>Validation codes (porte-monnaie)</h3>
                 <div class="form-row">
                     <input type="text" id="codeInput" placeholder="Entrez votre code promo">
-                    <button class="btn" id="validateCodeBtn">Ajouter argent (+5€)</button>
+                    <button class="btn" id="validateCodeBtn">Ajouter argent (+5Ar)</button>
                 </div>
                 <p><small>Codes disponibles: WELCOME5, NUTRIGOLD, SPORT10 (exemple)</small></p>
             </div>
@@ -567,12 +567,12 @@
         let regimeContainer = document.getElementById("regimeListContainer");
         let sportContainer = document.getElementById("sportListContainer");
         let discount = currentUser.gold ? 0.85 : 1;
-        regimeContainer.innerHTML = regimes.map(r => `<div class="card"><h4>${r.nom}</h4><p>🍗 Viande ${r.viande}% / 🐟 Poisson ${r.poisson}% / 🍗 Volaille ${r.volaille}%</p><p>Durée: ${r.dureeSemaines} semaines</p><p class="price">${(r.prix * discount).toFixed(2)} € ${currentUser.gold ? "( -15% Gold)" : ""}</p><button class="btn-small acheter" data-id="${r.id}">Acheter régime</button></div>`).join('');
+        regimeContainer.innerHTML = regimes.map(r => `<div class="card"><h4>${r.nom}</h4><p>🍗 Viande ${r.viande}% / 🐟 Poisson ${r.poisson}% / 🍗 Volaille ${r.volaille}%</p><p>Durée: ${r.dureeSemaines} semaines</p><p class="price">${(r.prix * discount).toFixed(2)} Ar ${currentUser.gold ? "( -15% Gold)" : ""}</p><button class="btn-small acheter" data-id="${r.id}">Acheter régime</button></div>`).join('');
         sportContainer.innerHTML = activites.map(s => `<div class="card"><h4>${s.nom}</h4><p>🔥 ~${s.calories} kcal/séance</p><button class="btn-small btn-outline">Choisir activité</button></div>`).join('');
         document.querySelectorAll(".acheter").forEach(btn => btn.addEventListener("click", (e) => {
             let id = parseInt(btn.dataset.id);
             let regime = regimes.find(r=>r.id===id);
-            if(regime) alert(`💰 ${regime.nom} ajouté à votre planning. Prix final: ${(regime.prix * (currentUser.gold?0.85:1)).toFixed(2)}€ (déduit du porte-monnaie non implémenté ici mais simulation)`);
+            if(regime) alert(`💰 ${regime.nom} ajouté à votre planning. Prix final: ${(regime.prix * (currentUser.gold?0.85:1)).toFixed(2)}Ar (déduit du porte-monnaie non implémenté ici mais simulation)`);
         }));
         let goldMsgDiv = document.getElementById("goldDiscountMsg");
         if(currentUser.gold) goldMsgDiv.style.display = "block";
@@ -581,7 +581,7 @@
 
     function refreshAdminCrud() {
         let regimeListDiv = document.getElementById("regimeCrudList");
-        regimeListDiv.innerHTML = `<table class="data-table"><thead><tr><th>Nom</th><th>Prix</th><th>Durée(s)</th><th>Action</th></tr></thead><tbody>${regimes.map(r => `<tr><td>${r.nom}</td><td>${r.prix}€</td><td>${r.dureeSemaines} sem</td><td><button class="btn-small delRegime" data-id="${r.id}">Supprimer</button></td></tr>`).join('')}</tbody></table>`;
+        regimeListDiv.innerHTML = `<table class="data-table"><thead><tr><th>Nom</th><th>Prix</th><th>Durée(s)</th><th>Action</th></tr></thead><tbody>${regimes.map(r => `<tr><td>${r.nom}</td><td>${r.prix}Ar</td><td>${r.dureeSemaines} sem</td><td><button class="btn-small delRegime" data-id="${r.id}">Supprimer</button></td></tr>`).join('')}</tbody></table>`;
         document.querySelectorAll(".delRegime").forEach(btn => btn.addEventListener("click", (e)=>{
             let idDel = parseInt(btn.dataset.id);
             regimes = regimes.filter(r=>r.id !== idDel);
@@ -627,7 +627,7 @@
         if(validCodes.includes(code.toUpperCase())) {
             currentUser.wallet += 5;
             updateDashboardUI();
-            alert(`+5€ ajouté ! Nouveau solde : ${currentUser.wallet}€`);
+            alert(`+5Ar ajouté ! Nouveau solde : ${currentUser.wallet}Ar`);
             document.getElementById("codeInput").value="";
         } else alert("Code invalide");
     });
@@ -636,7 +636,7 @@
         if(validCodes.includes(code.toUpperCase())) {
             currentUser.wallet += 5;
             updateDashboardUI();
-            document.getElementById("codeMsg").innerText = "Code validé +5€";
+            document.getElementById("codeMsg").innerText = "Code validé +5Ar";
         } else document.getElementById("codeMsg").innerText = "Code non reconnu";
     });
     document.getElementById("saveProfileBtn")?.addEventListener("click",()=>{
@@ -657,7 +657,7 @@
             updateDashboardUI();
             refreshRegimeSports();
             alert("Félicitations ! Vous êtes membre GOLD, -15% sur tous les régimes !");
-        } else alert(`Solde insuffisant (${currentUser.wallet}€), besoin de 39.99€. Utilisez des codes promo.`);
+        } else alert(`Solde insuffisant (${currentUser.wallet}Ar), besoin de 39.99Ar. Utilisez des codes promo.`);
     });
     document.getElementById("exportPdfBtn")?.addEventListener("click",()=>{
         alert("Fonctionnalité PDF : export du planning personnalisé (IMC, objectif, régime suggéré, sport). Version complète générée en backend.");

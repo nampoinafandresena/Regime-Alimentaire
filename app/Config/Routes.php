@@ -24,6 +24,7 @@ $routes->post('/profil/gold', 'UserController::acheterGold');
 $routes->get('/profil/export-pdf', 'UserExportController::exportPlanPDF');
 
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
+$routes->get('/bo/dashboard/params', 'BackOfficeController::crud_params');
 
 $routes->get('/bo/dashboard/regime', 'BORegimeController::crud_regime');
 $routes->post('/bo/dashboard/regime/delete/(:num)', 'BORegimeController::deleteRegimeAjax/$1');

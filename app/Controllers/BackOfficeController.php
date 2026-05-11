@@ -24,6 +24,7 @@ class BackOfficeController extends BaseController
         $regimeModel = new RegimeModel();
         $dataRegimes = $regimeModel->countActiveRegimes();
         $dataRegimesInfos = $regimeModel->getAllInfosRegimes();
+        $populateRegimes = $regimeModel->getPopulariteRegimes();
 
         $codeModel = new CodeModel();
         $dataCodes = $codeModel->countValidatedCodes();
@@ -36,6 +37,7 @@ class BackOfficeController extends BaseController
             'dataUserInfos' => $dataUserInfos,
             'dataRegimes' => $dataRegimes,
             'dataRegimesInfos' => $dataRegimesInfos,
+            'populateRegimes' => $populateRegimes,
             'dataCodes' => $dataCodes,
             'objectifsStats' => $objectifsStats 
         ]);
@@ -50,6 +52,10 @@ class BackOfficeController extends BaseController
 
     public function crud_code(): string{
         return view('Modal-BO', ['page' => 'pages/bo-crud-code']);
+    }
+
+    public function crud_params(): string{
+        return view('Modal-BO', ['page' => 'pages/bo-crud-params']);
     }
 
     public function crud_user(){

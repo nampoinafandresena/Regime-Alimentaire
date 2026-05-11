@@ -116,18 +116,18 @@
 <div class="action-btns">
     <?php if(!$aEteUtilise && $estValide && !$estExpire): ?>
         <button class="btn-edit" onclick="validerCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')" title="Valider">
-            <i class="bi bi-check-circle-fill"></i>
+            <i class="bi bi-check-circle-fill">Valider</i>
         </button>
         <button class="btn-del" onclick="invaliderCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')" title="Invalider">
-            <i class="bi bi-x-circle-fill"></i>
+            <i class="bi bi-x-circle-fill">Invalider</i>
         </button>
     <?php else: ?>
         <button class="btn-edit" onclick="voirCode(<?= $code['id'] ?>)" title="Voir">
-            <i class="bi bi-eye-fill"></i>
+            <i class="bi bi-eye-fill">Voir plus</i>
         </button>
     <?php endif; ?>
     <button class="btn-del" onclick="deleteCode(<?= $code['id'] ?>, '<?= esc($code['code']) ?>')" title="Supprimer">
-        <i class="bi bi-trash-fill"></i>
+        <i class="bi bi-trash-fill">Supprimer</i>
     </button>
 </div>
                                     </td>

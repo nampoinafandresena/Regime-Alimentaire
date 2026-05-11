@@ -1,15 +1,15 @@
 <div class="bo-content">
     <div class="page-header"><h2>Tableau de bord Admin</h2><p>Vue d'ensemble au <?= date('d/m/Y'); ?></p></div>
     <div class="kpi-row">
-      <div class="kpi-card"><div class="kpi-label">Utilisateurs total</div><div class="kpi-value"><?= $dataUser; ?></div><div class="kpi-trend">↑ +12 ce mois</div></div>
-      <div class="kpi-card"><div class="kpi-label">Abonnés Gold</div><div class="kpi-value"><?= $dataGold; ?></div><div class="kpi-trend">↑ +5 ce mois</div></div>
-      <div class="kpi-card"><div class="kpi-label">Régimes</div><div class="kpi-value"><?= $dataRegimes; ?></div><div class="kpi-trend">↑ +23 ce mois</div></div>
-      <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value"><?= $dataCodes; ?></div><div class="kpi-trend">↑ +8 ce mois</div></div>
+      <div class="kpi-card"><div class="kpi-label">Utilisateurs total</div><div class="kpi-value"><?= $dataUser; ?></div></div>
+      <div class="kpi-card"><div class="kpi-label">Abonnés Gold</div><div class="kpi-value"><?= $dataGold; ?></div></div>
+      <div class="kpi-card"><div class="kpi-label">Régimes</div><div class="kpi-value"><?= $dataRegimes; ?></div></div>
+      <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value"><?= $dataCodes; ?></div></div>
     </div>
     <div class="chart-row">
       <div class="chart-card chart-card--full">
-        <h3>Popularité des régimes</h3>
-        <?php if(empty($dataRegimesInfos)): ?>
+        <h3>Popularité des régimes auprès des utilisateurs</h3>
+        <?php if(empty($populateRegimes)): ?>
             <div style="text-align: center; padding: 40px; color: var(--slate-400);">
                 Aucun régime à afficher
             </div>
@@ -92,7 +92,11 @@
               <td><?= $user['email'] ?></td>
               <td><?= $user['imc'] ?></td>
               <td><?= $user['objectif'] ?></td>
-              <td><span class="badge-status badge-active"><?= $user['statut'] ?></span></td>
+              <?php if ($user['statut'] === 'Gold'): ?>
+                <td><span class="badge-status badge-gold">⭐ <?= $user['statut'] ?></span></td>
+              <?php else: ?>
+                <td><span class="badge-status badge-active"><?= $user['statut'] ?></span></td>
+              <?php endif; ?>
             </tr>
           <?php endforeach; ?>
         </tbody>
@@ -103,23 +107,23 @@
 <script>
 // Graphique en camembert des objectifs
 const objectifsData = <?= json_encode($objectifsStats) ?>;
-const regimesData = <?= json_encode($dataRegimesInfos) ?>;
+const regimesData = <?= json_encode($populateRegimes) ?>;
 
 if(document.getElementById('populariteRegimesChart') && regimesData.length > 0) {
     const regimesCtx = document.getElementById('populariteRegimesChart').getContext('2d');
-    const regimeValues = regimesData.map(regime => {
-        const price = Number(regime.prix);
-        const duration = Number(regime.duree_semaines);
-        return Number.isFinite(price) ? price : (Number.isFinite(duration) ? duration : 1);
-    });
-
+    
+    // Extraire les données correctement
+    const regimeLabels = regimesData.map(regime => regime.nom);
+    const regimeNombreChoix = regimesData.map(regime => regime.nombre_choix || 0);
+    const regimePourcentages = regimesData.map(regime => regime.pourcentage || 0);
+    
     new Chart(regimesCtx, {
         type: 'bar',
         data: {
-            labels: regimesData.map(regime => regime.nom),
+            labels: regimeLabels,
             datasets: [{
-                label: 'Popularité estimée',
-                data: regimeValues,
+                label: 'Nombre de choix',
+                data: regimeNombreChoix,
                 backgroundColor: regimesData.map((_, index) => {
                     const colors = ['#3b82f6', '#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0ea5e9', '#f97316'];
                     return colors[index % colors.length];
@@ -133,21 +137,39 @@ if(document.getElementById('populariteRegimesChart') && regimesData.length > 0) 
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: {
-                    ticks: { autoSkip: false, maxRotation: 45, minRotation: 0, font: { size: 11 } }
-                },
                 y: {
                     beginAtZero: true,
-                    grid: { color: '#e2e8f0' }
+                    title: {
+                        display: true,
+                        text: 'Nombre de choix',
+                        font: { size: 12, weight: 'bold' }
+                    },
+                    grid: { color: '#e2e8f0' },
+                    ticks: { stepSize: 1, precision: 0 }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Régimes',
+                        font: { size: 12, weight: 'bold' }
+                    },
+                    ticks: { 
+                        autoSkip: false, 
+                        maxRotation: 45, 
+                        minRotation: 0, 
+                        font: { size: 11 } 
+                    }
                 }
             },
             plugins: {
-                legend: { display: false },
+                legend: { display: true, position: 'top' },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             const value = context.parsed.y || 0;
-                            return `Valeur : ${value}`;
+                            const index = context.dataIndex;
+                            const pourcentage = regimePourcentages[index] || 0;
+                            return `Choix: ${value} (${pourcentage}% du total)`;
                         }
                     }
                 }
