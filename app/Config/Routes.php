@@ -47,3 +47,5 @@ $routes->post('/bo/dashboard/code/invalider/(:num)', 'BOCodeController::invalide
 
 $routes->get('/bo/dashboard/user', 'BackOfficeController::crud_user');
 $routes->post('/bo/dashboard/user/delete/(:num)', 'BackOfficeController::deleteUserAjax/$1');
+
+$routes->post('/traitement-choix', 'traitementChoix::traitement');

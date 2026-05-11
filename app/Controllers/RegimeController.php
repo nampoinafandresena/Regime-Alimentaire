@@ -49,15 +49,32 @@ class RegimeController extends BaseController
             $variationKg = 0.1;
         }
 
-        // Cible alignée sur regimes_prix_duree.variation_poids (+ = prise, - = perte, 0 = équilibre pour IMC idéal)
+        $tailleM = $tailleCm > 0 ? $tailleCm / 100 : 0;
+
+        // Cible alignée sur regimes_prix_duree.variation_poids (+ = prise, - = perte)
         $variationSouhaitee = 0.0;
         if ($selectedObjectifId === 1) {
             $variationSouhaitee = $variationKg;
         } elseif ($selectedObjectifId === 2) {
             $variationSouhaitee = -$variationKg;
         } else {
-            // IMC idéal : rapprocher d'une variation de pack nulle (stable / modérée)
-            $variationSouhaitee = 0.0;
+            // IMC idéal : calculer le poids à atteindre pour être entre 18.5 et 24.9
+            if ($tailleM > 0) {
+                $poidsMinIdeal = 18.5 * $tailleM * $tailleM;
+                $poidsMaxIdeal = 24.9 * $tailleM * $tailleM;
+
+                if ($poidsKg < $poidsMinIdeal) {
+                    $variationSouhaitee = $poidsMinIdeal - $poidsKg;
+                } elseif ($poidsKg > $poidsMaxIdeal) {
+                    $variationSouhaitee = -($poidsKg - $poidsMaxIdeal);
+                } else {
+                    $variationSouhaitee = 0.0;
+                }
+
+                $variationKg = abs($variationSouhaitee);
+            } else {
+                $variationSouhaitee = 0.0;
+            }
         }
 
         // Même valeur de comparaison pour le tri sport : ABS(s.variation_poids_par_heure - variationSouhaitee)
@@ -79,7 +96,7 @@ class RegimeController extends BaseController
         foreach ($recommendedRegimes as &$regime) {
             $baseVariation = (float) ($regime['variation_poids'] ?? 0);
             $baseAbs = abs($baseVariation);
-            $ratio = $baseAbs > 0 ? ($cibleVariation / $baseAbs) : 1.0;
+            $ratio = ($baseAbs > 0 && $cibleVariation > 0) ? ($cibleVariation / $baseAbs) : 1.0;
             $regime['duree_semaines_calculee'] = round(((float) ($regime['duree_semaines'] ?? 0)) * $ratio, 1);
             $prixCalcule = round(((float) ($regime['prix'] ?? 0)) * $ratio, 0);
             $regime['prix_initial'] = $prixCalcule;
@@ -96,8 +113,7 @@ class RegimeController extends BaseController
             }
         }
 
-        $tailleM = $tailleCm > 0 ? $tailleCm / 100 : 0;
-        $imc = $tailleM > 0 ? round($poidsKg / ($tailleM * $tailleM), 1) : null;
+    $imc = $tailleM > 0 ? round($poidsKg / ($tailleM * $tailleM), 1) : null;
 
         return view('Modal', [
             'page' => 'pages/Regime',

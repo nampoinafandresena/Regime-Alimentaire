@@ -20,6 +20,8 @@ INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VAL
 (7, 162.00, 58.50, '2024-01-09 13:20:00'),
 (8, 178.00, 80.00, '2024-01-16 10:30:00');
 
+INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VALUES 
+(7, 200.00, 50.00, '2024-02-15 10:00:00');  
 -- Deuxième mesures pour certains (suivi)
 INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VALUES 
 (2, 165.00, 67.20, '2024-02-10 09:30:00'),
