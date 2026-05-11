@@ -56,7 +56,7 @@
                 <div class="regime-desc"><?= esc($regime['description']) ?></div>
                 <div class="regime-meta">
                   <span class="tag green"><?= esc($objectifLabel ?? '') ?></span>
-                  <span class="tag blue"><?= esc($regime['duree_semaines']) ?> semaines</span>
+                  <span class="tag blue"><?= esc($regime['duree_semaines_calculee'] ?? $regime['duree_semaines']) ?> semaines</span>
                   <span class="tag <?= $variation < 0 ? 'red' : 'amber' ?>">
                     Variation <?= $variation > 0 ? '+' : '' ?><?= esc($regime['variation_poids']) ?> kg
                   </span>
@@ -73,8 +73,16 @@
                 </div>
                 <div class="regime-price">
                   <div>
-                    <div class="price-amount"><?= number_format((float) $regime['prix'], 0, ',', ' ') ?> Ar</div>
-                    <div class="price-period">pour <?= esc($regime['duree_semaines']) ?> semaines</div>
+                    <?php if ((int) ($user['est_gold'] ?? 0) === 1 && isset($regime['prix_initial'])): ?>
+                      <div class="price-amount" style="font-size:14px; color: var(--slate-500); text-decoration: line-through;">
+                        <?= number_format((float) ($regime['prix_initial']), 0, ',', ' ') ?> Ar
+                      </div>
+                      <div class="price-amount">
+                        <?= number_format((float) ($regime['prix_calcule']), 0, ',', ' ') ?> Ar
+                      </div>
+                    <?php else: ?>
+                      <div class="price-amount"><?= number_format((float) ($regime['prix_calcule']), 0, ',', ' ') ?> Ar</div>
+                    <?php endif; ?>
                   </div>
                 </div>
               </div>

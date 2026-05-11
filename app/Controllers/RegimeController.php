@@ -61,7 +61,31 @@ class RegimeController extends BaseController
         }
 
         // Même valeur de comparaison pour le tri sport : ABS(s.variation_poids_par_heure - variationSouhaitee)
-        $recommendedRegimes = $regimeModel->getRecommendedPlansByObjectifAndVariation($selectedObjectifId, $variationSouhaitee, 3);
+        $recommendedRegimesRaw = $regimeModel->getRecommendedPlansByObjectifAndVariation($selectedObjectifId, $variationSouhaitee, 12);
+        $uniqueRegimes = [];
+        foreach ($recommendedRegimesRaw as $regime) {
+            $regimeId = (int) ($regime['id'] ?? 0);
+            if ($regimeId && !isset($uniqueRegimes[$regimeId])) {
+                $uniqueRegimes[$regimeId] = $regime;
+            }
+            if (count($uniqueRegimes) >= 3) {
+                break;
+            }
+        }
+        $recommendedRegimes = array_values($uniqueRegimes);
+
+        $isGold = (int) ($user['est_gold'] ?? 0) === 1;
+        $cibleVariation = abs($variationKg);
+        foreach ($recommendedRegimes as &$regime) {
+            $baseVariation = (float) ($regime['variation_poids'] ?? 0);
+            $baseAbs = abs($baseVariation);
+            $ratio = $baseAbs > 0 ? ($cibleVariation / $baseAbs) : 1.0;
+            $regime['duree_semaines_calculee'] = round(((float) ($regime['duree_semaines'] ?? 0)) * $ratio, 1);
+            $prixCalcule = round(((float) ($regime['prix'] ?? 0)) * $ratio, 0);
+            $regime['prix_initial'] = $prixCalcule;
+            $regime['prix_calcule'] = $isGold ? round($prixCalcule * 0.85, 0) : $prixCalcule;
+        }
+        unset($regime);
         $suggestedActivities = $activiteModel->getRecommendedByObjectifAndVariation($variationSouhaitee, 3);
 
         $objectifLabel = 'Objectif non defini';

@@ -49,7 +49,7 @@ class RegimeModel extends Model{
 
     public function getRecommendedPlansByObjectifAndVariation(int $objectifId, float $variationSouhaitee, int $limit = 3): array
     {
-        $cible = round($variationSouhaitee, 2);
+        $cible = abs(round($variationSouhaitee, 2));
 
         $builder = $this->db->table('regimes r');
         $builder->select(
@@ -64,7 +64,7 @@ class RegimeModel extends Model{
             $builder->where('rpd.variation_poids <', 0);
         }
 
-        $builder->orderBy('ABS(rpd.variation_poids - ' . $cible . ')', 'ASC', false);
+    $builder->orderBy('ABS(ABS(rpd.variation_poids) - ' . $cible . ')', 'ASC', false);
         $builder->limit($limit);
 
         return $builder->get()->getResultArray();
