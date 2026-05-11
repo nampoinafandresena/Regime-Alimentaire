@@ -1,25 +1,6 @@
-<div class="app-layout">
-  <div class="sidebar">
-    <div class="sidebar-logo">Nutri<span>Path</span></div>
-    <div class="sidebar-section">Menu</div>
-    <a href="/dashboard" class="sidebar-item">
-      <i class="fas fa-chart-line" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
-    </a>
-    <a href="/regimes" class="sidebar-item active">
-      <i class="fas fa-utensils" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
-    </a>
-    <a href="/sports" class="sidebar-item">
-      <i class="fas fa-dumbbell" style="font-size: 1.2rem; margin-right: 10px;"></i> Activités
-    </a>
-    <a href="/profil" class="sidebar-item">
-      <i class="fas fa-user-circle" style="font-size: 1.2rem; margin-right: 10px;"></i> Mon profil
-    </a>
-    <div class="sidebar-section" style="margin-top: 16px;">Compte</div>
-    <a href="/logout" class="sidebar-item">
-      <i class="fas fa-sign-out-alt" style="font-size: 1.2rem; margin-right: 10px;"></i> Se déconnecter
-    </a>
-  </div>
 
+<div class="app-layout">
+  <?php include ('Sidebar.php') ?>
   <div class="main-content">
     <div class="page-header">
       <h2>Objectif et variation de poids</h2>
