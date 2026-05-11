@@ -54,6 +54,10 @@ class BackOfficeController extends BaseController
         return view('Modal-BO', ['page' => 'pages/bo-crud-code']);
     }
 
+    public function crud_params(): string{
+        return view('Modal-BO', ['page' => 'pages/bo-crud-params']);
+    }
+
     public function crud_user(){
         $userModel = new UserModel();
         $searchTerm = $this->request->getGet('search');
