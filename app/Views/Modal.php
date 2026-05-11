@@ -24,20 +24,7 @@
     <a href="/inscription/etape-1" class="<?= ($page ?? '') === 'inscription1' ? 'active' : '' ?>">
         <i class="bi bi-pencil-fill"></i> Inscription
     </a>
-    <a href="/dashboard" class="<?= ($page ?? '') === 'pages/dashboard' ? 'active' : '' ?>">
-        <i class="bi bi-graph-up"></i> Mon tableau
-    </a>
-    <a href="/regimes" class="<?= ($page ?? '') === 'pages/regimes' ? 'active' : '' ?>">
-        <i class="fas fa-utensils"></i> Régimes
-    </a>
-    <a href="/sports" class="<?= ($page ?? '') === 'pages/sports' ? 'active' : '' ?>">
-        <i class="bi bi-bicycle"></i> Sports
-    </a>
-    <a href="/profil" class="<?= ($page ?? '') === 'pages/profil' ? 'active' : '' ?>">
-        <i class="bi bi-person-circle"></i> Mon profil
-    </a>
 </nav>
-
 
     <?php include $page . '.php' ?>
 </body>

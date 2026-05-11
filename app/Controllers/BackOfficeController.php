@@ -23,6 +23,7 @@ class BackOfficeController extends BaseController
         
         $regimeModel = new RegimeModel();
         $dataRegimes = $regimeModel->countActiveRegimes();
+        $dataRegimesInfos = $regimeModel->getAllInfosRegimes();
 
         $codeModel = new CodeModel();
         $dataCodes = $codeModel->countValidatedCodes();
@@ -34,19 +35,9 @@ class BackOfficeController extends BaseController
             'dataGold' => $dataGold,
             'dataUserInfos' => $dataUserInfos,
             'dataRegimes' => $dataRegimes,
+            'dataRegimesInfos' => $dataRegimesInfos,
             'dataCodes' => $dataCodes,
             'objectifsStats' => $objectifsStats 
-        ]);
-    }
-
-    public function crud_regime(): string{
-        $regimeModel = new RegimeModel();
-        $searchTerm = $this->request->getGet('search');
-        $regimes = $regimeModel->getAllInfosRegimes($searchTerm);
-        return view('Modal-BO', [
-            'page' => 'pages/bo-crud-regime',
-            'regimes' => $regimes,
-            'title' => 'Régimes'
         ]);
     }
 
@@ -134,22 +125,31 @@ class BackOfficeController extends BaseController
     
     public function deleteUser($id)
     {
-        $userModel = new UserModel();
-        $userModel->delete($id);
-        
-        return redirect()->to('/backoffice')->with('success', 'Utilisateur supprimé');
+        $result = $this->deleteUserWithRelations((int) $id);
+
+        if (! $result['success']) {
+            return redirect()->to('/backoffice')->with('error', $result['message']);
+        }
+
+        return redirect()->to('/backoffice')->with('success', $result['message']);
     }
 
     public function deleteUserAjax($id)
     {
         if ($this->request->isAJAX()) {
-            $userModel = new UserModel();
-            
             try {
-                $userModel->delete($id);
+                $result = $this->deleteUserWithRelations((int) $id);
+
+                if (! $result['success']) {
+                    return $this->response->setJSON([
+                        'success' => false,
+                        'message' => $result['message']
+                    ]);
+                }
+
                 return $this->response->setJSON([
                     'success' => true,
-                    'message' => 'Utilisateur supprimé avec succès'
+                    'message' => $result['message']
                 ]);
             } catch (\Exception $e) {
                 return $this->response->setJSON([
@@ -165,172 +165,38 @@ class BackOfficeController extends BaseController
         ]);
     }
 
-    public function deleteRegimeAjax($id)
+    private function deleteUserWithRelations(int $id): array
     {
-        if ($this->request->isAJAX()) {
-            $regimeModel = new RegimeModel();
-            
-            try {
-                $regimeModel->delete($id);
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => 'Régime supprimé avec succès'
-                ]);
-            } catch (\Exception $e) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Erreur lors de la suppression: ' . $e->getMessage()
-                ]);
-            }
-        }
-        
-        return $this->response->setStatusCode(400)->setJSON([
-            'success' => false,
-            'message' => 'Requête invalide'
-        ]);
-    }
+        $db = \Config\Database::connect();
 
-    public function getRegimeAjax($id)
-    {
-        if ($this->request->isAJAX()) {
-            $regimeModel = new RegimeModel();
-            $regime = $regimeModel->getRegimeById($id);
-            
-            if ($regime) {
-                return $this->response->setJSON([
-                    'success' => true,
-                    'regime' => $regime
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Régime non trouvé'
-                ]);
-            }
-        }
-        
-        return $this->response->setStatusCode(400)->setJSON([
-            'success' => false,
-            'message' => 'Requête invalide'
-        ]);
-    }
-
-    public function createRegimeAjax()
-    {
-        if ($this->request->isAJAX()) {
-            $regimeModel = new RegimeModel();
-            
-            $data = [
-                'nom' => $this->request->getPost('nom'),
-                'description' => $this->request->getPost('description'),
-                'pourcentage_viande' => $this->request->getPost('pourcentage_viande'),
-                'pourcentage_poisson' => $this->request->getPost('pourcentage_poisson'),
-                'pourcentage_volaille' => $this->request->getPost('pourcentage_volaille')
+        $userExists = $db->table('utilisateurs')->where('id', $id)->countAllResults() > 0;
+        if (! $userExists) {
+            return [
+                'success' => false,
+                'message' => 'Utilisateur introuvable'
             ];
-            
-            // Validation basique
-            if (empty($data['nom']) || empty($data['description'])) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Le nom et la description sont obligatoires'
-                ]);
-            }
-            
-            try {
-                $regimeId = $regimeModel->insert($data);
-                
-                if ($regimeId) {
-                    // Insérer les données de prix et durée si fournies
-                    $prixData = [
-                        'id_regime' => $regimeId,
-                        'duree_semaines' => $this->request->getPost('duree_semaines'),
-                        'prix' => $this->request->getPost('prix'),
-                        'variation_poids' => $this->request->getPost('variation_min') . ' à ' . $this->request->getPost('variation_max')
-                    ];
-                    
-                    $this->db->table('regimes_prix_duree')->insert($prixData);
-                    
-                    return $this->response->setJSON([
-                        'success' => true,
-                        'message' => 'Régime créé avec succès'
-                    ]);
-                } else {
-                    return $this->response->setJSON([
-                        'success' => false,
-                        'message' => 'Erreur lors de la création du régime'
-                    ]);
-                }
-            } catch (\Exception $e) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Erreur lors de la création: ' . $e->getMessage()
-                ]);
-            }
         }
-        
-        return $this->response->setStatusCode(400)->setJSON([
-            'success' => false,
-            'message' => 'Requête invalide'
-        ]);
-    }
 
-    public function updateRegimeAjax($id)
-    {
-        if ($this->request->isAJAX()) {
-            $regimeModel = new RegimeModel();
-            
-            $data = [
-                'nom' => $this->request->getPost('nom'),
-                'description' => $this->request->getPost('description'),
-                'pourcentage_viande' => $this->request->getPost('pourcentage_viande'),
-                'pourcentage_poisson' => $this->request->getPost('pourcentage_poisson'),
-                'pourcentage_volaille' => $this->request->getPost('pourcentage_volaille')
+        $db->transStart();
+
+        $db->table('code_users')->where('id_utilisateur', $id)->delete();
+        $db->table('achats_gold')->where('id_utilisateur', $id)->delete();
+        $db->table('utilisateurs_objectifs')->where('id_utilisateur', $id)->delete();
+        $db->table('donnees_sante')->where('id_utilisateur', $id)->delete();
+        $db->table('utilisateurs')->where('id', $id)->delete();
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return [
+                'success' => false,
+                'message' => 'La suppression a échoué à cause des dépendances en base.'
             ];
-            
-            // Validation basique
-            if (empty($data['nom']) || empty($data['description'])) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Le nom et la description sont obligatoires'
-                ]);
-            }
-            
-            try {
-                $updated = $regimeModel->update($id, $data);
-                
-                if ($updated) {
-                    // Mettre à jour les données de prix et durée
-                    $prixData = [
-                        'duree_semaines' => $this->request->getPost('duree_semaines'),
-                        'prix' => $this->request->getPost('prix'),
-                        'variation_poids' => $this->request->getPost('variation_min') . ' à ' . $this->request->getPost('variation_max')
-                    ];
-                    
-                    $this->db->table('regimes_prix_duree')
-                             ->where('id_regime', $id)
-                             ->update($prixData);
-                    
-                    return $this->response->setJSON([
-                        'success' => true,
-                        'message' => 'Régime mis à jour avec succès'
-                    ]);
-                } else {
-                    return $this->response->setJSON([
-                        'success' => false,
-                        'message' => 'Erreur lors de la mise à jour du régime'
-                    ]);
-                }
-            } catch (\Exception $e) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Erreur lors de la mise à jour: ' . $e->getMessage()
-                ]);
-            }
         }
-        
-        return $this->response->setStatusCode(400)->setJSON([
-            'success' => false,
-            'message' => 'Requête invalide'
-        ]);
+
+        return [
+            'success' => true,
+            'message' => 'Utilisateur supprimé avec succès'
+        ];
     }
 }
