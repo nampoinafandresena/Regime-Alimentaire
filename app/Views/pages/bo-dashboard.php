@@ -1,14 +1,14 @@
 <div class="bo-content">
     <div class="page-header"><h2>Tableau de bord Admin</h2><p>Vue d'ensemble au <?= date('d/m/Y'); ?></p></div>
     <div class="kpi-row">
-      <div class="kpi-card"><div class="kpi-label">Utilisateurs total</div><div class="kpi-value"><?= $dataUser; ?></div><div class="kpi-trend">↑ +12 ce mois</div></div>
-      <div class="kpi-card"><div class="kpi-label">Abonnés Gold</div><div class="kpi-value"><?= $dataGold; ?></div><div class="kpi-trend">↑ +5 ce mois</div></div>
-      <div class="kpi-card"><div class="kpi-label">Régimes</div><div class="kpi-value"><?= $dataRegimes; ?></div><div class="kpi-trend">↑ +23 ce mois</div></div>
-      <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value"><?= $dataCodes; ?></div><div class="kpi-trend">↑ +8 ce mois</div></div>
+      <div class="kpi-card"><div class="kpi-label">Utilisateurs total</div><div class="kpi-value"><?= $dataUser; ?></div></div>
+      <div class="kpi-card"><div class="kpi-label">Abonnés Gold</div><div class="kpi-value"><?= $dataGold; ?></div></div>
+      <div class="kpi-card"><div class="kpi-label">Régimes</div><div class="kpi-value"><?= $dataRegimes; ?></div></div>
+      <div class="kpi-card"><div class="kpi-label">Codes validés</div><div class="kpi-value"><?= $dataCodes; ?></div></div>
     </div>
     <div class="chart-row">
       <div class="chart-card chart-card--full">
-        <h3>Popularité des régimes</h3>
+        <h3>Popularité des régimes auprès des utilisateurs</h3>
         <?php if(empty($populateRegimes)): ?>
             <div style="text-align: center; padding: 40px; color: var(--slate-400);">
                 Aucun régime à afficher
@@ -92,7 +92,11 @@
               <td><?= $user['email'] ?></td>
               <td><?= $user['imc'] ?></td>
               <td><?= $user['objectif'] ?></td>
-              <td><span class="badge-status badge-active"><?= $user['statut'] ?></span></td>
+              <?php if ($user['statut'] === 'Gold'): ?>
+                <td><span class="badge-status badge-gold">⭐ <?= $user['statut'] ?></span></td>
+              <?php else: ?>
+                <td><span class="badge-status badge-active"><?= $user['statut'] ?></span></td>
+              <?php endif; ?>
             </tr>
           <?php endforeach; ?>
         </tbody>
