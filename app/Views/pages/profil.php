@@ -8,6 +8,21 @@
   <?php include ('Sidebar.php') ?>
   <div class="main-content">
     <div class="page-header"><h2>Mon profil</h2><p>Gerez vos informations et consultez votre plan nutritionnel</p></div>
+    
+    <!-- Affichage du message de succès -->
+    <?php if (session()->getFlashdata('success')): ?>
+      <div style="background: #d4f0e0; border-left: 4px solid #2d8f57; padding: 16px; border-radius: 8px; margin-bottom: 20px; color: #1e6b3e;">
+        <strong>✓ Succès!</strong> <?= esc(session()->getFlashdata('success')) ?>
+      </div>
+    <?php endif; ?>
+
+    <!-- Affichage du message d'erreur -->
+    <?php if (session()->getFlashdata('error')): ?>
+      <div style="background: #fde8e8; border-left: 4px solid #e04646; padding: 16px; border-radius: 8px; margin-bottom: 20px; color: #c53030;">
+        <strong>✗ Erreur!</strong> <?= esc(session()->getFlashdata('error')) ?>
+      </div>
+    <?php endif; ?>
+    
     <div class="profile-layout">
       <div>
           <div class="profile-card">
