@@ -218,8 +218,6 @@ tr:last-child td { border-bottom: none; }
 .price-cell.del { display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--red-400); }
 .add-row-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--green-500); cursor: pointer; padding: 10px 0; border: none; background: none; font-family: 'DM Sans', sans-serif; }
 
-
-
 /* Responsive */
 @media (max-width: 1000px) {
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
