@@ -126,7 +126,34 @@
         <!-- Recommendations and objectives (visible by default) -->
         <div class="recommendations">
           <h3>Mon plan actuel</h3>
-          <?php if (! empty($recommendedRegimes)): ?>
+          <?php if (! empty($selectedPlans)): ?>
+            <?php foreach ($selectedPlans as $plan): ?>
+              <div class="regime-card" style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; gap:12px;">
+                  <div>
+                    <div class="regime-name"><?= esc($plan['regime_nom'] ?? 'Regime') ?></div>
+                    <div class="regime-desc" style="font-size:13px; color:var(--slate-500);">
+                      <?= esc($plan['regime_description'] ?? '') ?>
+                    </div>
+                    <div style="font-size:12px; color:var(--slate-500); margin-top:6px;">
+                      Sport: <?= esc($plan['sport_nom'] ?? 'N/A') ?>
+                      <?php if (! empty($plan['sport_categorie']) || ! empty($plan['sport_intensite'])): ?>
+                        · <?= esc($plan['sport_categorie'] ?? 'N/A') ?> · <?= esc($plan['sport_intensite'] ?? 'N/A') ?>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div class="price-amount">
+                      <?= number_format((float) ($plan['prix_precis'] ?? 0), 2, ',', ' ') ?> Ar
+                    </div>
+                    <div class="price-period" style="font-size:12px; color:var(--slate-500);">
+                      <?= esc($plan['semaine_precis'] ?? 'N/A') ?> semaines
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php elseif (! empty($recommendedRegimes)): ?>
             <?php foreach ($recommendedRegimes as $r): ?>
               <div class="regime-card" style="margin-bottom:12px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:12px;">
@@ -142,7 +169,7 @@
               </div>
             <?php endforeach; ?>
           <?php else: ?>
-            <div style="color:var(--slate-500);">Aucun régime recommandé pour le moment.</div>
+            <div style="color:var(--slate-500);">Aucun plan sélectionné pour le moment.</div>
           <?php endif; ?>
 
           <h4 id="objectifs-summary-title" style="margin-top:18px;">Objectifs sélectionnés</h4>
@@ -158,7 +185,7 @@
             <?php endif; ?>
           </div>
 
-          <?php if (! empty($recommendedRegimes)): ?>
+          <?php if (! empty($selectedPlans) || ! empty($recommendedRegimes)): ?>
             <a href="<?= base_url('profil/export-pdf') ?>" class="btn-export-pdf" style="display:inline-block; margin-top:20px; padding:12px 20px; background:#000; color:#fff; text-decoration:none; border-radius:8px; font-weight:600; text-align:center; cursor:pointer;">
               📄 Exporter mon plan en PDF
             </a>

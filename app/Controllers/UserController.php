@@ -125,6 +125,7 @@ class UserController extends BaseController
 		$santeModel = new SanteModel();
 		$objectifModel = new ObjectifModel();
 		$userObjectifModel = new UserObjectifModel();
+		$choixRegimesSportModel = new \App\Models\ChoixRegimesSport();
 
 		$user = $userModel->find($userId);
 		$latestSante = $santeModel->getLatestSanteByUserId($userId);
@@ -137,6 +138,7 @@ class UserController extends BaseController
 		$regimeModel = new \App\Models\RegimeModel();
 		$regimes = $regimeModel->getAllInfosRegimes();
 		$recommendedRegimes = array_slice($regimes, 0, 3);
+		$selectedPlans = $choixRegimesSportModel->getChoixDetailsByUserId($userId);
 		$optionGoldModel = new OptionGoldModel();
 		$goldOption = $optionGoldModel->orderBy('prix', 'ASC')->first();
 
@@ -154,6 +156,7 @@ class UserController extends BaseController
 			'selectedObjectifIds' => $selectedObjectifIds,
 			'imc' => $imc,
 			'recommendedRegimes' => $recommendedRegimes,
+			'selectedPlans' => $selectedPlans,
 			'goldOption' => $goldOption,
 		]);
 	}
