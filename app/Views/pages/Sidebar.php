@@ -29,19 +29,7 @@
     }
   }
 ?>
-<?php if (session()->getFlashdata('errors')): ?>
-  <div class="flash flash-error" style="margin-top:16px;">
-    <?php foreach (session()->getFlashdata('errors') as $message): ?>
-      <div><?= esc($message) ?></div>
-    <?php endforeach; ?>
-  </div>
-<?php endif; ?>
 
-<?php if (session()->getFlashdata('success')): ?>
-  <div class="flash" style="margin-top:16px; background:#e8f7ee; color:#1e6b3e; border:1px solid #bfe7cf;">
-    <?= esc(session()->getFlashdata('success')) ?>
-  </div>
-<?php endif; ?>
  <div class="sidebar">
     <div class="sidebar-logo">Nutri<span>Path</span></div>
     <div class="sidebar-section">Menu</div>

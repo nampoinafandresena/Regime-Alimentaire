@@ -1,15 +1,34 @@
 <?php
 
 namespace app\Models;
-
-class ChoixRegimesSport extends BaseModel
+use CodeIgniter\Model;
+class ChoixRegimesSport extends Model
 {
-    protected $table = 'choix_regime_sport';
+    protected $table = 'choix_regimes_sport';
     protected $primaryKey = 'id';
     protected $allowedFields = ['id_utilisateur', 'id_regime', 'id_sport', 'date_choix'];
 
     public function getChoixByUserId($userId){
         return $this->where('id_utilisateur', $userId)->findAll();
+    }
+
+    // inserer plusieurs regime en meme temps pour un sport donné
+    public function insertAll($regimeIds, $sportId){
+        $userId = session()->get('user')['id'] ?? null;
+        if (!$userId) {
+            return false; // ou gérer l'erreur comme vous le souhaitez
+        }
+
+        $data = [];
+        foreach ($regimeIds as $regimeId) {
+            $data[] = [
+                'id_utilisateur' => $userId,
+                'id_regime' => $regimeId,
+                'id_sport' => $sportId
+            ];
+        }
+
+        return $this->insertBatch($data);
     }
 
     
