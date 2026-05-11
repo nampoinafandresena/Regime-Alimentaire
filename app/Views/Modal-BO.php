@@ -19,7 +19,7 @@
   <a href="/"><i class="bi bi-house-fill"></i> Landing</a>
   <a href="/formulaire"><i class="bi bi-lock-fill"></i> Se connecter</a>
   <a href="/bo/dashboard/general" class="active"><i class="bi bi-pencil-fill"></i> BO Dashboard</a>
-  <a href="/bo/dashboard/regime"><i class="fas fa-utensils"></i> BO Régime CRUD</a>
+  <a href="/bo/dashboard/regime"><i class="bi bi-cup-straw"></i> BO Régime CRUD</a>
   <a href="/bo/dashboard/sport"><i class="bi bi-bicycle"></i> BO Sports CRUD</a>
   <a href="/bo/dashboard/code"><i class="bi bi-credit-card"></i> BO Codes</a>
   <a href="/bo/dashboard/user"><i class="bi bi-people"></i> BO Utilisateurs</a>
@@ -31,7 +31,7 @@
         
         <div class="bo-section">Général</div>
         <a href="/bo/dashboard/general" class="bo-item">
-            <i class="bi bi-speedometer2" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
+            <i class="fas fa-chart-line" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
         </a>
         
         <div class="bo-section">Gestion</div>
@@ -39,22 +39,22 @@
             <i class="fas fa-utensils" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
         </a>
         <a href="/bo/dashboard/sport" class="bo-item">
-            <i class="bi bi-bicycle" style="font-size: 1.2rem; margin-right: 10px;"></i> Sports
+            <i class="fas fa-dumbbell" style="font-size: 1.2rem; margin-right: 10px;"></i> Sports
         </a>
         <a href="/bo/dashboard/code" class="bo-item">
-            <i class="bi bi-credit-card-fill" style="font-size: 1.2rem; margin-right: 10px;"></i> Codes wallet
+            <i class="fas fa-credit-card" style="font-size: 1.2rem; margin-right: 10px;"></i> Codes wallet
         </a>
         <a href="/bo/dashboard/user" class="bo-item">
-            <i class="bi bi-people-fill" style="font-size: 1.2rem; margin-right: 10px;"></i> Utilisateurs
+            <i class="fas fa-users" style="font-size: 1.2rem; margin-right: 10px;"></i> Utilisateurs
         </a>
         
         <div class="bo-section">Paramètres</div>
         <div class="bo-item">
-            <i class="bi bi-gear-fill" style="font-size: 1.2rem; margin-right: 10px;"></i> Paramètres
+            <i class="fas fa-cog" style="font-size: 1.2rem; margin-right: 10px;"></i> Paramètres
         </div>
-        <div class="bo-item">
-            <i class="bi bi-box-arrow-right" style="font-size: 1.2rem; margin-right: 10px;"></i> Se déconnecter
-        </div>
+        <a href="/logout" class="bo-item">
+            <i class="fas fa-sign-out-alt" style="font-size: 1.2rem; margin-right: 10px;"></i> Se déconnecter
+        </a>
     </div>
     <?php include $page . '.php' ?>
 </div>

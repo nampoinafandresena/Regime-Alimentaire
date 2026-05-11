@@ -34,7 +34,7 @@
             </div>
             
             <button class="form-submit" type="submit">Se connecter</button>
-            <p class="form-link" style="margin-top:16px">Pas encore de compte ? <a href="inscription1.html">S'inscrire</a></p>
+            <p class="form-link" style="margin-top:16px">Pas encore de compte ? <a href="/inscription/etape-1">S'inscrire</a></p>
         </div>
     </div>
 </form>

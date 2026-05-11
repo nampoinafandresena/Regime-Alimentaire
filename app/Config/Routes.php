@@ -12,6 +12,7 @@ $routes->get('/inscription/etape-2', 'UserController::inscriptionStep2');
 $routes->post('/inscription/etape-2', 'UserController::storeStep2');
 $routes->get('/formulaire', 'AuthController::form');
 $routes->post('/login', 'AuthController::login');   
+$routes->get('/logout', 'AuthController::logout');
 $routes->get('/index', 'RegimeController::index');
 $routes->match(['get', 'post'], '/regimes', 'RegimeController::index');
 $routes->get('/profil', 'UserController::profil');
@@ -20,6 +21,7 @@ $routes->post('/profil/sante', 'UserController::updateSante');
 $routes->post('/profil/objectifs', 'UserController::updateObjectifs');
 $routes->post('/profil/redeem', 'UserController::UtilisationCode');
 $routes->post('/profil/gold', 'UserController::acheterGold');
+$routes->get('/profil/export-pdf', 'UserExportController::exportPlanPDF');
 
 $routes->get('/bo/dashboard/general', 'BackOfficeController::index');
 
