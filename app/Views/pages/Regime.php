@@ -1,3 +1,4 @@
+
 <div class="app-layout">
   <?php include ('Sidebar.php') ?>
   <div class="main-content">
@@ -132,6 +133,68 @@
             <p>Aucune activite proposee.</p>
           <?php endif; ?>
         </div>
+      </form>
+    </div>
+
+    <div class="card suggestion-summary">
+      <div class="card-title">Synthese actuelle</div>
+      <p><strong>Objectif:</strong> <?= esc($objectifLabel ?? 'Non defini') ?></p>
+      <p><strong>Variation demandee:</strong> <?= esc($variationKg ?? 5) ?> kg <?= isset($selectedObjectifId) && (int) $selectedObjectifId === 1 ? 'en prise' : ((int) $selectedObjectifId === 2 ? 'en perte' : '(IMC idéal : tri proche de 0)') ?></p>
+      <?php if (isset($variationSouhaitee)): ?>
+        <p><strong>Cible de tri (regime & sport):</strong> <?= $variationSouhaitee > 0 ? '+' : '' ?><?= esc($variationSouhaitee) ?> (comparaison ABS avec les variations en base)</p>
+      <?php endif; ?>
+      <p><strong>Poids actuel:</strong> <?= esc($poids ?? 0) ?> kg</p>
+      <p><strong>IMC:</strong> <?= esc($imc ?? 'N/A') ?></p>
+    </div>
+
+    <div class="card" id="results-section">
+      <div class="card-title">Regimes suggeres</div>
+      <div class="regime-grid">
+        <?php if (!empty($recommendedRegimes)): ?>
+          <?php foreach ($recommendedRegimes as $regime): ?>
+            <?php $variation = (float) $regime['variation_poids']; ?>
+            <div class="regime-card">
+              <div class="regime-banner green">🥗</div>
+              <div class="regime-body">
+                <div class="regime-name"><?= esc($regime['nom']) ?></div>
+                <div class="regime-desc"><?= esc($regime['description']) ?></div>
+                <div class="regime-meta">
+                  <span class="tag green"><?= esc($objectifLabel ?? '') ?></span>
+                  <span class="tag blue"><?= esc($regime['duree_semaines_calculee'] ?? $regime['duree_semaines']) ?> semaines</span>
+                  <span class="tag <?= $variation < 0 ? 'red' : 'amber' ?>">
+                    Variation <?= $variation > 0 ? '+' : '' ?><?= esc($regime['variation_poids']) ?> kg
+                  </span>
+                </div>
+                <div class="composition-bar">
+                  <div class="comp-label">
+                    Composition : Viande <?= esc($regime['pourcentage_viande']) ?>% · Poisson <?= esc($regime['pourcentage_poisson']) ?>% · Volaille <?= esc($regime['pourcentage_volaille']) ?>%
+                  </div>
+                  <div class="comp-bar">
+                    <div class="seg-meat" style="width:<?= esc($regime['pourcentage_viande']) ?>%"></div>
+                    <div class="seg-fish" style="width:<?= esc($regime['pourcentage_poisson']) ?>%"></div>
+                    <div class="seg-poultry" style="width:<?= esc($regime['pourcentage_volaille']) ?>%"></div>
+                  </div>
+                </div>
+                <div class="regime-price">
+                  <div>
+                    <?php if ((int) ($user['est_gold'] ?? 0) === 1 && isset($regime['prix_initial'])): ?>
+                      <div class="price-amount" style="font-size:14px; color: var(--slate-500); text-decoration: line-through;">
+                        <?= number_format((float) ($regime['prix_initial']), 0, ',', ' ') ?> Ar
+                      </div>
+                      <div class="price-amount">
+                        <?= number_format((float) ($regime['prix_calcule']), 0, ',', ' ') ?> Ar
+                      </div>
+                    <?php else: ?>
+                      <div class="price-amount"><?= number_format((float) ($regime['prix_calcule']), 0, ',', ' ') ?> Ar</div>
+                    <?php endif; ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p>Aucun regime trouve pour cet objectif.</p>
+        <?php endif; ?>
       </div>
 
       <!-- BOUTON VALIDATION GLOBAL TOUT EN BAS -->

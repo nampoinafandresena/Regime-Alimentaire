@@ -171,3 +171,13 @@ INSERT INTO options_gold (id, prix, description) VALUES
 (2, 79.99, 'Abonnement Gold pour 3 mois'),
 (3, 149.99, 'Abonnement Gold pour 6 mois'),
 (4, 279.99, 'Abonnement Gold pour 12 mois');
+
+
+insert into choix_regimes_sport (id_utilisateur, id_regime, id_sport) values
+(2, 1, 3),  -- Rojotiana a choisi Carnivore Plus et Musculation
+(3, 2, 1),  -- Feno a choisi Oceanic et Course à pied
+(4, 4, 4),  -- Miora a choisi Volailles Legeres et Yoga
+(5, 5, 2),  -- Rindra a choisi Proteine Max et Natation
+(6, 2, 1),  -- Tahiry a choisi Oceanic et Course à pied
+(7, 6, 7),  -- Nantenaina a choisi Végétarien Renforcé et Randonnée
+(8, 7, 8);  -- Fitia a choisi Méditerranéen et CrossFit
