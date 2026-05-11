@@ -120,5 +120,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<footer class="bo-footer-simple">
+    <div class="footer-inner">
+        <p>© <?= date('Y') ?> NutriPath — Back-office Administration</p>
+        <div class="footer-version">
+            <i class="fas fa-code-branch"></i> v1.0
+        </div>
+    </div>
+</footer>
+
+<style>
+.bo-footer-simple { background: var(--slate-900); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 16px 32px; margin-top: auto;}
+.footer-inner {display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;gap: 12px;max-width: 1400px;margin: 0 ;}
+.bo-footer-simple p {font-size: 12px;color: var(--slate-500);margi;}
+.footer-version {font-size: 11px;color: var(--slate-600);font-family: monos;}
+.footer-version i { margin-right:4px;}
+</style>
+
 </body>
 </html>
