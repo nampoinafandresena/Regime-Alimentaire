@@ -51,7 +51,7 @@
         <p>5 programmes nutritionnels variés avec composition détaillée (viande, poisson, volaille).</p>
       </div>
       <div class="feat-card">
-        <i class="bi bi-person-running feat-icon"></i>
+        <i class="bi bi-bicycle feat-icon"></i>
         <h3>Activité sportive</h3>
         <p>Des recommandations sportives complémentaires adaptées à votre objectif et votre condition.</p>
       </div>

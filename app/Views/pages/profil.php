@@ -41,25 +41,27 @@
 
 <div class="app-layout">
   <div class="sidebar">
-  <div class="sidebar">
     <div class="sidebar-logo">Nutri<span>Path</span></div>
     <div class="sidebar-section">Menu</div>
     <a href="/dashboard" class="sidebar-item">
-      <i class="bi bi-speedometer2" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
+      <i class="fas fa-chart-line" style="font-size: 1.2rem; margin-right: 10px;"></i> Tableau de bord
     </a>
     <a href="/regimes" class="sidebar-item">
       <i class="fas fa-utensils" style="font-size: 1.2rem; margin-right: 10px;"></i> Régimes
     </a>
     <a href="/sports" class="sidebar-item">
-      <i class="bi bi-bicycle" style="font-size: 1.2rem; margin-right: 10px;"></i> Activités
+      <i class="fas fa-dumbbell" style="font-size: 1.2rem; margin-right: 10px;"></i> Activités
     </a>
     <a href="/profil" class="sidebar-item active">
-      <i class="bi bi-person-circle" style="font-size: 1.2rem; margin-right: 10px;"></i> Mon profil
+      <i class="fas fa-user-circle" style="font-size: 1.2rem; margin-right: 10px;"></i> Mon profil
     </a>
-  </div>
     <?php if (! $isGold): ?>
-      <div class="sidebar-item"><span class="icon">⭐</span> Option Gold</div>
+      <div class="sidebar-item"><i class="fas fa-star" style="font-size: 1.2rem; margin-right: 10px;"></i> Option Gold</div>
     <?php endif; ?>
+    <div class="sidebar-section" style="margin-top: 16px;">Compte</div>
+    <a href="/logout" class="sidebar-item">
+      <i class="fas fa-sign-out-alt" style="font-size: 1.2rem; margin-right: 10px;"></i> Se déconnecter
+    </a>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="avatar"><?= esc($initials) ?></div>
