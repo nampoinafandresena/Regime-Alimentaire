@@ -90,6 +90,8 @@
                       <?php endif; ?>
                     </div>
                   </div>
+                  <input type="hidden" name="regime_weeks[<?= esc($regime['id']) ?>]" value="<?= esc($regime['duree_semaines_calculee'] ?? $regime['duree_semaines']) ?>">
+                  <input type="hidden" name="regime_prices[<?= esc($regime['id']) ?>]" value="<?= esc($regime['prix_calcule']) ?>">
                   <!-- Checkbox pour ce régime -->
                   <div class="selection-checkbox">
                     <label>

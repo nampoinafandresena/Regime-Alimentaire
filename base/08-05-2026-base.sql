@@ -55,11 +55,27 @@ CREATE TABLE regimes_prix_duree (
     FOREIGN KEY (id_regime) REFERENCES regimes(id)
 );
 
-CREATE TABLE activites_sportives (
+create table sport_categorie (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100)
+);
+
+create table sport_intensite (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100)
+);
+
+CREATE TABLE sport (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100),
-    variation_poids_par_heure DECIMAL(5, 2) 
+    description TEXT,
+    id_categorie INT,
+    id_intensite INT,
+    variation_poids_par_heure DECIMAL(5, 2),
+    foreign key (id_categorie) references sport_categorie(id),
+    foreign key (id_intensite) references sport_intensite(id)
 );
+
 
 CREATE TABLE codes_portefeuille (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -99,6 +115,8 @@ CREATE TABLE choix_regimes_sport (
     id_utilisateur INT,
     id_regime INT,
     id_sport INT,
+    prix_precis DECIMAL(10, 2),
+    semaine_precis DECIMAL(6, 1),
     date_choix TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id),
     FOREIGN KEY (id_regime) REFERENCES regimes(id),
@@ -106,19 +124,6 @@ CREATE TABLE choix_regimes_sport (
 
 );
 
--- avoir la liste des utilisateurs (ID	Nom complet	Email	Genre	Taille/Poids	IMC	Objectif	Wallet (€)	Statut	Actions)
-select 
-    nom, 
-    email, 
-    genre, 
-    concat(taille_cm, ' cm / ', poids_kg, ' kg') as taille_poids, 
-    round(poids_kg / (taille_cm/100 * taille_cm/100), 2) as imc, 
-    o.libelle as objectif, solde_portefeuille, 
-    case when est_gold = 1 then 'Gold' else 'Standard' end as statut 
-from utilisateurs u 
-    join donnees_sante ds on u.id = ds.id_utilisateur 
-    join utilisateurs_objectifs uo on u.id = uo.id_utilisateur 
-    join objectifs o on uo.id_objectif = o.id;
 
 
     
