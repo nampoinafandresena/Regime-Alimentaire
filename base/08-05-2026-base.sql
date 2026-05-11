@@ -93,6 +93,19 @@ CREATE TABLE options_gold (
     description VARCHAR(255)
 );
 
+
+CREATE TABLE choix_regimes_sport (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_utilisateur INT,
+    id_regime INT,
+    id_sport INT,
+    date_choix TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id),
+    FOREIGN KEY (id_regime) REFERENCES regimes(id),
+    FOREIGN KEY (id_sport) REFERENCES sport(id)
+
+);
+
 -- avoir la liste des utilisateurs (ID	Nom complet	Email	Genre	Taille/Poids	IMC	Objectif	Wallet (€)	Statut	Actions)
 select 
     nom, 
