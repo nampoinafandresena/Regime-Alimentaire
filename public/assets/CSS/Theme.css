@@ -3354,6 +3354,8 @@ label {
     margin-bottom: 30px;
 }
 
+.footer-newsletter h4 {color: var(--cream);}
+
 .newsletter-content {
     display: flex;
     justify-content: space-between;
