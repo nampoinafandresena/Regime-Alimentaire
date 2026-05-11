@@ -1,6 +1,4 @@
-<style>
-  @import url("<?= base_url('assets/CSS/Style.css') ?>");
-</style>
+
 
 
 

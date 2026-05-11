@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card activities-card">
       <div class="card-title">Activites sportives suggerees</div>
       <div class="activity-list">
         <?php if (!empty($suggestedActivities)): ?>

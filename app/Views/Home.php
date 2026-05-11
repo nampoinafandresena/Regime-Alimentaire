@@ -36,6 +36,23 @@
     </div>
   </div>
 
+  <div class="landing-imc">
+    <h2>Calculez votre IMC maintenant</h2>
+    <p>Découvrez votre indice de masse corporelle en quelques secondes, sans inscription</p>
+    <div class="imc-widget">
+      <div class="imc-field">
+        <label>Taille (cm)</label>
+        <input type="number" id="calc-taille" placeholder="175" value="175">
+      </div>
+      <div class="imc-field">
+        <label>Poids (kg)</label>
+        <input type="number" id="calc-poids" placeholder="72" value="72">
+      </div>
+      <button class="imc-btn" onclick="calcIMC()">Calculer mon IMC</button>
+    </div>
+    <div class="imc-result" id="imc-result"></div>
+  </div>
+
   <div class="landing-features">
     <h2>Tout ce dont vous avez besoin</h2>
     <p class="subtitle">Une approche complète et personnalisée de la nutrition</p>
@@ -96,23 +113,6 @@
         <figcaption>Un suivi plus équilibré et progressif</figcaption>
       </figure>
     </div>
-  </div>
-
-  <div class="landing-imc">
-    <h2>Calculez votre IMC maintenant</h2>
-    <p>Découvrez votre indice de masse corporelle en quelques secondes, sans inscription</p>
-    <div class="imc-widget">
-      <div class="imc-field">
-        <label>Taille (cm)</label>
-        <input type="number" id="calc-taille" placeholder="175" value="175">
-      </div>
-      <div class="imc-field">
-        <label>Poids (kg)</label>
-        <input type="number" id="calc-poids" placeholder="72" value="72">
-      </div>
-      <button class="imc-btn" onclick="calcIMC()">Calculer mon IMC</button>
-    </div>
-    <div class="imc-result" id="imc-result"></div>
   </div>
 </div>
 
