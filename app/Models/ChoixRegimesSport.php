@@ -12,6 +12,22 @@ class ChoixRegimesSport extends Model
         return $this->where('id_utilisateur', $userId)->findAll();
     }
 
+    public function getChoixDetailsByUserId($userId)
+    {
+        return $this->db->table('choix_regimes_sport crs')
+            ->select('crs.id, crs.id_utilisateur, crs.id_regime, crs.id_sport, crs.prix_precis, crs.semaine_precis, crs.date_choix')
+            ->select('r.nom AS regime_nom, r.description AS regime_description')
+            ->select('s.nom AS sport_nom, c.nom AS sport_categorie, i.nom AS sport_intensite')
+            ->join('regimes r', 'r.id = crs.id_regime', 'left')
+            ->join('sport s', 's.id = crs.id_sport', 'left')
+            ->join('sport_categorie c', 'c.id = s.id_categorie', 'left')
+            ->join('sport_intensite i', 'i.id = s.id_intensite', 'left')
+            ->where('crs.id_utilisateur', $userId)
+            ->orderBy('crs.date_choix', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
+
     // inserer plusieurs regime en meme temps pour un sport donné
     public function insertAll($regimeIds, $sportId, $regimePrices = [], $regimeWeeks = []){
         $userId = session()->get('user')['id'] ?? null;

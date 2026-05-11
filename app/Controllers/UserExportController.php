@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Models\RegimeModel;
 use App\Models\UserModel;
 use App\Models\SanteModel;
 use App\Models\ObjectifModel;
 use App\Models\UserObjectifModel;
+use App\Models\ChoixRegimesSport;
 
 class UserExportController extends BaseController
 {
@@ -24,11 +24,13 @@ class UserExportController extends BaseController
             $santeModel = new SanteModel();
             $objectifModel = new ObjectifModel();
             $userObjectifModel = new UserObjectifModel();
+            $choixRegimesSportModel = new ChoixRegimesSport();
 
             $user = $userModel->find($userId);
             $latestSante = $santeModel->getLatestSanteByUserId($userId);
             $allObjectifs = $objectifModel->findAll();
             $selectedObjectifIds = $userObjectifModel->getObjectifIdsByUserId($userId);
+            $selectedPlans = $choixRegimesSportModel->getChoixDetailsByUserId($userId);
 
             $imc = null;
             if ($latestSante && (float) $latestSante['taille_cm'] > 0) {
@@ -37,7 +39,7 @@ class UserExportController extends BaseController
             }
 
 
-            $this->generatePDFwithFPDF($user, $latestSante, $imc, $allObjectifs, $selectedObjectifIds, $sessionUser);
+            $this->generatePDFwithFPDF($user, $latestSante, $imc, $allObjectifs, $selectedObjectifIds, $selectedPlans, $sessionUser);
 
         } catch (\Exception $e) {
             log_message('error', 'PDF Generation Error: ' . $e->getMessage());
@@ -45,7 +47,7 @@ class UserExportController extends BaseController
         }
     }
 
-    private function generatePDFwithFPDF($user, $latestSante, $imc, $allObjectifs, $selectedObjectifIds, $sessionUser)
+    private function generatePDFwithFPDF($user, $latestSante, $imc, $allObjectifs, $selectedObjectifIds, $selectedPlans, $sessionUser)
     {
 
         $possiblePaths = [
@@ -141,6 +143,37 @@ class UserExportController extends BaseController
         }
 
         $pdf->Ln(6);
+
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(0, 8, 'Plan a suivre (regimes et sports)', 0, 1);
+
+        $pdf->SetFont('Arial', '', 10);
+        if (! empty($selectedPlans)) {
+            foreach ($selectedPlans as $plan) {
+                $regimeNom = $plan['regime_nom'] ?? 'Regime';
+                $sportNom = $plan['sport_nom'] ?? 'N/A';
+                $prix = $plan['prix_precis'] ?? null;
+                $semaines = $plan['semaine_precis'] ?? null;
+                $line = $regimeNom . ' | Sport: ' . $sportNom;
+                if (! empty($plan['sport_categorie']) || ! empty($plan['sport_intensite'])) {
+                    $line .= ' (' . ($plan['sport_categorie'] ?? 'N/A') . ' / ' . ($plan['sport_intensite'] ?? 'N/A') . ')';
+                }
+                if ($prix !== null) {
+                    $line .= ' | Prix: ' . number_format((float) $prix, 2, ',', ' ') . ' Ar';
+                }
+                if ($semaines !== null) {
+                    $line .= ' | Semaines: ' . $semaines;
+                }
+                $pdf->SetTextColor(80, 80, 80);
+                $pdf->MultiCell(0, 6, $line, 0, 'L');
+            }
+        } else {
+            $pdf->SetTextColor(150, 150, 150);
+            $pdf->Cell(0, 6, 'Aucun plan selectionne', 0, 1);
+        }
+
+        $pdf->Ln(4);
 
         $pdf->SetFont('Arial', '', 8);
         $pdf->SetTextColor(150, 150, 150);
