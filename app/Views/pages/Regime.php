@@ -25,10 +25,10 @@
       <h2>Objectif et variation de poids</h2>
       <p>Choisissez votre objectif puis le poids a gagner ou a perdre : le systeme classe les regimes et sports dont la variation est la plus proche.</p>
     </div>
-
+    
     <div class="card objective-card">
       <div class="card-title">Parametrer votre plan</div>
-      <form class="objective-form-wrap" method="post" action="/regimes">
+      <form class="objective-form-wrap" method="post" action="/regimes#results-section">
         <?= csrf_field() ?>
         <div class="objective-form">
           <?php foreach (($objectifs ?? []) as $objectif): ?>
@@ -62,14 +62,14 @@
       <p><strong>IMC:</strong> <?= esc($imc ?? 'N/A') ?></p>
     </div>
 
-    <div class="card">
+    <div class="card" id="results-section">
       <div class="card-title">Regimes suggeres</div>
       <div class="regime-grid">
         <?php if (!empty($recommendedRegimes)): ?>
           <?php foreach ($recommendedRegimes as $regime): ?>
             <?php $variation = (float) $regime['variation_poids']; ?>
             <div class="regime-card">
-              <div class="regime-banner green"><i class="bi bi-cup-straw"></i></div>
+              <div class="regime-banner green">🥗</div>
               <div class="regime-body">
                 <div class="regime-name"><?= esc($regime['nom']) ?></div>
                 <div class="regime-desc"><?= esc($regime['description']) ?></div>
