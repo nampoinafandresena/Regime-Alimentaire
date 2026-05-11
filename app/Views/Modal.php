@@ -106,7 +106,7 @@
     <!-- Footer bottom -->
     <div class="footer-bottom">
         <div class="footer-bottom-inner">
-            <p>&copy; <?= date('Y') ?> NutriPath. Tous droits réservés.</p>
+            <p>&copy; <?= date('Y') ?> NutriPath. Tous droits réservés. ETU3920-ETU4017-ETU4161</p>
             <div class="footer-legal">
                 <a href="#">Mentions légales</a>
                 <span class="separator">|</span>
