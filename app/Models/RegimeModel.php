@@ -33,6 +33,30 @@ class RegimeModel extends Model{
         return $query->getResultArray();
     }
 
+    // SELECT 
+//     r.id,
+//     r.nom,
+//     COUNT(crs.id_regime) AS nombre_choix,
+//     ROUND(COUNT(crs.id_regime) * 100.0 / (SELECT COUNT(*) FROM choix_regimes_sport), 2) AS pourcentage
+// FROM regimes r
+// LEFT JOIN choix_regimes_sport crs ON r.id = crs.id_regime
+// GROUP BY r.id, r.nom
+// ORDER BY nombre_choix DESC;
+// -- => popularite d un regime aupres des users
+    public function getPopulariteRegimes(){
+        $sql = "SELECT 
+                    r.id,
+                    r.nom,
+                    COUNT(crs.id_regime) AS nombre_choix,
+                    ROUND(COUNT(crs.id_regime) * 100.0 / (SELECT COUNT(*) FROM choix_regimes_sport), 2) AS pourcentage
+                FROM regimes r
+                LEFT JOIN choix_regimes_sport crs ON r.id = crs.id_regime
+                GROUP BY r.id, r.nom
+                ORDER BY nombre_choix DESC";
+        $query = $this->db->query($sql);
+        return $query->getResultArray();
+    }
+
     public function getRegimeById($id){
         $sql = "SELECT regimes.id, regimes.nom, regimes.description, regimes.pourcentage_viande, regimes.pourcentage_poisson, regimes.pourcentage_volaille, 
                 COALESCE(rpd.duree_semaines, 'N/A') AS duree_semaines, 

@@ -45,3 +45,17 @@ insert into sport (nom, description, id_categorie, id_intensite, variation_poids
 ('Football', 'Sport collectif avec des phases de sprint et d’endurance.', 1, 3, -0.35),
 ('Randonnée', 'Activité d’endurance en plein air.', 4, 1, -0.15),
 ('CrossFit', 'Entraînement à haute intensité combinant cardio et musculation.', 5, 3, 0.05);
+
+
+
+-- requetes
+SELECT 
+    r.id,
+    r.nom,
+    COUNT(crs.id_regime) AS nombre_choix,
+    ROUND(COUNT(crs.id_regime) * 100.0 / (SELECT COUNT(*) FROM choix_regimes_sport), 2) AS pourcentage
+FROM regimes r
+LEFT JOIN choix_regimes_sport crs ON r.id = crs.id_regime
+GROUP BY r.id, r.nom
+ORDER BY nombre_choix DESC;
+-- => popularite d un regime aupres des users
