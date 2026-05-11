@@ -18,7 +18,10 @@
                                 <a href="<?= current_url() ?>" class="btn-add-bo" style="background: #6b7280;">Réinitialiser</a>
                             <?php endif; ?>
                         </form>
-                        <button class="btn-add-bo" onclick="cancelEdit()">+ Nouveau régime</button>
+                        <button class="btn-add-bo" onclick="cancelEdit()">
+                            <i class="bi bi-plus-circle-fill" style="font-size: 1.2rem; margin-right: 8px; color: var(--green-500);"></i> 
+                             Nouveau régime
+                            </button>
                     </div>
                 </div>
                 
@@ -46,8 +49,10 @@
                                     <td><?= number_format($regime['prix'], 0, ',', ' ') ?> Ar</td>
                                     <td>
                                         <div class="action-btns">
-                                            <button class="btn-edit" onclick="editRegime(<?= $regime['id'] ?>)">✏️ Éditer</button>
-                                            <button class="btn-del" data-id="<?= $regime['id'] ?>" data-name="<?= esc($regime['nom']) ?>" onclick="deleteRegime(this)">🗑️ Supprimer</button>
+                                            <button class="btn-edit" onclick="editRegime(<?= $regime['id'] ?>)">
+                                                <i class="bi bi-pencil-fill" style="color: #3b82f6;"></i> Éditer</button>
+                                            <button class="btn-del" data-id="<?= $regime['id'] ?>" data-name="<?= esc($regime['nom']) ?>" onclick="deleteRegime(this)">
+                                                <i class="bi bi-trash-fill" style="color: #ef4444;"></i> Supprimer</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -61,7 +66,7 @@
         <!-- Formulaire -->
         <div class="form-page">
             <div class="form-card">
-                <h3 id="form-title">➕ Nouveau régime</h3>
+                <h3 id="form-title"><i class="bi bi-plus-circle-fill" style="font-size: 1.2rem; margin-right: 8px; color: var(--green-500);"></i>  Nouveau régime</h3>
                 <form id="regimeForm">
                     <input type="hidden" id="regimeId" name="id">
                     
@@ -263,7 +268,7 @@ function cancelEdit() {
     document.getElementById('poultryInput').value = 30;
     
     updateCompositionTotal();
-    document.getElementById('form-title').textContent = '➕ Nouveau régime';
+    document.getElementById('form-title').textContent = ' Nouveau régime';
 }
 
 // ========== SOUMISSION DU FORMULAIRE ==========

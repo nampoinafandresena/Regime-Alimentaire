@@ -28,7 +28,7 @@
             <i class="fas fa-coins" style="font-size: 1rem; margin-right: 8px;"></i> 
             Porte-monnaie total
         </div>
-        <div class="kpi-value"><?= number_format($soldePortefeuille ?? 0, 2, ',', ' ') ?> €</div>
+        <div class="kpi-value"><?= number_format($soldePortefeuille ?? 0, 2, ',', ' ') ?> Ar</div>
         <div class="kpi-trend">Fonds cumulés</div>
     </div>
     
@@ -74,7 +74,7 @@
                         <th>Taille/Poids</th>
                         <th>IMC</th>
                         <th>Objectif</th>
-                        <th>Wallet (€)</th>
+                        <th>Wallet (Ar)</th>
                         <th>Statut</th>
                         <th>Actions</th>
                     </tr>
@@ -101,7 +101,7 @@
                                     </span>
                                 </td>
                                 <td><?= esc($user['objectif']) ?></td>
-                                <td><?= number_format($user['solde_portefeuille'], 2, ',', ' ') ?> €</td>
+                                <td><?= number_format($user['solde_portefeuille'], 2, ',', ' ') ?> Ar</td>
                                 <td>
                                     <?php if($user['statut'] === 'Gold'): ?>
                                         <span class="badge-status badge-gold">⭐ Gold</span>

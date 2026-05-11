@@ -179,7 +179,7 @@
         <div class="kpi-row" id="kpiStats">
             <div class="kpi-card"><div class="kpi-label">👥 Total utilisateurs</div><div class="kpi-value" id="totalUsers">0</div><div class="kpi-trend">Minimum 5 requis ✓</div></div>
             <div class="kpi-card"><div class="kpi-label">⭐ Membres Gold</div><div class="kpi-value" id="goldCount">0</div><div class="kpi-trend">-15% sur régimes</div></div>
-            <div class="kpi-card"><div class="kpi-label">💰 Porte-monnaie total</div><div class="kpi-value" id="totalWallet">0 €</div><div class="kpi-trend">Fonds cumulés</div></div>
+            <div class="kpi-card"><div class="kpi-label">💰 Porte-monnaie total</div><div class="kpi-value" id="totalWallet">0 Ar</div><div class="kpi-trend">Fonds cumulés</div></div>
             <div class="kpi-card"><div class="kpi-label">📊 IMC moyen</div><div class="kpi-value" id="avgImc">0</div><div class="kpi-trend">Normale ~18.5-25</div></div>
         </div>
 
@@ -201,7 +201,7 @@
             <div style="overflow-x: auto;">
                 <table id="usersTable">
                     <thead>
-                        <tr><th>ID</th><th>Nom complet</th><th>Email</th><th>Genre</th><th>Taille/Poids</th><th>IMC</th><th>Objectif</th><th>Wallet (€)</th><th>Statut</th><th>Actions</th></tr>
+                        <tr><th>ID</th><th>Nom complet</th><th>Email</th><th>Genre</th><th>Taille/Poids</th><th>IMC</th><th>Objectif</th><th>Wallet (Ar)</th><th>Statut</th><th>Actions</th></tr>
                     </thead>
                     <tbody id="usersTableBody"></tbody>
                 </table>
@@ -231,7 +231,7 @@
         </div>
         <div class="form-row">
             <div class="form-group"><label>Objectif principal</label><select id="userGoal"><option value="reduce">⬇️ Réduire son poids</option><option value="increase">⬆️ Augmenter son poids</option><option value="ideal">🎯 Atteindre IMC idéal</option></select></div>
-            <div class="form-group"><label>Porte-monnaie (€)</label><input type="number" id="userWallet" value="0" step="5"></div>
+            <div class="form-group"><label>Porte-monnaie (Ar)</label><input type="number" id="userWallet" value="0" step="5"></div>
         </div>
         <div class="form-group"><label>Statut Gold</label><select id="userGold"><option value="false">Standard</option><option value="true">⭐ Gold (-15% régimes)</option></select></div>
         <div class="form-actions">
@@ -274,7 +274,7 @@
                 <td>${user.height}cm / ${user.weight}kg</td>
                 <td><span class="imc-badge">${imc} (${getIMCCategory(imc)})</span></td>
                 <td>${goalMap[user.goal] || user.goal}</td>
-                <td>${user.wallet.toFixed(2)} €</td>
+                <td>${user.wallet.toFixed(2)} Ar</td>
                 <td>${user.gold ? '<span class="badge-status badge-gold">⭐ Gold</span>' : '<span class="badge-status badge-silver">Standard</span>'}</td>
                 <td class="action-btns">
                     <button class="btn-view" onclick="viewUser(${user.id})"><i class="bi bi-eye"></i> Voir</button>
@@ -294,7 +294,7 @@
         const avgImcVal = users.reduce((sum, u) => sum + calculateIMC(u.weight, u.height), 0) / total;
         document.getElementById('totalUsers').innerText = total;
         document.getElementById('goldCount').innerText = golds;
-        document.getElementById('totalWallet').innerHTML = totalWallet.toFixed(2) + " €";
+        document.getElementById('totalWallet').innerHTML = totalWallet.toFixed(2) + " Ar";
         document.getElementById('avgImc').innerText = avgImcVal.toFixed(1);
 
         // Graphique objectifs
@@ -385,7 +385,7 @@
     }
     function editUser(id) { const user = users.find(u => u.id === id); if(user) openModal(true, user); }
     function deleteUser(id) { if(confirm("Supprimer cet utilisateur définitivement ?")) { users = users.filter(u => u.id !== id); refreshUsersTable(); } }
-    function viewUser(id) { const user = users.find(u => u.id === id); if(user) { alert(`👤 ${user.name}\n📧 ${user.email}\n📏 ${user.height}cm / ${user.weight}kg\n🎯 Objectif: ${user.goal}\n💰 Wallet: ${user.wallet}€\n⭐ Gold: ${user.gold ? "Oui (-15%)" : "Non"}`); } }
+    function viewUser(id) { const user = users.find(u => u.id === id); if(user) { alert(`👤 ${user.name}\n📧 ${user.email}\n📏 ${user.height}cm / ${user.weight}kg\n🎯 Objectif: ${user.goal}\n💰 Wallet: ${user.wallet}Ar\n⭐ Gold: ${user.gold ? "Oui (-15%)" : "Non"}`); } }
 
     // Event listeners & search
     document.getElementById('openAddUserModal').addEventListener('click', () => openModal(false));
