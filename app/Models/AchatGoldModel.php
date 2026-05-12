@@ -8,7 +8,7 @@ class AchatGoldModel extends Model{
     protected $table = 'achats_gold';
     protected $primaryKey = 'id';
     protected $allowedFields = ['id_utilisateur', 'date_achat', 'montant_paye'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     public function getAchatsByUserId($userId){
         return $this->where('id_utilisateur', $userId)->orderBy('date_achat', 'DESC')->findAll();

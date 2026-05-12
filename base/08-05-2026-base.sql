@@ -55,17 +55,35 @@ CREATE TABLE regimes_prix_duree (
     FOREIGN KEY (id_regime) REFERENCES regimes(id)
 );
 
-CREATE TABLE activites_sportives (
+create table sport_categorie (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100)
+);
+
+create table sport_intensite (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100)
+);
+
+CREATE TABLE sport (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100),
-    variation_poids_par_heure DECIMAL(5, 2) 
+    description TEXT,
+    id_categorie INT,
+    id_intensite INT,
+    variation_poids_par_heure DECIMAL(5, 2),
+    foreign key (id_categorie) references sport_categorie(id),
+    foreign key (id_intensite) references sport_intensite(id)
 );
+
 
 CREATE TABLE codes_portefeuille (
     id INT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(20) UNIQUE,
     montant DECIMAL(10, 2),
-    est_valide BOOLEAN DEFAULT TRUE 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_expiration TIMESTAMP DEFAULT DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 30 DAY),
+    est_valide BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE code_users(
@@ -90,3 +108,22 @@ CREATE TABLE options_gold (
     prix DECIMAL(10,2),
     description VARCHAR(255)
 );
+
+
+CREATE TABLE choix_regimes_sport (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_utilisateur INT,
+    id_regime INT,
+    id_sport INT,
+    prix_precis DECIMAL(10, 2),
+    semaine_precis DECIMAL(6, 1),
+    date_choix TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id),
+    FOREIGN KEY (id_regime) REFERENCES regimes(id),
+    FOREIGN KEY (id_sport) REFERENCES sport(id)
+
+);
+
+
+
+    

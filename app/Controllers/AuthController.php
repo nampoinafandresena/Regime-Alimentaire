@@ -7,16 +7,28 @@
     }
     public function login() {
         $model = new UserModel();
+        $role = $this->request->getPost('role');
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $user = $model->getUserByEmail($email);
-        if (!$user || !password_verify($password, password_hash($user['mot_de_passe'], PASSWORD_DEFAULT))) {
+            if (! $user) {
+                return view('Modal', [
+                    'erreur' => 'Email ou mot de passe incorrect',
+                    'page' => 'auth/Login'
+                ]);
+            }
+
+        if ($user['role'] !== $role) {
             return view('Modal', [
-            'erreur' => 'Email ou mot de passe incorrect',
+            'erreur' => 'Rôle sélectionné ne correspond pas à l\'utilisateur',
             'page' => 'auth/Login'
             ]);
         }
-        // Stocker uniquement les données non sensibles en session
+        if ($user['role'] === 'admin') {
+            session()->set('admin', ['id' => $user['id'],'nom' => $user['nom'], 'email' => $user['email'],'role' => $user['role']]);
+            return redirect()->to('/bo/dashboard/general');
+        }
+        
         session()->set('user', ['id' => $user['id'],'nom' => $user['nom'], 'email' => $user['email'],'role' => $user['role']]);
         return redirect()->to('/index');
     }

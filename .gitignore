@@ -1,0 +1,26 @@
+# CodeIgniter writable directory
+writable/logs/
+writable/debugbar/
+writable/session/
+writable/cache/
+writable/.htaccess
+
+# Log files
+*.log
+
+# Debugbar files
+debugbar_*.json
+
+# Session files
+ci_session*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+writable/logs/
+writable/debugbar/
+writable/session/

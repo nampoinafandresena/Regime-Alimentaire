@@ -20,6 +20,8 @@ INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VAL
 (7, 162.00, 58.50, '2024-01-09 13:20:00'),
 (8, 178.00, 80.00, '2024-01-16 10:30:00');
 
+INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VALUES 
+(7, 200.00, 50.00, '2024-02-15 10:00:00');  
 -- Deuxième mesures pour certains (suivi)
 INSERT INTO donnees_sante (id_utilisateur, taille_cm, poids_kg, date_mesure) VALUES 
 (2, 165.00, 67.20, '2024-02-10 09:30:00'),
@@ -98,15 +100,27 @@ INSERT INTO regimes_prix_duree (id_regime, duree_semaines, variation_poids, prix
 (7, 16, -5.00, 145000);
 
 -- Activités sportives (5 fournies + ajout)
-INSERT INTO activites_sportives (nom, variation_poids_par_heure) VALUES 
-('Course à pied', -0.30),
-('Natation', -0.40),
-('Musculation', 0.10),
-('Yoga', -0.05),
-('Cyclisme', -0.20),
-('Football', -0.35),
-('Randonnée', -0.15),
-('CrossFit', 0.05);
+insert into sport_categorie (nom) values 
+('Cardio'),
+('Renforcement musculaire'),
+('Flexibilité'),
+('Endurance'),
+('HIIT');
+
+insert into sport_intensite (nom) values 
+('Légère'),
+('Modérée'),
+('Intense');
+
+insert into sport (nom, description, id_categorie, id_intensite, variation_poids_par_heure) values 
+('Course à pied', 'Activité cardio qui brûle des calories rapidement.', 1, 3, -0.30),
+('Natation', 'Exercice complet qui sollicite tout le corps.', 1, 2, -0.40),
+('Musculation', 'Renforcement musculaire pour prise de masse ou tonification.', 2, 3, 0.10),
+('Yoga', 'Activité de flexibilité et de relaxation.', 3, 1, -0.05),
+('Cyclisme', 'Exercice d’endurance pour brûler des calories sur de longues distances.', 4, 2, -0.20),
+('Football', 'Sport collectif avec des phases de sprint et d’endurance.', 1, 3, -0.35),
+('Randonnée', 'Activité d’endurance en plein air.', 4, 1, -0.15),
+('CrossFit', 'Entraînement à haute intensité combinant cardio et musculation.', 5, 3, 0.05);
 
 -- Codes portefeuille (15 fournis + quelques-uns supplémentaires avec état invalide)
 INSERT INTO codes_portefeuille (code, montant, est_valide) VALUES 
@@ -169,3 +183,13 @@ INSERT INTO options_gold (id, prix, description) VALUES
 (2, 79.99, 'Abonnement Gold pour 3 mois'),
 (3, 149.99, 'Abonnement Gold pour 6 mois'),
 (4, 279.99, 'Abonnement Gold pour 12 mois');
+
+
+insert into choix_regimes_sport (id_utilisateur, id_regime, id_sport) values
+(2, 1, 3),  -- Rojotiana a choisi Carnivore Plus et Musculation
+(3, 2, 1),  -- Feno a choisi Oceanic et Course à pied
+(4, 4, 4),  -- Miora a choisi Volailles Legeres et Yoga
+(5, 5, 2),  -- Rindra a choisi Proteine Max et Natation
+(6, 2, 1),  -- Tahiry a choisi Oceanic et Course à pied
+(7, 6, 7),  -- Nantenaina a choisi Végétarien Renforcé et Randonnée
+(8, 7, 8);  -- Fitia a choisi Méditerranéen et CrossFit

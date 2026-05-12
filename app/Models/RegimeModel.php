@@ -8,10 +8,89 @@ class RegimeModel extends Model{
     protected $table = 'regimes';
     protected $primaryKey = 'id';
     protected $allowedFields = ['nom', 'description', 'pourcentage_viande', 'pourcentage_poisson', 'pourcentage_volaille'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     public function getAllRegimes(){
         return $this->findAll();
     }
     
+    public function countActiveRegimes(){
+        return $this->countAllResults();
+    }
+
+    public function getAllInfosRegimes($filtre_nom = null){
+        $sql = "SELECT regimes.id, regimes.nom, regimes.description, regimes.pourcentage_viande, regimes.pourcentage_poisson, regimes.pourcentage_volaille, 
+                COALESCE(rpd.duree_semaines, 'N/A') AS duree_semaines, 
+                COALESCE(rpd.variation_poids, 'N/A') AS variation_poids, 
+                COALESCE(rpd.prix, 'N/A') AS prix
+         FROM regimes 
+         LEFT JOIN regimes_prix_duree rpd ON regimes.id = rpd.id_regime";
+
+        if($filtre_nom) {
+            $sql .= " WHERE regimes.nom LIKE '%" . $this->db->escapeLikeString($filtre_nom) . "%'";
+        }
+        $query = $this->db->query($sql);
+        return $query->getResultArray();
+    }
+
+    // SELECT 
+//     r.id,
+//     r.nom,
+//     COUNT(crs.id_regime) AS nombre_choix,
+//     ROUND(COUNT(crs.id_regime) * 100.0 / (SELECT COUNT(*) FROM choix_regimes_sport), 2) AS pourcentage
+// FROM regimes r
+// LEFT JOIN choix_regimes_sport crs ON r.id = crs.id_regime
+// GROUP BY r.id, r.nom
+// ORDER BY nombre_choix DESC;
+// -- => popularite d un regime aupres des users
+    public function getPopulariteRegimes(){
+        $sql = "SELECT 
+                    r.id,
+                    r.nom,
+                    COUNT(crs.id_regime) AS nombre_choix,
+                    ROUND(COUNT(crs.id_regime) * 100.0 / (SELECT COUNT(*) FROM choix_regimes_sport), 2) AS pourcentage
+                FROM regimes r
+                LEFT JOIN choix_regimes_sport crs ON r.id = crs.id_regime
+                GROUP BY r.id, r.nom
+                ORDER BY nombre_choix DESC";
+        $query = $this->db->query($sql);
+        return $query->getResultArray();
+    }
+
+    public function getRegimeById($id){
+        $sql = "SELECT regimes.id, regimes.nom, regimes.description, regimes.pourcentage_viande, regimes.pourcentage_poisson, regimes.pourcentage_volaille, 
+                COALESCE(rpd.duree_semaines, 'N/A') AS duree_semaines, 
+                COALESCE(rpd.variation_poids, 'N/A') AS variation_poids, 
+                COALESCE(rpd.prix, 'N/A') AS prix
+         FROM regimes 
+         LEFT JOIN regimes_prix_duree rpd ON regimes.id = rpd.id_regime
+         WHERE regimes.id = ?";
+        
+        $query = $this->db->query($sql, [$id]);
+        return $query->getRowArray();
+    }
+
+
+    public function getRecommendedPlansByObjectifAndVariation(int $objectifId, float $variationSouhaitee, int $limit = 3): array
+    {
+        $cible = abs(round($variationSouhaitee, 2));
+
+        $builder = $this->db->table('regimes r');
+        $builder->select(
+            'r.id, r.nom, r.description, r.pourcentage_viande, r.pourcentage_poisson, r.pourcentage_volaille, ' .
+            'rpd.duree_semaines, rpd.variation_poids, rpd.prix'
+        );
+        $builder->join('regimes_prix_duree rpd', 'r.id = rpd.id_regime', 'inner');
+
+        if ($objectifId === 1) {
+            $builder->where('rpd.variation_poids >', 0);
+        } elseif ($objectifId === 2) {
+            $builder->where('rpd.variation_poids <', 0);
+        }
+
+    $builder->orderBy('ABS(ABS(rpd.variation_poids) - ' . $cible . ')', 'ASC', false);
+        $builder->limit($limit);
+
+        return $builder->get()->getResultArray();
+    }
 }
